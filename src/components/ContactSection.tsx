@@ -15,19 +15,19 @@ const ContactSection = () => {
   };
 
   return (
-    <section id="contact" className="py-32 relative">
-      <div className="section-divider mb-32" />
+    <section id="contact" className="py-16 relative">
+      <div className="section-divider mb-12" />
       <div className="container mx-auto px-6">
         <AnimatedSection>
           <p className="font-mono text-sm tracking-[0.3em] text-muted-foreground uppercase mb-4">
             — Get In Touch
           </p>
-          <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-16">
+          <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-10">
             Let's <span className="text-gradient">talk</span>
           </h2>
         </AnimatedSection>
 
-        <div className="grid lg:grid-cols-2 gap-16">
+        <div className="grid lg:grid-cols-2 gap-10">
           {/* Info */}
           <AnimatedSection delay={0.2}>
             <p className="text-muted-foreground text-lg leading-relaxed mb-10">

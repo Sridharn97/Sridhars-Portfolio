@@ -42,24 +42,24 @@ const projects = [
 
 const ProjectsSection = () => {
   return (
-    <section id="projects" className="py-32 relative">
-      <div className="section-divider mb-32" />
+    <section id="projects" className="py-16 relative">
+      <div className="section-divider mb-12" />
       <div className="container mx-auto px-6">
         <AnimatedSection>
           <p className="font-mono text-sm tracking-[0.3em] text-muted-foreground uppercase mb-4">
             — Selected Work
           </p>
-          <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-16">
+          <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-16">
             Featured <span className="text-gradient">projects</span>
           </h2>
         </AnimatedSection>
 
-        <div className="grid md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {projects.map((project, i) => (
             <AnimatedSection key={project.title} delay={i * 0.15}>
               <motion.div
                 whileHover={{ y: -8 }}
-                className="group border border-border rounded-lg overflow-hidden bg-card transition-all duration-500 hover:border-muted-foreground/30"
+                className="group border border-border rounded-lg overflow-hidden bg-card transition-all duration-500 hover:border-muted-foreground/30 ai-circuit-corners ai-glow-pulse"
               >
                 <div className="relative h-56 overflow-hidden">
                   <img
@@ -68,6 +68,12 @@ const ProjectsSection = () => {
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-card to-transparent" />
+
+                  {/* AI Scan Overlay */}
+                  <div className="ai-scan-overlay">
+                    <div className="ai-scan-line" style={{ animationDuration: '4s' }} />
+                  </div>
+
                   <div className="absolute inset-0 bg-background/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-4">
                     <motion.a whileHover={{ scale: 1.1 }} href="#" target="_blank" rel="noreferrer" className="w-12 h-12 rounded-full border border-foreground flex items-center justify-center text-foreground hover:bg-foreground hover:text-primary-foreground transition-all duration-300">
                       <ExternalLink size={18} />
@@ -78,7 +84,7 @@ const ProjectsSection = () => {
                   </div>
                 </div>
                 <div className="p-6">
-                  <h3 className="text-xl font-bold text-foreground mb-2">{project.title}</h3>
+                  <h3 className="text-xl font-bold text-foreground mb-2 tech-glitch-hover inline-block">{project.title}</h3>
                   <p className="text-muted-foreground text-sm mb-4 leading-relaxed">{project.description}</p>
                   <div className="flex flex-wrap gap-2">
                     {project.tags.map((tag) => (

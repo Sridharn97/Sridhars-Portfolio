@@ -31,14 +31,14 @@ const internships = [
 
 const InternshipsSection = () => {
   return (
-    <section id="internships" className="py-32 relative">
-      <div className="section-divider mb-32" />
+    <section id="internships" className="py-16 relative">
+      <div className="section-divider mb-12" />
       <div className="container mx-auto px-6">
         <AnimatedSection>
           <p className="font-mono text-sm tracking-[0.3em] text-muted-foreground uppercase mb-4">
             — Experience
           </p>
-          <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-16">
+          <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-10">
             My <span className="text-gradient">internships</span>
           </h2>
         </AnimatedSection>
@@ -48,8 +48,12 @@ const InternshipsSection = () => {
             <AnimatedSection key={item.company} delay={i * 0.15}>
               <motion.div
                 whileHover={{ x: 6, borderColor: "hsl(0 0% 30%)" }}
-                className="border border-border rounded-lg p-6 md:p-8 transition-all duration-300 group"
+                className="border border-border rounded-lg p-6 md:p-8 transition-all duration-300 group relative overflow-hidden ai-circuit-corners ai-glow-pulse"
               >
+                {/* AI Scan Overlay */}
+                <div className="ai-scan-overlay">
+                  <div className="ai-scan-line" style={{ animationDuration: '6s' }} />
+                </div>
                 <div className="flex flex-col md:flex-row md:items-start gap-4 md:gap-8">
                   {/* Icon */}
                   <div className="w-12 h-12 rounded-full border border-border flex items-center justify-center shrink-0 group-hover:border-foreground transition-colors duration-300">
@@ -62,7 +66,7 @@ const InternshipsSection = () => {
 
                   <div className="flex-1">
                     <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 mb-2">
-                      <h3 className="text-lg font-bold text-foreground">{item.company}</h3>
+                      <h3 className="text-lg font-bold text-foreground tech-glitch-hover inline-block">{item.company}</h3>
                       <span className="text-xs font-mono tracking-wider px-3 py-1 rounded-full border border-border text-muted-foreground w-fit">
                         {item.type === "professional" ? "Professional" : "Training"}
                       </span>

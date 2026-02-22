@@ -75,6 +75,7 @@
   .noise {
     position: relative;
   }
+
   .noise::before {
     content: '';
     position: absolute;
@@ -87,6 +88,7 @@
   .magnetic-hover {
     @apply transition-transform duration-300 ease-out;
   }
+
   .magnetic-hover:hover {
     transform: scale(1.05);
   }
@@ -105,9 +107,11 @@
 ::-webkit-scrollbar {
   width: 4px;
 }
+
 ::-webkit-scrollbar-track {
   background: hsl(0 0% 3%);
 }
+
 ::-webkit-scrollbar-thumb {
   background: hsl(0 0% 25%);
   border-radius: 2px;
@@ -116,4 +120,137 @@
 /* Smooth scroll */
 html {
   scroll-behavior: smooth;
+}
+
+/* Marquee animation */
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee-track {
+  animation: marquee 28s linear infinite;
+  width: max-content;
+}
+
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+/* AI & Tech Hover Effects */
+.ai-scan-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.group:hover .ai-scan-overlay {
+  opacity: 1;
+}
+
+.ai-scan-line {
+  position: absolute;
+  top: -100%;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  background: linear-gradient(to bottom,
+      transparent,
+      hsl(var(--glow) / 0.05),
+      hsl(var(--glow) / 0.1),
+      transparent);
+  animation: scan-vertical 3s linear infinite;
+}
+
+@keyframes scan-vertical {
+  0% {
+    top: -50%;
+  }
+
+  100% {
+    top: 100%;
+  }
+}
+
+.ai-circuit-corners::before,
+.ai-circuit-corners::after {
+  content: '';
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-color: hsl(var(--glow) / 0.3);
+  border-style: solid;
+  opacity: 0;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+}
+
+.ai-circuit-corners::before {
+  top: 0;
+  left: 0;
+  border-width: 1px 0 0 1px;
+  transform: translate(-5px, -5px);
+}
+
+.ai-circuit-corners::after {
+  bottom: 0;
+  right: 0;
+  border-width: 0 1px 1px 0;
+  transform: translate(5px, 5px);
+}
+
+.group:hover .ai-circuit-corners::before,
+.group:hover .ai-circuit-corners::after {
+  opacity: 1;
+  transform: translate(0, 0);
+}
+
+.tech-glitch-hover:hover {
+  animation: glitch 0.3s cubic-bezier(.25, .46, .45, .94) both infinite;
+}
+
+@keyframes glitch {
+  0% {
+    transform: translate(0);
+  }
+
+  20% {
+    transform: translate(-2px, 2px);
+  }
+
+  40% {
+    transform: translate(-2px, -2px);
+  }
+
+  60% {
+    transform: translate(2px, 2px);
+  }
+
+  80% {
+    transform: translate(2px, -2px);
+  }
+
+  100% {
+    transform: translate(0);
+  }
+}
+
+.neural-grid {
+  background-size: 20px 20px;
+  background-image:
+    radial-gradient(circle at 1px 1px, hsl(var(--glow) / 0.05) 1px, transparent 0);
+}
+
+.ai-glow-pulse:hover {
+  box-shadow: 0 0 15px hsl(var(--glow) / 0.1),
+    0 0 30px hsl(var(--glow) / 0.05);
+  transition: box-shadow 0.3s ease;
 }

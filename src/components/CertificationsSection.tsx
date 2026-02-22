@@ -31,14 +31,14 @@ const certifications = [
 
 const CertificationsSection = () => {
   return (
-    <section id="certifications" className="py-32 relative">
-      <div className="section-divider mb-32" />
+    <section id="certifications" className="py-16 relative">
+      <div className="section-divider mb-12" />
       <div className="container mx-auto px-6">
         <AnimatedSection>
           <p className="font-mono text-sm tracking-[0.3em] text-muted-foreground uppercase mb-4">
             — Achievements
           </p>
-          <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-16">
+          <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-10">
             My <span className="text-gradient">certifications</span>
           </h2>
         </AnimatedSection>
@@ -48,10 +48,10 @@ const CertificationsSection = () => {
             <AnimatedSection key={cert.title} delay={i * 0.1}>
               <motion.div
                 whileHover={{ y: -4, borderColor: "hsl(0 0% 30%)" }}
-                className="border border-border rounded-lg p-6 h-full transition-all duration-300 group"
+                className="border border-border rounded-lg p-6 h-full transition-all duration-300 group ai-circuit-corners ai-glow-pulse"
               >
-                <Award className="w-6 h-6 text-foreground mb-4 group-hover:rotate-12 transition-transform duration-300" />
-                <h3 className="text-sm font-bold text-foreground mb-2 leading-snug">{cert.title}</h3>
+                <Award className="w-6 h-6 text-foreground mb-4 group-hover:rotate-12 transition-transform duration-300 tech-glitch-hover" />
+                <h3 className="text-sm font-bold text-foreground mb-2 leading-snug tech-glitch-hover inline-block">{cert.title}</h3>
                 <span className="text-xs font-mono text-muted-foreground tracking-wider">{cert.issuer}</span>
               </motion.div>
             </AnimatedSection>

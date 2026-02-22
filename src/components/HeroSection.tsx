@@ -7,17 +7,14 @@ const socials = [
   { icon: Instagram, href: "https://www.instagram.com/sridhar__.n?igsh=MTEwN3hoem05eW84NA==", label: "Instagram" },
   { icon: Twitter, href: "https://x.com/SrIdharN09", label: "Twitter" },
   { icon: Github, href: "https://github.com/Sridharn97", label: "GitHub" },
-  
+
 ];
 
 const HeroSection = () => {
   return (
     <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden noise">
       {/* Subtle grid bg */}
-      <div className="absolute inset-0 opacity-[0.03]" style={{
-        backgroundImage: `linear-gradient(hsl(0 0% 30%) 1px, transparent 1px), linear-gradient(90deg, hsl(0 0% 30%) 1px, transparent 1px)`,
-        backgroundSize: "60px 60px",
-      }} />
+      <div className="absolute inset-0 opacity-[0.03] neural-grid" />
 
       {/* Radial glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full opacity-10"
@@ -43,7 +40,7 @@ const HeroSection = () => {
               transition={{ duration: 0.8, delay: 0.4 }}
               className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight leading-[0.9] mb-6"
             >
-              <span className="text-gradient">Sridhar</span>
+              <span className="text-gradient tech-glitch-hover inline-block">Sridhar</span>
             </motion.h1>
 
             <motion.p
@@ -95,10 +92,15 @@ const HeroSection = () => {
             transition={{ duration: 1, delay: 0.6 }}
             className="flex-1 flex justify-center"
           >
-            <div className="relative">
-              <div className="w-72 h-72 md:w-96 md:h-96 rounded-full overflow-hidden border-2 border-border relative">
+            <div className="relative group">
+              <div className="w-72 h-72 md:w-96 md:h-96 rounded-full overflow-hidden border-2 border-border relative ai-circuit-corners">
                 <img src={heroImage} alt="Sridhar" className="w-full h-full object-cover" />
                 <div className="absolute inset-0 bg-gradient-to-t from-background/60 to-transparent" />
+
+                {/* AI Scan Overlay */}
+                <div className="ai-scan-overlay">
+                  <div className="ai-scan-line" style={{ animationDuration: '5s' }} />
+                </div>
               </div>
               <div className="absolute inset-0 w-72 h-72 md:w-96 md:h-96 rounded-full border border-muted-foreground/20 animate-[spin_20s_linear_infinite] -m-4 p-4">
                 <div className="absolute top-0 left-1/2 w-2 h-2 bg-foreground rounded-full" />
