@@ -4,6 +4,13 @@ import { ExternalLink, Github } from "lucide-react";
 
 const projects = [
   {
+    title: "FitVerse",
+    description: "A premium MERN stack fitness tracking app with secure JWT auth, intuitive dashboards, and workout tracking. Features comprehensive diet management, interactive progress charts with health metrics, and a vibrant community forum for enthusiast engagement.",
+    tags: ["MERN Stack", "JWT", "Charts.js", "Community Forum"],
+    image: "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=600&h=400&fit=crop",
+    github: "https://github.com/Sridharn97/FitVerse",
+  },
+  {
     title: "LearnAsses",
     description: "A comprehensive MERN Stack learning assessment platform that provides interactive quizzes, progress tracking, and performance analytics for students and educators.",
     tags: ["React", "Node.js", "Express.js", "MongoDB"],
