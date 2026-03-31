@@ -76,8 +76,9 @@ const HeroSection = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 1.2 }}
-              href="/23CS163_Sridhar N Resume.pdf"
-              download
+              href="https://drive.google.com/drive/folders/108GQzc5uf22Rfgv5FM_17-0cBQL5P-sJ?usp=drive_link"
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-flex items-center gap-3 px-8 py-4 border border-foreground text-foreground font-medium tracking-wider text-sm uppercase magnetic-hover hover:bg-foreground hover:text-primary-foreground transition-all duration-300"
             >
               <FileText size={16} />
