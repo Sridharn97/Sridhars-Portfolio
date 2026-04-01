@@ -7,8 +7,8 @@ const navItems = [
   { label: "About", href: "#about" },
   { label: "Skills", href: "#skills" },
   { label: "Internships", href: "#internships" },
-  { label: "Certifications", href: "#certifications" },
   { label: "Projects", href: "#projects" },
+  { label: "Certifications", href: "#certifications" },
   { label: "Contact", href: "#contact" },
 ];
 
@@ -56,19 +56,19 @@ const Navbar = () => {
         transition={{ type: "spring", stiffness: 400, damping: 35 }}
         className={`mx-auto transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${
           shrunk
-            ? "mt-3 max-w-xl rounded-full border border-border/60 bg-background/70 backdrop-blur-2xl shadow-[0_4px_24px_rgba(0,0,0,0.5)] px-3 py-1.5"
-            : "mt-0 max-w-full rounded-none bg-transparent px-0 py-5"
+            ? "mt-6 max-w-fit rounded-full border border-border/60 bg-background/80 backdrop-blur-3xl shadow-[0_8px_32px_rgba(0,0,0,0.4)] px-5 py-2"
+            : "mt-0 max-w-full rounded-none bg-transparent px-0 py-6"
         }`}
       >
-        <div className={`flex items-center justify-between transition-all duration-500 ${
-          shrunk ? "px-3" : "container mx-auto px-6"
+        <div className={`flex items-center justify-center transition-all duration-500 ${
+          shrunk ? "px-2 gap-4" : "container mx-auto px-8 justify-between"
         }`}>
           {/* Logo */}
           <a href="#home" className="group flex items-center gap-2 shrink-0">
             <div className={`relative rounded-lg border border-border flex items-center justify-center overflow-hidden group-hover:border-foreground transition-all duration-300 ${
-              shrunk ? "w-7 h-7" : "w-9 h-9"
+              shrunk ? "w-10 h-10" : "w-12 h-12"
             }`}>
-              <span className={`font-mono font-bold text-foreground transition-all duration-300 ${shrunk ? "text-xs" : "text-sm"}`}>SN</span>
+              <span className={`font-mono font-bold text-foreground transition-all duration-300 ${shrunk ? "text-sm" : "text-base"}`}>SN</span>
               <div className="absolute inset-0 bg-foreground scale-y-0 origin-bottom group-hover:scale-y-100 transition-transform duration-300" />
               <span className={`absolute font-mono font-bold text-primary-foreground opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100 ${shrunk ? "text-xs" : "text-sm"}`}>
                 SN
@@ -87,7 +87,7 @@ const Navbar = () => {
           </a>
 
           {/* Desktop Nav */}
-          <ul className="hidden md:flex items-center gap-0.5">
+          <ul className="hidden md:flex items-center gap-1.5">
             {navItems.map((item) => {
               const isActive = activeSection === item.href.slice(1);
               return (
@@ -95,7 +95,7 @@ const Navbar = () => {
                   <a
                     href={item.href}
                     className={`relative transition-colors duration-300 rounded-full ${
-                      shrunk ? "px-3 py-1 text-[10px]" : "px-4 py-2 text-xs"
+                      shrunk ? "px-4 py-1.5 text-[11px]" : "px-6 py-3 text-xs"
                     } font-medium tracking-[0.15em] uppercase ${
                       isActive
                         ? "text-foreground"
@@ -121,7 +121,7 @@ const Navbar = () => {
             {!shrunk && (
               <a
                 href="#contact"
-                className="hidden md:inline-flex items-center gap-1.5 px-5 py-2 text-xs font-medium tracking-[0.15em] uppercase border border-foreground text-foreground rounded-full hover:bg-foreground hover:text-primary-foreground transition-all duration-300"
+                className="hidden md:inline-flex items-center gap-1.5 px-6 py-3 text-xs font-medium tracking-[0.15em] uppercase border border-foreground text-foreground rounded-full hover:bg-foreground hover:text-primary-foreground transition-all duration-300"
               >
                 Hire Me
                 <ArrowUpRight size={14} />
@@ -130,9 +130,9 @@ const Navbar = () => {
             {shrunk && (
               <a
                 href="#contact"
-                className="hidden md:inline-flex items-center justify-center w-7 h-7 rounded-full border border-foreground text-foreground hover:bg-foreground hover:text-primary-foreground transition-all duration-300"
+                className="hidden md:inline-flex items-center justify-center w-8 h-8 rounded-full border border-foreground text-foreground hover:bg-foreground hover:text-primary-foreground transition-all duration-300"
               >
-                <ArrowUpRight size={12} />
+                <ArrowUpRight size={14} />
               </a>
             )}
 
