@@ -130,10 +130,10 @@ const SkillsSection = () => {
           {skillCategories.map((cat, i) => (
             <AnimatedSection key={cat.title} delay={i * 0.08}>
               <motion.div
-                whileHover={{ y: -8, borderColor: "hsl(0 0% 30%)" }}
+                whileHover={{ y: -8, borderColor: "hsl(var(--primary))", boxShadow: "0 10px 30px -10px hsl(var(--primary) / 0.2)" }}
                 transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                className="rounded-xl p-5 h-full relative group cursor-default border border-border ai-circuit-corners"
-                style={{ background: "hsl(0 0% 6%)" }}
+                className="rounded-xl p-5 h-full relative group cursor-default border border-border ai-circuit-corners transition-shadow duration-300"
+                style={{ background: "hsl(var(--card))" }}
               >
                 {/* AI Scan Overlay */}
                 <div className="ai-scan-overlay">
@@ -142,7 +142,7 @@ const SkillsSection = () => {
 
                 {/* Subtle white glow on hover */}
                 <div className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-                  style={{ background: "radial-gradient(circle at 50% 0%, hsl(0 0% 100% / 0.03) 0%, transparent 70%)" }}
+                  style={{ background: "radial-gradient(circle at 50% 0%, hsl(var(--primary) / 0.08) 0%, transparent 70%)" }}
                 />
 
                 {/* Icon */}
@@ -179,16 +179,16 @@ const SkillsSection = () => {
                 <span
                   key={`${tech}-${i}`}
                   className="flex-shrink-0 px-4 py-1.5 rounded-full text-xs font-mono text-muted-foreground border border-border whitespace-nowrap"
-                  style={{ background: "hsl(0 0% 6%)" }}
+                  style={{ background: "hsl(var(--card))" }}
                 >
                   {tech}
                 </span>
               ))}
             </div>
             <div className="absolute inset-y-0 left-0 w-20 pointer-events-none"
-              style={{ background: "linear-gradient(90deg, hsl(0 0% 3%), transparent)" }} />
+              style={{ background: "linear-gradient(90deg, hsl(var(--background)), transparent)" }} />
             <div className="absolute inset-y-0 right-0 w-20 pointer-events-none"
-              style={{ background: "linear-gradient(270deg, hsl(0 0% 3%), transparent)" }} />
+              style={{ background: "linear-gradient(270deg, hsl(var(--background)), transparent)" }} />
           </div>
         </AnimatedSection>
 
@@ -215,9 +215,9 @@ const SkillsSection = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.08 }}
-                whileHover={{ y: -5, borderColor: "hsl(0 0% 30%)" }}
-                className="group relative rounded-xl p-5 block overflow-hidden border border-border ai-circuit-corners"
-                style={{ background: "hsl(0 0% 6%)" }}
+                whileHover={{ y: -5, borderColor: "hsl(var(--primary))", boxShadow: "0 10px 30px -10px hsl(var(--primary) / 0.2)" }}
+                className="group relative rounded-xl p-5 block overflow-hidden border border-border ai-circuit-corners transition-shadow duration-300"
+                style={{ background: "hsl(var(--card))" }}
               >
                 {/* AI Scan Overlay */}
                 <div className="ai-scan-overlay opacity-0 group-hover:opacity-100">
@@ -226,7 +226,7 @@ const SkillsSection = () => {
 
                 {/* Subtle top-edge glow on hover */}
                 <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none rounded-xl"
-                  style={{ background: "radial-gradient(circle at 50% 0%, hsl(0 0% 100% / 0.04) 0%, transparent 70%)" }}
+                  style={{ background: "radial-gradient(circle at 50% 0%, hsl(var(--primary) / 0.08) 0%, transparent 70%)" }}
                 />
 
                 {/* Top row */}
@@ -254,7 +254,7 @@ const SkillsSection = () => {
 
                 {/* Bottom accent bar — white */}
                 <div className="absolute bottom-0 left-0 right-0 h-px opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-b-xl"
-                  style={{ background: "linear-gradient(90deg, transparent, hsl(0 0% 35%), transparent)" }}
+                  style={{ background: "linear-gradient(90deg, transparent, hsl(var(--primary) / 0.5), transparent)" }}
                 />
               </motion.a>
             ))}

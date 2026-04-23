@@ -17,8 +17,8 @@ const HeroSection = () => {
       <div className="absolute inset-0 opacity-[0.03] neural-grid" />
 
       {/* Radial glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full opacity-10"
-        style={{ background: "radial-gradient(circle, hsl(0 0% 100%) 0%, transparent 70%)" }}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full opacity-20"
+        style={{ background: "radial-gradient(circle, hsl(var(--primary)) 0%, transparent 70%)" }}
       />
 
       <div className="container mx-auto px-6 relative z-10">
@@ -103,8 +103,8 @@ const HeroSection = () => {
                   <div className="ai-scan-line" style={{ animationDuration: '5s' }} />
                 </div>
               </div>
-              <div className="absolute inset-0 w-72 h-72 md:w-96 md:h-96 rounded-full border border-muted-foreground/20 animate-[spin_20s_linear_infinite] -m-4 p-4">
-                <div className="absolute top-0 left-1/2 w-2 h-2 bg-foreground rounded-full" />
+              <div className="absolute inset-0 w-72 h-72 md:w-96 md:h-96 rounded-full border border-primary/20 animate-[spin_20s_linear_infinite] -m-4 p-4">
+                <div className="absolute top-0 left-1/2 w-2 h-2 bg-primary rounded-full shadow-[0_0_10px_hsl(var(--primary))]" />
               </div>
             </div>
           </motion.div>
