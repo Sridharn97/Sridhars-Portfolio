@@ -57,12 +57,21 @@ const BackgroundGlow = () => {
             const mx = mouse.current.x;
             const my = mouse.current.y;
 
+            const isDark = document.documentElement.classList.contains("dark");
+            const rgb = isDark ? "255,255,255" : "0,0,0";
+
             // Move glow divs
             if (glow) {
                 glow.style.transform = `translate(${mx - 400}px, ${my - 400}px)`;
+                glow.style.background = isDark 
+                    ? "radial-gradient(circle, rgba(255,255,255,0.028) 0%, rgba(255,255,255,0.008) 40%, transparent 70%)"
+                    : "radial-gradient(circle, rgba(0,0,0,0.028) 0%, rgba(0,0,0,0.008) 40%, transparent 70%)";
             }
             if (spot) {
                 spot.style.transform = `translate(${mx - 150}px, ${my - 150}px)`;
+                spot.style.background = isDark 
+                    ? "radial-gradient(circle, rgba(255,255,255,0.045) 0%, rgba(255,255,255,0.01) 50%, transparent 70%)"
+                    : "radial-gradient(circle, rgba(0,0,0,0.045) 0%, rgba(0,0,0,0.01) 50%, transparent 70%)";
             }
 
             // Draw grid dots
@@ -75,7 +84,7 @@ const BackgroundGlow = () => {
                     // Draw faint base dot always
                     ctx.beginPath();
                     ctx.arc(d.x, d.y, 0.8, 0, Math.PI * 2);
-                    ctx.fillStyle = "rgba(255,255,255,0.04)";
+                    ctx.fillStyle = `rgba(${rgb},0.04)`;
                     ctx.fill();
                     continue;
                 }
@@ -89,9 +98,8 @@ const BackgroundGlow = () => {
 
                 ctx.beginPath();
                 ctx.arc(d.x, d.y, size, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(255,255,255,${alpha})`;
+                ctx.fillStyle = `rgba(${rgb},${alpha})`;
                 ctx.fill();
-
             }
 
             rafRef.current = requestAnimationFrame(loop);

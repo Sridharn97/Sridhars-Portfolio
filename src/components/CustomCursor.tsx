@@ -1,9 +1,11 @@
 import { useEffect, useState, useRef } from "react";
 import { motion, useMotionValue, useSpring } from "framer-motion";
+import { useTheme } from "next-themes";
 
 const CustomCursor = () => {
   const [visible, setVisible] = useState(false);
   const [hovered, setHovered] = useState(false);
+  const { resolvedTheme } = useTheme();
 
   // Position of the core dot (instant tracking)
   const dotX = useMotionValue(-100);
@@ -82,8 +84,12 @@ const CustomCursor = () => {
         animate={{
           width: hovered ? 56 : 30,
           height: hovered ? 56 : 30,
-          borderColor: hovered ? "hsl(190 90% 50%)" : "rgba(255, 255, 255, 0.25)",
-          backgroundColor: hovered ? "rgba(190, 90, 50, 0.05)" : "rgba(255, 255, 255, 0)",
+          borderColor: hovered 
+            ? (resolvedTheme === "dark" ? "hsl(190 90% 50%)" : "hsl(240 5.9% 10%)") 
+            : (resolvedTheme === "dark" ? "rgba(255, 255, 255, 0.25)" : "rgba(0, 0, 0, 0.2)"),
+          backgroundColor: hovered 
+            ? (resolvedTheme === "dark" ? "rgba(190, 90, 50, 0.05)" : "rgba(0, 0, 0, 0.03)") 
+            : "rgba(0, 0, 0, 0)",
           opacity: visible ? 1 : 0,
         }}
         transition={{ type: "spring", stiffness: 220, damping: 20 }}

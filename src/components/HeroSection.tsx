@@ -40,7 +40,7 @@ const HeroSection = () => {
               transition={{ duration: 0.8, delay: 0.4 }}
               className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight leading-[0.9] mb-6"
             >
-              <span className="text-gradient tech-glitch-hover inline-block drop-shadow-[0_0_35px_rgba(190,90,50,0.15)]">Sridhar</span>
+              <span className="text-gradient tech-glitch-hover inline-block">Sridhar</span>
             </motion.h1>
 
             <motion.p
@@ -66,9 +66,9 @@ const HeroSection = () => {
                   aria-label={social.label}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group relative w-12 h-12 rounded-full border border-border flex items-center justify-center magnetic-hover hover:border-primary hover:bg-primary/10 transition-all duration-300 hover:shadow-[0_0_15px_rgba(190,90,50,0.25)]"
+                  className="group relative w-12 h-12 rounded-full border border-border flex items-center justify-center magnetic-hover hover:border-foreground/30 hover:bg-muted/40 transition-all duration-300 hover:shadow-sm"
                 >
-                  <social.icon size={18} className="text-muted-foreground group-hover:text-primary transition-colors duration-300" />
+                  <social.icon size={18} className="text-muted-foreground group-hover:text-foreground transition-colors duration-300" />
                 </a>
               ))}
             </motion.div>
@@ -81,7 +81,7 @@ const HeroSection = () => {
               href="https://drive.google.com/drive/folders/108GQzc5uf22Rfgv5FM_17-0cBQL5P-sJ?usp=drive_link"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-primary to-secondary text-primary-foreground font-semibold tracking-wider text-sm uppercase rounded-lg shadow-[0_4px_20px_rgba(190,90,50,0.2)] hover:shadow-[0_4px_30px_rgba(190,90,50,0.4)] transition-all duration-300 hover:scale-[1.03]"
+              className="inline-flex items-center gap-3 px-8 py-4 bg-foreground text-background font-semibold tracking-wider text-sm uppercase rounded-lg shadow-md hover:bg-foreground/90 hover:shadow-lg transition-all duration-300 hover:scale-[1.03]"
             >
               <FileText size={16} />
               Download Resume
@@ -117,7 +117,7 @@ const HeroSection = () => {
               <motion.div
                 animate={{ y: [0, -10, 0] }}
                 transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute top-4 -left-6 px-3 py-1.5 rounded-xl border border-primary/20 bg-background/80 backdrop-blur-md text-[11px] font-mono text-foreground font-semibold shadow-[0_4px_12px_rgba(0,0,0,0.5),0_0_10px_rgba(190,90,50,0.15)] flex items-center gap-1.5 z-20 cursor-default"
+                className="absolute top-4 -left-6 px-3 py-1.5 rounded-xl border border-primary/20 bg-background/80 backdrop-blur-md text-[11px] font-mono text-foreground font-semibold shadow-md flex items-center gap-1.5 z-20 cursor-default"
               >
                 Full Stack
               </motion.div>
@@ -125,7 +125,7 @@ const HeroSection = () => {
               <motion.div
                 animate={{ y: [0, 10, 0] }}
                 transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-                className="absolute top-20 -right-6 px-3 py-1.5 rounded-xl border border-secondary/20 bg-background/80 backdrop-blur-md text-[11px] font-mono text-foreground font-semibold shadow-[0_4px_12px_rgba(0,0,0,0.5),0_0_10px_rgba(260,80,60,0.15)] flex items-center gap-1.5 z-20 cursor-default"
+                className="absolute top-20 -right-6 px-3 py-1.5 rounded-xl border border-secondary/20 bg-background/80 backdrop-blur-md text-[11px] font-mono text-foreground font-semibold shadow-md flex items-center gap-1.5 z-20 cursor-default"
               >
                 MERN Developer
               </motion.div>
@@ -133,7 +133,7 @@ const HeroSection = () => {
               <motion.div
                 animate={{ y: [0, -8, 0] }}
                 transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-                className="absolute bottom-16 -left-8 px-3 py-1.5 rounded-xl border border-primary/25 bg-background/80 backdrop-blur-md text-[11px] font-mono text-foreground font-semibold shadow-[0_4px_12px_rgba(0,0,0,0.5),0_0_10px_rgba(190,90,50,0.15)] flex items-center gap-1.5 z-20 cursor-default"
+                className="absolute bottom-16 -left-8 px-3 py-1.5 rounded-xl border border-primary/25 bg-background/80 backdrop-blur-md text-[11px] font-mono text-foreground font-semibold shadow-md flex items-center gap-1.5 z-20 cursor-default"
               >
                 React / Next.js
               </motion.div>
@@ -141,7 +141,7 @@ const HeroSection = () => {
               <motion.div
                 animate={{ y: [0, 8, 0] }}
                 transition={{ duration: 4.8, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
-                className="absolute bottom-10 -right-4 px-3 py-1.5 rounded-xl border border-secondary/25 bg-background/80 backdrop-blur-md text-[11px] font-mono text-foreground font-semibold shadow-[0_4px_12px_rgba(0,0,0,0.5),0_0_10px_rgba(260,80,60,0.15)] flex items-center gap-1.5 z-20 cursor-default"
+                className="absolute bottom-10 -right-4 px-3 py-1.5 rounded-xl border border-secondary/25 bg-background/80 backdrop-blur-md text-[11px] font-mono text-foreground font-semibold shadow-md flex items-center gap-1.5 z-20 cursor-default"
               >
                 AWS Foundations
               </motion.div>

@@ -44,13 +44,13 @@ const education = [
 
 const AboutSection = () => {
   return (
-    <section id="about" className="py-24 relative overflow-hidden">
-      <div className="section-divider mb-20" />
+    <section id="about" className="py-16 relative scroll-mt-24 overflow-hidden">
+      <div className="section-divider mb-12" />
       <div className="container mx-auto px-6">
 
         {/* ── Header ── */}
         <AnimatedSection>
-          <div className="flex flex-col items-center text-center mb-16">
+          <div className="flex flex-col items-center text-center mb-10">
             <p className="font-mono text-sm tracking-[0.3em] text-muted-foreground uppercase mb-4">
               — About Me
             </p>
@@ -103,7 +103,7 @@ const AboutSection = () => {
                   <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-4 border border-border/50 bg-muted/40 tech-glitch-hover transition-colors">
                     <item.icon className="w-5 h-5 text-muted-foreground group-hover:text-foreground transition-colors" />
                   </div>
-                  <h3 className="text-sm font-bold text-foreground mb-1.5 group-hover:text-white transition-colors">{item.title}</h3>
+                  <h3 className="text-sm font-bold text-foreground mb-1.5 transition-colors">{item.title}</h3>
                   <p className="text-xs text-muted-foreground font-mono leading-relaxed">{item.desc}</p>
                 </div>
                 
@@ -161,7 +161,7 @@ const AboutSection = () => {
                   </div>
 
                   {/* Institution & Degree */}
-                  <h4 className="text-lg font-bold text-foreground mb-3 group-hover:text-white transition-colors">{edu.institution}</h4>
+                  <h4 className="text-lg font-bold text-foreground mb-3 transition-colors">{edu.institution}</h4>
                   <p className="text-sm text-muted-foreground font-mono leading-relaxed">{edu.degree}</p>
                 </div>
 

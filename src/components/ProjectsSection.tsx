@@ -73,10 +73,10 @@ const ProjectsSection = () => {
     : projects.filter(p => p.category === activeCategory);
 
   return (
-    <section id="projects" className="py-24 relative">
-      <div className="section-divider mb-20" />
+    <section id="projects" className="py-16 relative scroll-mt-24">
+      <div className="section-divider mb-12" />
       <div className="container mx-auto px-6">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6">
           <AnimatedSection className="flex-1">
             <p className="font-mono text-sm tracking-[0.3em] text-primary uppercase mb-4">
               — Selected Work
@@ -188,7 +188,7 @@ const ProjectsSection = () => {
                     {project.tags.map((tag) => (
                       <span 
                         key={tag} 
-                        className="px-2.5 py-1 text-[10px] font-mono tracking-wide text-muted-foreground bg-background/40 border border-border/50 rounded-md group-hover:border-border/80 group-hover:text-foreground transition-colors cursor-default"
+                        className="px-2.5 py-1 text-[10px] font-mono tracking-wide text-muted-foreground bg-muted/60 border border-border/60 rounded-md group-hover:border-border/80 group-hover:text-foreground transition-colors cursor-default"
                       >
                         {tag}
                       </span>

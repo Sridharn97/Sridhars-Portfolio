@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
 import { Menu, X, ArrowUpRight } from "lucide-react";
+import ThemeToggle from "./ThemeToggle";
 
 const navItems = [
   { label: "Home", href: "#home" },
@@ -56,7 +57,7 @@ const Navbar = () => {
         transition={{ type: "spring", stiffness: 400, damping: 35 }}
         className={`mx-auto transition-all duration-500 ease-custom-spring ${
           shrunk
-            ? "mt-6 max-w-fit rounded-full border border-primary/20 bg-background/70 backdrop-blur-3xl shadow-[0_8px_32px_rgba(0,0,0,0.5),0_0_20px_rgba(190,90,50,0.06)] px-5 py-2"
+            ? "mt-6 max-w-fit rounded-full border border-primary/20 bg-background/70 backdrop-blur-3xl shadow-[0_8px_32px_rgba(0,0,0,0.15)] px-5 py-2"
             : "mt-0 max-w-full rounded-none bg-transparent px-0 py-6"
         }`}
       >
@@ -105,7 +106,7 @@ const Navbar = () => {
                     {isActive && (
                       <motion.span
                         layoutId="active-nav"
-                        className="absolute inset-0 rounded-full bg-primary/10 border border-primary/25 shadow-[inset_0_0_8px_rgba(190,90,50,0.08)]"
+                        className="absolute inset-0 rounded-full bg-primary/10 border border-primary/25 shadow-sm"
                         transition={{ type: "spring", stiffness: 380, damping: 30 }}
                       />
                     )}
@@ -118,6 +119,7 @@ const Navbar = () => {
 
           {/* CTA + Mobile */}
           <div className="flex items-center gap-2 shrink-0">
+            <ThemeToggle />
             {!shrunk && (
               <a
                 href="#contact"
@@ -202,8 +204,9 @@ const Navbar = () => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 20 }}
                 transition={{ duration: 0.3, delay: 0.5 }}
-                className="mt-8"
+                className="mt-8 flex items-center gap-4"
               >
+                <ThemeToggle />
                 <a
                   href="#contact"
                   onClick={() => setMobileOpen(false)}

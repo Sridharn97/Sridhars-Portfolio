@@ -116,8 +116,8 @@ const allTechs = [
 
 const SkillsSection = () => {
   return (
-    <section id="skills" className="py-32 relative overflow-hidden">
-      <div className="section-divider mb-32" />
+    <section id="skills" className="py-16 relative scroll-mt-24 overflow-hidden">
+      <div className="section-divider mb-12" />
 
       <div className="container mx-auto px-6">
         {/* Header */}
@@ -128,7 +128,7 @@ const SkillsSection = () => {
           <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-4">
             My <span className="text-gradient">tech stack</span>
           </h2>
-          <p className="text-muted-foreground text-lg max-w-xl mb-16">
+          <p className="text-muted-foreground text-lg max-w-xl mb-10">
             Technologies I work with to build fast, scalable, and elegant products.
           </p>
         </AnimatedSection>
@@ -255,7 +255,7 @@ const SkillsSection = () => {
                 </div>
 
                 {/* Tag pill */}
-                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-mono border border-border/50 text-muted-foreground bg-background/50">
+                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-mono border border-border/60 text-muted-foreground bg-muted/60">
                   {platform.tag}
                 </span>
 

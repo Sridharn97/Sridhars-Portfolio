@@ -52,7 +52,11 @@ function createSparkle(x: number, y: number, burst = false): Particle[] {
 }
 
 function drawStar(ctx: CanvasRenderingContext2D, x: number, y: number, size: number, rotation: number, alpha: number) {
-    const color = COLORS[Math.floor(Math.random() * COLORS.length)];
+    const isDark = document.documentElement.classList.contains("dark");
+    const colors = isDark 
+        ? ["255,255,255", "220,220,220", "180,180,180", "255,255,255"]
+        : ["0,0,0", "60,60,60", "100,100,100", "0,0,0"];
+    const color = colors[Math.floor(Math.random() * colors.length)];
     ctx.save();
     ctx.translate(x, y);
     ctx.rotate(rotation);
@@ -78,7 +82,8 @@ function drawStar(ctx: CanvasRenderingContext2D, x: number, y: number, size: num
 }
 
 function drawLine(ctx: CanvasRenderingContext2D, x: number, y: number, length: number, angle: number, alpha: number) {
-    const color = COLORS[0];
+    const isDark = document.documentElement.classList.contains("dark");
+    const color = isDark ? "255,255,255" : "0,0,0";
     ctx.save();
     ctx.globalAlpha = alpha * 0.6;
     ctx.strokeStyle = `rgba(${color},1)`;
@@ -163,9 +168,11 @@ const SparkleCanvas = () => {
                     drawLine(ctx, p.x, p.y, p.length ?? 6, p.angle ?? 0, p.alpha);
                 } else {
                     // dot
+                    const isDark = document.documentElement.classList.contains("dark");
+                    const rgb = isDark ? "255,255,255" : "0,0,0";
                     ctx.save();
                     ctx.globalAlpha = p.alpha;
-                    ctx.fillStyle = `rgba(255,255,255,${p.alpha})`;
+                    ctx.fillStyle = `rgba(${rgb},${p.alpha})`;
                     ctx.beginPath();
                     ctx.arc(p.x, p.y, p.size * 0.5, 0, Math.PI * 2);
                     ctx.fill();

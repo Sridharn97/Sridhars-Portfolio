@@ -71,21 +71,20 @@ const certifications: Certification[] = [
 
 const CertificationsSection = () => {
   return (
-    <section id="certifications" className="py-24 relative overflow-hidden">
-      {/* Background elements */}
-      <div className="absolute top-1/4 -right-1/4 w-96 h-96 bg-primary/5 rounded-full blur-[100px] pointer-events-none" />
-      <div className="absolute bottom-1/4 -left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-[100px] pointer-events-none" />
+    <section id="certifications" className="py-16 relative scroll-mt-24 overflow-hidden">
+      <div className="absolute inset-0 opacity-[0.015] pointer-events-none neural-grid" />
       
-      <div className="section-divider mb-16 opacity-50" />
+      {/* Subtle grid base line */}
+      <div className="section-divider mb-10 opacity-50" />
       
       <div className="container mx-auto px-6">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-6">
           <AnimatedSection className="flex-1">
             <div className="flex items-center gap-3 mb-4">
               <p className="font-mono text-sm tracking-[0.3em] text-muted-foreground uppercase flex items-center gap-2">
                 <span className="w-8 h-px bg-muted-foreground/30 inline-block" /> Credentials
               </p>
-              <span className="px-2 py-0.5 rounded-full bg-white/5 border border-white/10 text-[10px] font-mono text-muted-foreground">
+              <span className="px-2 py-0.5 rounded-full bg-muted/50 border border-border/50 text-[10px] font-mono text-muted-foreground">
                 {certifications.length} TOTAL
               </span>
             </div>
@@ -166,7 +165,7 @@ const CertificationsSection = () => {
         <AnimatedSection delay={0.8} className="mt-20 text-center">
           <motion.div 
             whileHover={{ scale: 1.02 }}
-            className="inline-flex items-center gap-4 px-6 py-3 rounded-full bg-white/5 border border-white/10 text-sm text-muted-foreground font-mono"
+            className="inline-flex items-center gap-4 px-6 py-3 rounded-full bg-muted/50 border border-border/50 text-sm text-muted-foreground font-mono"
           >
             <ShieldCheck className="w-4 h-4 text-primary" />
             All certifications are verified and visually authenticated
