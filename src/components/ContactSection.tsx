@@ -28,86 +28,99 @@ const ContactSection = () => {
         </AnimatedSection>
 
         <div className="grid lg:grid-cols-2 gap-10">
-          {/* Info */}
-          <AnimatedSection delay={0.2}>
-            <p className="text-muted-foreground text-lg leading-relaxed mb-10">
-              Have a project in mind or just want to chat? I'm always open to
-              discussing new opportunities and creative ideas.
-            </p>
+          {/* Info Cards */}
+          <AnimatedSection delay={0.2} className="flex flex-col justify-between">
+            <div>
+              <p className="text-muted-foreground text-lg leading-relaxed mb-10 font-sans">
+                Have a project in mind or just want to chat? I'm always open to
+                discussing new opportunities, collaborations, and creative ideas.
+              </p>
 
-            <div className="space-y-6">
-              {[
-                { icon: Mail, text: "sridharnaagarajan@gmail.com" },
-                { icon: Phone, text: "+91 9003236836" },
-                { icon: MapPin, text: "India" },
-              ].map((item) => (
-                <div key={item.text} className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-full border border-border flex items-center justify-center">
-                    <item.icon size={18} className="text-muted-foreground" />
+              <div className="space-y-4">
+                {[
+                  { icon: Mail, text: "sridharnaagarajan@gmail.com", label: "Email Me" },
+                  { icon: Phone, text: "+91 9003236836", label: "Call Me" },
+                  { icon: MapPin, text: "Tamil Nadu, India", label: "Location" },
+                ].map((item) => (
+                  <div 
+                    key={item.text} 
+                    className="flex items-center gap-5 border border-border/40 rounded-xl p-4 glass-card glass-card-hover group cursor-default transition-all duration-300"
+                  >
+                    <div className="w-12 h-12 rounded-xl border border-border/50 bg-muted/30 flex items-center justify-center group-hover:border-border group-hover:bg-muted/50 transition-colors duration-300 shrink-0 shadow-inner">
+                      <item.icon size={18} className="text-muted-foreground group-hover:text-foreground transition-colors duration-300" />
+                    </div>
+                    <div>
+                      <div className="text-[10px] font-mono text-muted-foreground/60 uppercase tracking-wider mb-0.5">{item.label}</div>
+                      <span className="text-foreground font-medium text-sm md:text-base group-hover:text-foreground transition-colors">{item.text}</span>
+                    </div>
                   </div>
-                  <span className="text-foreground">{item.text}</span>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </AnimatedSection>
 
-          {/* Form */}
+          {/* Form Console Card */}
           <AnimatedSection delay={0.4}>
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div>
-                <label className="block text-sm font-mono tracking-wider text-muted-foreground mb-2 uppercase">
-                  Name
-                </label>
-                <input
-                  type="text"
-                  required
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full bg-transparent border-b border-border py-3 text-foreground placeholder:text-muted-foreground/50 focus:border-foreground focus:outline-none transition-colors duration-300"
-                  placeholder="Your name"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-mono tracking-wider text-muted-foreground mb-2 uppercase">
-                  Email
-                </label>
-                <input
-                  type="email"
-                  required
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="w-full bg-transparent border-b border-border py-3 text-foreground placeholder:text-muted-foreground/50 focus:border-foreground focus:outline-none transition-colors duration-300"
-                  placeholder="your@email.com"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-mono tracking-wider text-muted-foreground mb-2 uppercase">
-                  Message
-                </label>
-                <textarea
-                  required
-                  rows={4}
-                  value={formData.message}
-                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  className="w-full bg-transparent border-b border-border py-3 text-foreground placeholder:text-muted-foreground/50 focus:border-foreground focus:outline-none transition-colors duration-300 resize-none"
-                  placeholder="Tell me about your project..."
-                />
-              </div>
+            <div className="p-8 md:p-10 border border-border/40 rounded-2xl glass-card relative overflow-hidden group shadow-2xl">
+              {/* Subtle grid background decoration */}
+              <div className="absolute inset-0 opacity-[0.02] pointer-events-none neural-grid" />
 
-              <motion.button
-                type="submit"
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="inline-flex items-center gap-3 px-8 py-4 border border-foreground text-foreground font-medium tracking-wider text-sm uppercase hover:bg-foreground hover:text-primary-foreground transition-all duration-300"
-              >
-                {submitted ? "Message Sent!" : (
-                  <>
-                    <Send size={16} />
-                    Send Message
-                  </>
-                )}
-              </motion.button>
-            </form>
+              <form onSubmit={handleSubmit} className="space-y-6 relative z-10">
+                <div>
+                  <label className="block text-xs font-mono tracking-widest text-muted-foreground mb-2 uppercase">
+                    Name
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    className="w-full bg-transparent border-b border-border/60 py-3 text-foreground placeholder:text-muted-foreground/30 focus:border-foreground focus:outline-none transition-colors duration-300 font-mono text-sm"
+                    placeholder="Your name"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-mono tracking-widest text-muted-foreground mb-2 uppercase">
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    required
+                    value={formData.email}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    className="w-full bg-transparent border-b border-border/60 py-3 text-foreground placeholder:text-muted-foreground/30 focus:border-foreground focus:outline-none transition-colors duration-300 font-mono text-sm"
+                    placeholder="your@email.com"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-mono tracking-widest text-muted-foreground mb-2 uppercase">
+                    Message
+                  </label>
+                  <textarea
+                    required
+                    rows={4}
+                    value={formData.message}
+                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                    className="w-full bg-transparent border-b border-border/60 py-3 text-foreground placeholder:text-muted-foreground/30 focus:border-foreground focus:outline-none transition-colors duration-300 resize-none font-mono text-sm"
+                    placeholder="Tell me about your project or enquiry..."
+                  />
+                </div>
+
+                <motion.button
+                  type="submit"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-8 py-4 bg-foreground text-background font-semibold tracking-wider text-sm uppercase rounded-lg hover:bg-foreground/90 transition-all duration-300"
+                >
+                  {submitted ? "Message Sent!" : (
+                    <>
+                      <Send size={14} />
+                      Send Message
+                    </>
+                  )}
+                </motion.button>
+              </form>
+            </div>
           </AnimatedSection>
         </div>
       </div>

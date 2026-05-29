@@ -66,35 +66,27 @@ const AboutSection = () => {
           {/* Bio Card (2x2) */}
           <AnimatedSection delay={0.1} className="md:col-span-2 lg:row-span-2 lg:col-span-2">
             <motion.div
-              whileHover={{ y: -4, borderColor: "hsl(var(--primary))", boxShadow: "0 10px 30px -10px hsl(var(--primary) / 0.2)" }}
-              className="h-full relative rounded-2xl p-8 lg:p-10 border border-border ai-circuit-corners group overflow-hidden flex flex-col justify-between transition-shadow duration-300"
-              style={{ background: "hsl(var(--card))" }}
+              whileHover={{ y: -4 }}
+              className="h-full relative rounded-2xl p-8 lg:p-10 border border-border/40 glass-card group overflow-hidden flex flex-col justify-between transition-all duration-300"
             >
-              <div className="ai-scan-overlay opacity-0 group-hover:opacity-100">
-                <div className="ai-scan-line" style={{ animationDuration: '6s' }} />
-              </div>
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"
-                style={{ background: "radial-gradient(circle at 0% 0%, hsl(var(--primary) / 0.08) 0%, transparent 60%)" }}
-              />
-
               <div className="space-y-6 relative z-10 mb-8">
-                <p className="text-muted-foreground text-base md:text-lg leading-relaxed">
-                  Hi, I'm <span className="text-foreground font-medium">Sridhar</span> — a dedicated Full Stack Developer and eager tech enthusiast. My skill set spans both front-end and back-end technologies, allowing me to create seamless and dynamic web applications.
+                <p className="text-muted-foreground text-base md:text-lg leading-relaxed font-sans">
+                  Hi, I'm <span className="text-foreground font-semibold">Sridhar</span> — a dedicated Full Stack Developer and eager tech enthusiast. My skill set spans both front-end and back-end technologies, allowing me to create seamless and dynamic web applications.
                 </p>
-                <p className="text-muted-foreground text-base md:text-lg leading-relaxed">
+                <p className="text-muted-foreground text-base md:text-lg leading-relaxed font-sans">
                   I'm passionate about continuous learning and exploring new technologies. I enjoy building practical applications that solve real problems and improve user experience.
                 </p>
               </div>
 
               <div className="flex flex-wrap gap-3 relative z-10 mt-auto">
                 <div className="flex items-center gap-2 text-xs font-mono text-muted-foreground border border-border/50 bg-background/50 rounded-full px-4 py-2 hover:bg-muted hover:text-foreground hover:-translate-y-0.5 hover:shadow-md transition-all cursor-default">
-                  <MapPin className="w-3.5 h-3.5" /> Tamil Nadu, India
+                  <MapPin className="w-3.5 h-3.5 text-muted-foreground" /> Tamil Nadu, India
                 </div>
                 <div className="flex items-center gap-2 text-xs font-mono text-muted-foreground border border-border/50 bg-background/50 rounded-full px-4 py-2 hover:bg-muted hover:text-foreground hover:-translate-y-0.5 hover:shadow-md transition-all cursor-default">
-                  <Calendar className="w-3.5 h-3.5" /> Available for Internship
+                  <Calendar className="w-3.5 h-3.5 text-muted-foreground" /> Available for Internship
                 </div>
                 <div className="flex items-center gap-2 text-xs font-mono text-muted-foreground border border-border/50 bg-background/50 rounded-full px-4 py-2 hover:bg-muted hover:text-foreground hover:-translate-y-0.5 hover:shadow-md transition-all cursor-default">
-                  <Award className="w-3.5 h-3.5" /> B.E CSE — 2027
+                  <Award className="w-3.5 h-3.5 text-muted-foreground" /> B.E CSE — 2027
                 </div>
               </div>
             </motion.div>
@@ -104,27 +96,27 @@ const AboutSection = () => {
           {highlights.map((item, i) => (
             <AnimatedSection key={item.title} delay={0.2 + i * 0.1} className="col-span-1">
               <motion.div
-                whileHover={{ y: -6, borderColor: "hsl(var(--primary))", boxShadow: "0 10px 30px -10px hsl(var(--primary) / 0.2)" }}
-                className="h-full relative rounded-2xl p-6 border border-border group overflow-hidden ai-circuit-corners flex flex-col justify-center transition-shadow duration-300"
-                style={{ background: "hsl(var(--card))" }}
+                whileHover={{ y: -4 }}
+                className="h-full relative rounded-2xl p-6 border border-border/40 glass-card glass-card-hover group overflow-hidden flex flex-col justify-between transition-all duration-300"
               >
-                <div className="ai-scan-overlay opacity-0 group-hover:opacity-100">
-                  <div className="ai-scan-line" style={{ animationDuration: '4s' }} />
+                <div>
+                  <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-4 border border-border/50 bg-muted/40 tech-glitch-hover transition-colors">
+                    <item.icon className="w-5 h-5 text-muted-foreground group-hover:text-foreground transition-colors" />
+                  </div>
+                  <h3 className="text-sm font-bold text-foreground mb-1.5 group-hover:text-white transition-colors">{item.title}</h3>
+                  <p className="text-xs text-muted-foreground font-mono leading-relaxed">{item.desc}</p>
                 </div>
-                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-                  style={{ background: "radial-gradient(circle at 50% 0%, hsl(var(--primary) / 0.08) 0%, transparent 70%)" }}
-                />
-
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-4 border border-border bg-muted tech-glitch-hover">
-                  <item.icon className="w-5 h-5 text-foreground" />
-                </div>
-                <h3 className="text-sm font-bold text-foreground mb-1.5 group-hover:text-white transition-colors">{item.title}</h3>
-                <p className="text-xs text-muted-foreground font-mono leading-relaxed">{item.desc}</p>
                 
-                {/* Bottom accent line */}
-                <div className="absolute bottom-0 left-0 right-0 h-px opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                  style={{ background: "linear-gradient(90deg, transparent, hsl(var(--primary) / 0.5), transparent)" }}
-                />
+                {/* Metric meter decorator */}
+                <div className="mt-4 w-full h-1 bg-border/20 rounded-full overflow-hidden relative">
+                  <motion.div 
+                    initial={{ width: 0 }}
+                    whileInView={{ width: "100%" }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 1.5, delay: 0.5 + i * 0.1 }}
+                    className="h-full bg-muted-foreground/30"
+                  />
+                </div>
               </motion.div>
             </AnimatedSection>
           ))}
@@ -133,8 +125,8 @@ const AboutSection = () => {
         {/* ── Education Section ── */}
         <AnimatedSection delay={0.5}>
           <div className="flex items-center gap-3 mb-8 max-w-6xl mx-auto">
-            <div className="w-10 h-10 rounded-xl flex items-center justify-center border border-border bg-muted tech-glitch-hover">
-              <GraduationCap className="w-5 h-5 text-foreground" />
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center border border-border/50 bg-muted/40 tech-glitch-hover">
+              <GraduationCap className="w-5 h-5 text-muted-foreground" />
             </div>
             <div>
               <h3 className="text-xl font-bold text-foreground">Education</h3>
@@ -150,26 +142,19 @@ const AboutSection = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.6 + i * 0.15 }}
-                whileHover={{ y: -6, borderColor: "hsl(var(--primary))", boxShadow: "0 10px 30px -10px hsl(var(--primary) / 0.2)" }}
-                className="relative rounded-2xl p-6 lg:p-8 border border-border group overflow-hidden ai-circuit-corners flex flex-col justify-between transition-shadow duration-300"
-                style={{ background: "hsl(var(--card))" }}
+                whileHover={{ y: -4 }}
+                className="relative rounded-2xl p-6 lg:p-8 border border-border/40 border-l-2 border-l-border glass-card glass-card-hover group overflow-hidden flex flex-col justify-between transition-all duration-300"
               >
-                {/* AI Hover effects */}
-                <div className="ai-scan-overlay opacity-0 group-hover:opacity-100">
-                  <div className="ai-scan-line" style={{ animationDuration: '4s' }} />
-                </div>
-                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-                  style={{ background: "radial-gradient(circle at 50% 0%, hsl(var(--primary) / 0.08) 0%, transparent 70%)" }}
-                />
-
                 <div className="relative z-10 mb-8">
                   {/* Status Pill & Year */}
                   <div className="flex items-start justify-between gap-2 mb-6">
                     <span className="text-xs font-mono text-muted-foreground bg-background/50 px-3 py-1.5 rounded-lg border border-border/50">
                       {edu.year}
                     </span>
-                    <span className={`text-[10px] font-mono px-2.5 py-1 rounded-full border border-border/50 shrink-0 ${
-                      edu.status === 'Ongoing' ? 'text-green-400/80 bg-green-500/10 border-green-500/20' : 'text-muted-foreground bg-background/50'
+                    <span className={`text-[10px] font-mono px-2.5 py-1 rounded-full border shrink-0 ${
+                      edu.status === 'Ongoing' 
+                        ? 'text-foreground bg-foreground/5 border-border/80' 
+                        : 'text-muted-foreground bg-background/50 border-border/40'
                     }`}>
                       {edu.status}
                     </span>
@@ -180,18 +165,28 @@ const AboutSection = () => {
                   <p className="text-sm text-muted-foreground font-mono leading-relaxed">{edu.degree}</p>
                 </div>
 
-                {/* Score */}
-                <div className="relative z-10 mt-auto pt-5 border-t border-border/50">
-                  <div className="inline-flex items-center gap-2 text-xs text-foreground font-mono px-3 py-2 rounded-lg bg-muted/30 border border-border/50">
-                    <span className="text-muted-foreground">Score:</span>
-                    {edu.score}
+                {/* Score representation bar */}
+                <div className="relative z-10 mt-auto pt-5 border-t border-border/20 flex flex-col gap-2">
+                  <div className="flex justify-between items-center text-xs font-mono">
+                    <span className="text-muted-foreground text-[10px]">ACHIEVEMENT SCORE:</span>
+                    <span className="text-foreground font-bold text-[11px]">{edu.score}</span>
+                  </div>
+                  <div className="w-full h-1 bg-border/20 rounded-full overflow-hidden">
+                    <motion.div 
+                      initial={{ width: 0 }}
+                      whileInView={{ 
+                        width: edu.score.includes("7.82") 
+                          ? "78.2%" 
+                          : edu.score.includes("89") 
+                          ? "89.67%" 
+                          : "100%" 
+                      }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 1.2, delay: 0.8 + i * 0.15 }}
+                      className="h-full bg-muted-foreground/30"
+                    />
                   </div>
                 </div>
-
-                {/* Bottom accent line */}
-                <div className="absolute bottom-0 left-0 right-0 h-px opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                  style={{ background: "linear-gradient(90deg, transparent, hsl(var(--primary) / 0.5), transparent)" }}
-                />
               </motion.div>
             ))}
           </div>

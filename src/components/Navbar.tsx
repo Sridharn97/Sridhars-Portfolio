@@ -54,9 +54,9 @@ const Navbar = () => {
       <motion.div
         layout
         transition={{ type: "spring", stiffness: 400, damping: 35 }}
-        className={`mx-auto transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${
+        className={`mx-auto transition-all duration-500 ease-custom-spring ${
           shrunk
-            ? "mt-6 max-w-fit rounded-full border border-border/60 bg-background/80 backdrop-blur-3xl shadow-[0_8px_32px_rgba(0,0,0,0.4)] px-5 py-2"
+            ? "mt-6 max-w-fit rounded-full border border-primary/20 bg-background/70 backdrop-blur-3xl shadow-[0_8px_32px_rgba(0,0,0,0.5),0_0_20px_rgba(190,90,50,0.06)] px-5 py-2"
             : "mt-0 max-w-full rounded-none bg-transparent px-0 py-6"
         }`}
       >
@@ -65,11 +65,11 @@ const Navbar = () => {
         }`}>
           {/* Logo */}
           <a href="#home" className="group flex items-center gap-2 shrink-0">
-            <div className={`relative rounded-lg border border-border flex items-center justify-center overflow-hidden group-hover:border-foreground transition-all duration-300 ${
+            <div className={`relative rounded-lg border border-border flex items-center justify-center overflow-hidden group-hover:border-primary transition-all duration-300 ${
               shrunk ? "w-10 h-10" : "w-12 h-12"
             }`}>
               <span className={`font-mono font-bold text-foreground transition-all duration-300 ${shrunk ? "text-sm" : "text-base"}`}>SN</span>
-              <div className="absolute inset-0 bg-foreground scale-y-0 origin-bottom group-hover:scale-y-100 transition-transform duration-300" />
+              <div className="absolute inset-0 bg-primary scale-y-0 origin-bottom group-hover:scale-y-100 transition-transform duration-300" />
               <span className={`absolute font-mono font-bold text-primary-foreground opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100 ${shrunk ? "text-xs" : "text-sm"}`}>
                 SN
               </span>
@@ -79,7 +79,7 @@ const Navbar = () => {
                 initial={{ opacity: 0, width: 0 }}
                 animate={{ opacity: 1, width: "auto" }}
                 exit={{ opacity: 0, width: 0 }}
-                className="font-mono text-sm font-semibold tracking-[0.2em] text-foreground hidden sm:block"
+                className="font-mono text-sm font-semibold tracking-[0.2em] text-foreground hidden sm:block hover:text-primary transition-colors"
               >
                 PORTFOLIO
               </motion.span>
@@ -105,7 +105,7 @@ const Navbar = () => {
                     {isActive && (
                       <motion.span
                         layoutId="active-nav"
-                        className="absolute inset-0 rounded-full bg-accent border border-border/50"
+                        className="absolute inset-0 rounded-full bg-primary/10 border border-primary/25 shadow-[inset_0_0_8px_rgba(190,90,50,0.08)]"
                         transition={{ type: "spring", stiffness: 380, damping: 30 }}
                       />
                     )}

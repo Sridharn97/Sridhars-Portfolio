@@ -76,6 +76,8 @@ const codingPlatforms = [
     url: "https://leetcode.com/u/Sridhar_n09/",
     icon: Braces,
     tag: "DSA",
+    glowColor: "rgba(239, 162, 33, 0.12)",
+    iconColor: "text-amber-500",
   },
   {
     name: "HackerRank",
@@ -83,6 +85,8 @@ const codingPlatforms = [
     url: "https://www.hackerrank.com/profile/sridhar_n2023cse",
     icon: Star,
     tag: "Python",
+    glowColor: "rgba(46, 204, 113, 0.12)",
+    iconColor: "text-green-500",
   },
   {
     name: "CodeChef",
@@ -90,6 +94,8 @@ const codingPlatforms = [
     url: "https://www.codechef.com/users/sridhar94",
     icon: Globe,
     tag: "Competitive",
+    glowColor: "rgba(168, 85, 24, 0.12)",
+    iconColor: "text-orange-500",
   },
   {
     name: "SkillRack",
@@ -97,6 +103,8 @@ const codingPlatforms = [
     url: "https://www.skillrack.com/faces/resume.xhtml?id=484312&key=54fc07d910a00431ded128655b8128a617cdc05f",
     icon: Database,
     tag: "Problem Solving",
+    glowColor: "rgba(6, 182, 212, 0.12)",
+    iconColor: "text-cyan-500",
   },
 ];
 
@@ -114,7 +122,7 @@ const SkillsSection = () => {
       <div className="container mx-auto px-6">
         {/* Header */}
         <AnimatedSection>
-          <p className="font-mono text-sm tracking-[0.3em] text-muted-foreground uppercase mb-4">
+          <p className="font-mono text-sm tracking-[0.3em] text-primary uppercase mb-4">
             — Skills & Expertise
           </p>
           <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-4">
@@ -130,39 +138,44 @@ const SkillsSection = () => {
           {skillCategories.map((cat, i) => (
             <AnimatedSection key={cat.title} delay={i * 0.08}>
               <motion.div
-                whileHover={{ y: -8, borderColor: "hsl(var(--primary))", boxShadow: "0 10px 30px -10px hsl(var(--primary) / 0.2)" }}
+                whileHover={{ y: -4 }}
                 transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                className="rounded-xl p-5 h-full relative group cursor-default border border-border ai-circuit-corners transition-shadow duration-300"
-                style={{ background: "hsl(var(--card))" }}
+                className="rounded-xl p-5 h-full relative group cursor-default border border-border/40 glass-card glass-card-hover transition-all duration-300"
               >
-                {/* AI Scan Overlay */}
-                <div className="ai-scan-overlay">
-                  <div className="ai-scan-line" />
-                </div>
-
                 {/* Subtle white glow on hover */}
                 <div className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-                  style={{ background: "radial-gradient(circle at 50% 0%, hsl(var(--primary) / 0.08) 0%, transparent 70%)" }}
+                  style={{ background: "radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.02) 0%, transparent 70%)" }}
                 />
 
                 {/* Icon */}
-                <div className="w-10 h-10 rounded-lg flex items-center justify-center mb-4 border border-border bg-muted tech-glitch-hover">
-                  <cat.icon className="w-5 h-5 text-foreground" />
+                <div className="w-10 h-10 rounded-lg flex items-center justify-center mb-4 border border-border/50 bg-muted/30 transition-colors">
+                  <cat.icon className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
                 </div>
 
                 {/* Title */}
-                <h3 className="text-xs font-bold uppercase tracking-widest mb-4 text-foreground">
+                <h3 className="text-xs font-bold uppercase tracking-widest mb-6 text-foreground font-mono">
                   {cat.title}
                 </h3>
 
-                {/* Skills List */}
-                <div className="space-y-3">
+                {/* Skills List with Progress Bars */}
+                <div className="space-y-4">
                   {cat.skills.map((skill) => (
-                    <div key={skill.name} className="group/item flex items-center gap-2.5">
-                      <div className="h-px w-2 bg-border group-hover/item:w-3 group-hover/item:bg-foreground/50 transition-all duration-300" />
-                      <span className="text-xs text-muted-foreground group-hover/item:text-foreground transition-colors duration-300 font-medium">
-                        {skill.name}
-                      </span>
+                    <div key={skill.name} className="group/item flex flex-col gap-1.5">
+                      <div className="flex justify-between items-center text-xs">
+                        <span className="text-muted-foreground group-hover/item:text-foreground transition-colors duration-300 font-medium font-sans">
+                          {skill.name}
+                        </span>
+                        <span className="text-[10px] font-mono text-muted-foreground/60">{skill.level}%</span>
+                      </div>
+                      <div className="w-full h-1 bg-border/20 rounded-full overflow-hidden">
+                        <motion.div 
+                          initial={{ width: 0 }}
+                          whileInView={{ width: `${skill.level}%` }}
+                          viewport={{ once: true }}
+                          transition={{ duration: 1, ease: "easeOut" }}
+                          className="h-full bg-muted-foreground/35"
+                        />
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -173,13 +186,13 @@ const SkillsSection = () => {
 
         {/* Marquee Tech Pills */}
         <AnimatedSection delay={0.2}>
-          <div className="relative mb-14 overflow-hidden">
+          <div className="relative mb-14 overflow-hidden py-2">
             <div className="flex gap-3 marquee-track">
               {[...allTechs, ...allTechs].map((tech, i) => (
                 <span
                   key={`${tech}-${i}`}
-                  className="flex-shrink-0 px-4 py-1.5 rounded-full text-xs font-mono text-muted-foreground border border-border whitespace-nowrap"
-                  style={{ background: "hsl(var(--card))" }}
+                  className="flex-shrink-0 px-4 py-2 rounded-full text-xs font-mono text-muted-foreground border border-border/40 backdrop-blur-md hover:border-primary/20 hover:text-foreground transition-all duration-300 cursor-default shadow-sm"
+                  style={{ background: "hsl(var(--card) / 0.3)" }}
                 >
                   {tech}
                 </span>
@@ -195,11 +208,11 @@ const SkillsSection = () => {
         {/* Coding Platforms */}
         <AnimatedSection delay={0.35}>
           <div className="flex items-center gap-3 mb-8">
-            <div className="w-8 h-8 rounded-lg flex items-center justify-center border border-border bg-muted">
-              <Trophy className="w-4 h-4 text-foreground" />
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center border border-border/50 bg-muted/30">
+              <Trophy className="w-4 h-4 text-muted-foreground" />
             </div>
             <div>
-              <h3 className="text-lg font-bold text-foreground">Coding Platforms</h3>
+              <h3 className="text-lg font-bold text-foreground font-sans">Coding Platforms</h3>
               <p className="text-xs text-muted-foreground font-mono">where I practice & compete</p>
             </div>
           </div>
@@ -215,30 +228,24 @@ const SkillsSection = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.08 }}
-                whileHover={{ y: -5, borderColor: "hsl(var(--primary))", boxShadow: "0 10px 30px -10px hsl(var(--primary) / 0.2)" }}
-                className="group relative rounded-xl p-5 block overflow-hidden border border-border ai-circuit-corners transition-shadow duration-300"
-                style={{ background: "hsl(var(--card))" }}
+                whileHover={{ y: -3 }}
+                className="group relative rounded-xl p-5 block overflow-hidden border border-border/40 glass-card glass-card-hover transition-all duration-300"
               >
-                {/* AI Scan Overlay */}
-                <div className="ai-scan-overlay opacity-0 group-hover:opacity-100">
-                  <div className="ai-scan-line" style={{ animationDuration: '4s' }} />
-                </div>
-
                 {/* Subtle top-edge glow on hover */}
                 <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none rounded-xl"
-                  style={{ background: "radial-gradient(circle at 50% 0%, hsl(var(--primary) / 0.08) 0%, transparent 70%)" }}
+                  style={{ background: "radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.02) 0%, transparent 75%)" }}
                 />
 
                 {/* Top row */}
                 <div className="flex items-start justify-between mb-3">
-                  <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 border border-border bg-muted">
-                    <platform.icon className="w-4 h-4 text-foreground" />
+                  <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 border border-border/50 bg-muted/20">
+                    <platform.icon className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors duration-300" />
                   </div>
                   <ExternalLink className="w-3.5 h-3.5 text-muted-foreground group-hover:text-foreground transition-colors mt-1" />
                 </div>
 
                 {/* Platform name */}
-                <div className="font-semibold text-foreground text-sm mb-1 group-hover:text-white transition-colors">
+                <div className="font-semibold text-foreground text-sm mb-1 group-hover:text-primary transition-colors">
                   {platform.name}
                 </div>
 
@@ -248,14 +255,12 @@ const SkillsSection = () => {
                 </div>
 
                 {/* Tag pill */}
-                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-mono border border-border text-muted-foreground">
+                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-mono border border-border/50 text-muted-foreground bg-background/50">
                   {platform.tag}
                 </span>
 
-                {/* Bottom accent bar — white */}
-                <div className="absolute bottom-0 left-0 right-0 h-px opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-b-xl"
-                  style={{ background: "linear-gradient(90deg, transparent, hsl(var(--primary) / 0.5), transparent)" }}
-                />
+                {/* Bottom accent bar */}
+                <div className="absolute bottom-0 left-0 right-0 h-px opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-b-xl bg-border" />
               </motion.a>
             ))}
           </div>

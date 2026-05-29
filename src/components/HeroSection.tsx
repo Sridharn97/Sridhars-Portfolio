@@ -17,7 +17,7 @@ const HeroSection = () => {
       <div className="absolute inset-0 opacity-[0.03] neural-grid" />
 
       {/* Radial glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full opacity-20"
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full opacity-25"
         style={{ background: "radial-gradient(circle, hsl(var(--primary)) 0%, transparent 70%)" }}
       />
 
@@ -29,7 +29,7 @@ const HeroSection = () => {
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="font-mono text-sm tracking-[0.3em] text-muted-foreground uppercase mb-4"
+              className="font-mono text-sm tracking-[0.3em] text-primary uppercase mb-4"
             >
               Hello, It's Me
             </motion.p>
@@ -40,16 +40,16 @@ const HeroSection = () => {
               transition={{ duration: 0.8, delay: 0.4 }}
               className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight leading-[0.9] mb-6"
             >
-              <span className="text-gradient tech-glitch-hover inline-block">Sridhar</span>
+              <span className="text-gradient tech-glitch-hover inline-block drop-shadow-[0_0_35px_rgba(190,90,50,0.15)]">Sridhar</span>
             </motion.h1>
 
             <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.8 }}
-              className="text-muted-foreground text-lg max-w-md mx-auto lg:mx-0 mb-8"
+              className="text-muted-foreground text-lg max-w-md mx-auto lg:mx-0 mb-8 leading-relaxed"
             >
-              I am a passionate Full Stack Developer specializing in crafting dynamic and user-centric web applications.
+              I am a passionate <span className="text-foreground font-semibold">Full Stack Developer</span> specializing in crafting dynamic and user-centric web applications.
             </motion.p>
 
             {/* Social links */}
@@ -64,9 +64,11 @@ const HeroSection = () => {
                   key={social.label}
                   href={social.href}
                   aria-label={social.label}
-                  className="group relative w-12 h-12 rounded-full border border-border flex items-center justify-center magnetic-hover hover:border-foreground hover:bg-foreground transition-all duration-300"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group relative w-12 h-12 rounded-full border border-border flex items-center justify-center magnetic-hover hover:border-primary hover:bg-primary/10 transition-all duration-300 hover:shadow-[0_0_15px_rgba(190,90,50,0.25)]"
                 >
-                  <social.icon size={18} className="text-muted-foreground group-hover:text-primary-foreground transition-colors duration-300" />
+                  <social.icon size={18} className="text-muted-foreground group-hover:text-primary transition-colors duration-300" />
                 </a>
               ))}
             </motion.div>
@@ -79,48 +81,90 @@ const HeroSection = () => {
               href="https://drive.google.com/drive/folders/108GQzc5uf22Rfgv5FM_17-0cBQL5P-sJ?usp=drive_link"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-3 px-8 py-4 border border-foreground text-foreground font-medium tracking-wider text-sm uppercase magnetic-hover hover:bg-foreground hover:text-primary-foreground transition-all duration-300"
+              className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-primary to-secondary text-primary-foreground font-semibold tracking-wider text-sm uppercase rounded-lg shadow-[0_4px_20px_rgba(190,90,50,0.2)] hover:shadow-[0_4px_30px_rgba(190,90,50,0.4)] transition-all duration-300 hover:scale-[1.03]"
             >
               <FileText size={16} />
               Download Resume
             </motion.a>
           </div>
 
-          {/* Right - Image */}
+          {/* Right - Image with floating badges */}
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1, delay: 0.6 }}
-            className="flex-1 flex justify-center"
+            className="flex-1 flex justify-center relative"
           >
             <div className="relative group">
-              <div className="w-72 h-72 md:w-96 md:h-96 rounded-full overflow-hidden border-2 border-border relative ai-circuit-corners">
-                <img src={heroImage} alt="Sridhar" className="w-full h-full object-cover" />
-                <div className="absolute inset-0 bg-gradient-to-t from-background/60 to-transparent" />
+              {/* Profile Image container */}
+              <div className="w-72 h-72 md:w-96 md:h-96 rounded-full overflow-hidden border-2 border-primary/20 relative ai-circuit-corners shadow-[0_0_40px_rgba(0,0,0,0.5)]">
+                <img src={heroImage} alt="Sridhar" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                <div className="absolute inset-0 bg-gradient-to-t from-background/70 to-transparent" />
 
                 {/* AI Scan Overlay */}
                 <div className="ai-scan-overlay">
                   <div className="ai-scan-line" style={{ animationDuration: '5s' }} />
                 </div>
               </div>
-              <div className="absolute inset-0 w-72 h-72 md:w-96 md:h-96 rounded-full border border-primary/20 animate-[spin_20s_linear_infinite] -m-4 p-4">
+
+              {/* Dynamic Outer rotating ring */}
+              <div className="absolute inset-0 w-72 h-72 md:w-96 md:h-96 rounded-full border border-dashed border-primary/30 animate-[spin_40s_linear_infinite] -m-4 p-4 pointer-events-none">
                 <div className="absolute top-0 left-1/2 w-2 h-2 bg-primary rounded-full shadow-[0_0_10px_hsl(var(--primary))]" />
               </div>
+              <div className="absolute inset-0 w-72 h-72 md:w-96 md:h-96 rounded-full border border-dotted border-secondary/20 animate-[spin_60s_linear_infinite_reverse] -m-6 p-6 pointer-events-none" />
+
+              {/* Floating Badges */}
+              <motion.div
+                animate={{ y: [0, -10, 0] }}
+                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+                className="absolute top-4 -left-6 px-3 py-1.5 rounded-xl border border-primary/20 bg-background/80 backdrop-blur-md text-[11px] font-mono text-foreground font-semibold shadow-[0_4px_12px_rgba(0,0,0,0.5),0_0_10px_rgba(190,90,50,0.15)] flex items-center gap-1.5 z-20 cursor-default"
+              >
+                Full Stack
+              </motion.div>
+
+              <motion.div
+                animate={{ y: [0, 10, 0] }}
+                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+                className="absolute top-20 -right-6 px-3 py-1.5 rounded-xl border border-secondary/20 bg-background/80 backdrop-blur-md text-[11px] font-mono text-foreground font-semibold shadow-[0_4px_12px_rgba(0,0,0,0.5),0_0_10px_rgba(260,80,60,0.15)] flex items-center gap-1.5 z-20 cursor-default"
+              >
+                MERN Developer
+              </motion.div>
+
+              <motion.div
+                animate={{ y: [0, -8, 0] }}
+                transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+                className="absolute bottom-16 -left-8 px-3 py-1.5 rounded-xl border border-primary/25 bg-background/80 backdrop-blur-md text-[11px] font-mono text-foreground font-semibold shadow-[0_4px_12px_rgba(0,0,0,0.5),0_0_10px_rgba(190,90,50,0.15)] flex items-center gap-1.5 z-20 cursor-default"
+              >
+                React / Next.js
+              </motion.div>
+
+              <motion.div
+                animate={{ y: [0, 8, 0] }}
+                transition={{ duration: 4.8, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
+                className="absolute bottom-10 -right-4 px-3 py-1.5 rounded-xl border border-secondary/25 bg-background/80 backdrop-blur-md text-[11px] font-mono text-foreground font-semibold shadow-[0_4px_12px_rgba(0,0,0,0.5),0_0_10px_rgba(260,80,60,0.15)] flex items-center gap-1.5 z-20 cursor-default"
+              >
+                AWS Foundations
+              </motion.div>
             </div>
           </motion.div>
         </div>
 
-        {/* Scroll indicator */}
+        {/* Scroll indicator - Computer Mouse shape */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 2 }}
-          className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 cursor-pointer"
+          onClick={() => document.getElementById("about")?.scrollIntoView({ behavior: "smooth" })}
         >
-          <span className="font-mono text-xs tracking-widest text-muted-foreground uppercase">Scroll</span>
-          <motion.div animate={{ y: [0, 8, 0] }} transition={{ duration: 2, repeat: Infinity }}>
-            <ArrowDown size={16} className="text-muted-foreground" />
-          </motion.div>
+          <span className="font-mono text-[10px] tracking-[0.22em] text-muted-foreground uppercase">Scroll Down</span>
+          <div className="w-6 h-10 rounded-full border border-muted-foreground/30 flex justify-center p-1.5">
+            <motion.div
+              animate={{ y: [0, 12, 0], opacity: [1, 0, 1] }}
+              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+              className="w-1 h-2 bg-primary rounded-full"
+            />
+          </div>
         </motion.div>
       </div>
     </section>

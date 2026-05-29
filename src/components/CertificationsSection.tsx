@@ -105,32 +105,30 @@ const CertificationsSection = () => {
           {certifications.map((cert, i) => (
             <AnimatedSection key={cert.title} delay={i * 0.1}>
               <motion.div
-                whileHover={{ y: -8 }}
-                className="group relative h-full glass border border-white/5 rounded-xl p-8 transition-all duration-500 ai-circuit-corners ai-glow-pulse overflow-hidden bg-gradient-to-br from-white/[0.03] to-transparent"
+                whileHover={{ y: -4 }}
+                className="group relative h-full glass-card border border-border/40 rounded-xl p-8 transition-all duration-500 glass-card-hover overflow-hidden"
               >
-                {/* AI Scan Overlay */}
-                <div className="ai-scan-overlay">
-                  <div className="ai-scan-line" />
-                </div>
-
-
+                {/* Subtle white glow on hover */}
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none rounded-xl"
+                  style={{ background: "radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.02) 0%, transparent 70%)" }}
+                />
 
                 {/* Content */}
-                <div className="relative z-10 flex flex-col h-full">
-                  <div className="flex items-start justify-between mb-6">
-                    <div className="p-3 bg-white/5 rounded-xl border border-white/10 group-hover:border-white/20 transition-colors duration-300 group-hover:scale-110 group-hover:bg-white/10 shadow-inner">
-                      {cert.icon}
+                <div className="relative z-10 flex flex-col h-full justify-between">
+                  <div>
+                    <div className="flex items-start justify-between mb-6">
+                      <div className="p-3 bg-muted/30 rounded-xl border border-border/50 group-hover:border-border group-hover:bg-muted/50 transition-all duration-300 group-hover:scale-105 shadow-inner">
+                        <span className="text-muted-foreground group-hover:text-foreground transition-colors">{cert.icon}</span>
+                      </div>
+                      <span className="text-[10px] font-mono py-1 px-2.5 rounded-full border border-border/50 bg-background/50 text-muted-foreground tracking-tighter">
+                        {cert.date}
+                      </span>
                     </div>
-                    <span className="text-[10px] font-mono py-1 px-2 rounded-full border border-white/10 bg-white/5 text-muted-foreground tracking-tighter">
-                      {cert.date}
-                    </span>
-                  </div>
 
-                  <div className="flex-1">
-                    <h3 className="text-lg font-bold text-foreground mb-1 transition-colors leading-tight">
+                    <h3 className="text-lg font-bold text-foreground mb-1 group-hover:text-primary transition-colors leading-snug">
                       {cert.title}
                     </h3>
-                    <p className="text-sm font-medium text-muted-foreground/60 mb-4 font-mono">
+                    <p className="text-xs font-semibold text-muted-foreground/60 mb-4 font-mono uppercase tracking-wider">
                       {cert.issuer}
                     </p>
 
@@ -138,32 +136,27 @@ const CertificationsSection = () => {
                       {cert.skills.map((skill) => (
                         <span 
                           key={skill} 
-                          className="text-[9px] px-2 py-0.5 rounded-full border border-white/5 bg-white/5 text-muted-foreground font-mono"
+                          className="text-[9px] px-2.5 py-0.5 rounded-md border border-border/50 bg-background/40 text-muted-foreground font-mono group-hover:border-border/80 group-hover:text-foreground transition-colors cursor-default"
                         >
                           {skill}
                         </span>
                       ))}
                     </div>
-
-                    <motion.a 
-                      href={cert.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center justify-between py-3 px-4 rounded-lg bg-white/5 border border-white/10 hover:bg-white/10 transition-all duration-300 group/link overflow-hidden relative"
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                    >
-                      <span className="text-xs font-bold tracking-wider uppercase flex items-center gap-2 z-10">
-                        <LayoutGrid className="w-3.5 h-3.5" /> Verify Credential
-                      </span>
-                      <ExternalLink className="w-3.5 h-3.5 opacity-40 group-hover/link:opacity-100 transition-all group-hover/link:translate-x-0.5 z-10" />
-                      
-                      {/* Hover filling effect */}
-                      <motion.div 
-                        className="absolute inset-0 bg-primary/5 -translate-x-full group-hover/link:translate-x-0 transition-transform duration-500"
-                      />
-                    </motion.a>
                   </div>
+
+                  <motion.a 
+                    href={cert.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-between py-3 px-4 rounded-lg bg-background/50 border border-border/50 hover:border-border hover:bg-muted/40 transition-all duration-300 group/link overflow-hidden relative"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    <span className="text-[11px] font-bold tracking-wider uppercase flex items-center gap-2 z-10 font-mono text-muted-foreground group-hover/link:text-foreground transition-colors">
+                      <LayoutGrid className="w-3.5 h-3.5" /> Verify Credential
+                    </span>
+                    <ExternalLink className="w-3.5 h-3.5 text-muted-foreground group-hover/link:text-foreground transition-all group-hover/link:translate-x-0.5 z-10" />
+                  </motion.a>
                 </div>
               </motion.div>
             </AnimatedSection>
