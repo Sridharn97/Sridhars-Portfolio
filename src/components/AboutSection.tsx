@@ -6,9 +6,8 @@ import {
   Lightbulb,
   Rocket,
   GraduationCap,
-  MapPin,
-  Calendar,
-  Award,
+  Terminal,
+  CheckCircle2
 } from "lucide-react";
 
 const highlights = [
@@ -22,7 +21,7 @@ const education = [
   {
     institution: "Sri Eshwar College of Engineering",
     degree: "B.E — Computer Science & Engineering",
-    score: "CGPA: 7.82 (Up to 5th Sem)",
+    score: "CGPA: 7.82",
     year: "2023 – 2027",
     status: "Ongoing",
   },
@@ -44,151 +43,208 @@ const education = [
 
 const AboutSection = () => {
   return (
-    <section id="about" className="py-16 relative scroll-mt-24 overflow-hidden">
-      <div className="section-divider mb-12" />
-      <div className="container mx-auto px-6">
+    <section id="about" className="py-24 relative scroll-mt-24 overflow-hidden">
+      <div className="section-divider mb-16" />
+      <div className="container mx-auto px-6 max-w-7xl">
 
         {/* ── Header ── */}
         <AnimatedSection>
-          <div className="flex flex-col items-center text-center mb-10">
-            <p className="font-mono text-sm tracking-[0.3em] text-muted-foreground uppercase mb-4">
-              — About Me
+          <div className="flex flex-col items-center text-center mb-16">
+            <p className="font-mono text-sm tracking-[0.3em] text-muted-foreground uppercase mb-4 border border-border/50 bg-muted/30 px-4 py-1.5 rounded-full shadow-sm">
+              — Who I Am
             </p>
-            <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold tracking-tight">
-              Turning ideas into <br className="md:hidden" /><span className="text-gradient">digital reality</span>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight">
+              Behind the <span className="text-gradient">code</span>
             </h2>
           </div>
         </AnimatedSection>
 
-        {/* ── Bento Grid ── */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 max-w-6xl mx-auto mb-4">
+        {/* ── Top Split: IDE Bio & Highlights ── */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-24">
           
-          {/* Bio Card (2x2) */}
-          <AnimatedSection delay={0.1} className="md:col-span-2 lg:row-span-2 lg:col-span-2">
-            <motion.div
+          {/* Left: IDE Window */}
+          <AnimatedSection delay={0.1} className="lg:col-span-7 h-full">
+            <motion.div 
               whileHover={{ y: -4 }}
-              className="h-full relative rounded-2xl p-8 lg:p-10 border border-border/40 glass-card group overflow-hidden flex flex-col justify-between transition-all duration-300"
+              className="h-full rounded-2xl overflow-hidden border border-border/40 bg-[#0d1117]/90 backdrop-blur-xl shadow-2xl flex flex-col group transition-all duration-500 hover:shadow-primary/10 hover:border-border/80"
             >
-              <div className="space-y-6 relative z-10 mb-8">
-                <p className="text-muted-foreground text-base md:text-lg leading-relaxed font-sans">
-                  Hi, I'm <span className="text-foreground font-semibold">Sridhar</span> — a dedicated Full Stack Developer and eager tech enthusiast. My skill set spans both front-end and back-end technologies, allowing me to create seamless and dynamic web applications.
-                </p>
-                <p className="text-muted-foreground text-base md:text-lg leading-relaxed font-sans">
-                  I'm passionate about continuous learning and exploring new technologies. I enjoy building practical applications that solve real problems and improve user experience.
-                </p>
+              {/* IDE Header */}
+              <div className="bg-[#161b22] px-4 py-3 flex items-center justify-between border-b border-border/40">
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-full bg-red-500/80 shadow-[0_0_5px_rgba(239,68,68,0.5)]" />
+                  <div className="w-3 h-3 rounded-full bg-yellow-500/80 shadow-[0_0_5px_rgba(234,179,8,0.5)]" />
+                  <div className="w-3 h-3 rounded-full bg-green-500/80 shadow-[0_0_5px_rgba(34,197,94,0.5)]" />
+                </div>
+                <div className="flex items-center gap-2 text-xs font-mono text-muted-foreground bg-background/10 px-3 py-1 rounded-md">
+                  <Terminal className="w-3.5 h-3.5" />
+                  <span>sridhar.ts</span>
+                </div>
+                <div className="w-10" /> {/* Spacer for centering */}
               </div>
 
-              <div className="flex flex-wrap gap-3 relative z-10 mt-auto">
-                <div className="flex items-center gap-2 text-xs font-mono text-muted-foreground border border-border/50 bg-background/50 rounded-full px-4 py-2 hover:bg-muted hover:text-foreground hover:-translate-y-0.5 hover:shadow-md transition-all cursor-default">
-                  <MapPin className="w-3.5 h-3.5 text-muted-foreground" /> Tamil Nadu, India
-                </div>
-                <div className="flex items-center gap-2 text-xs font-mono text-muted-foreground border border-border/50 bg-background/50 rounded-full px-4 py-2 hover:bg-muted hover:text-foreground hover:-translate-y-0.5 hover:shadow-md transition-all cursor-default">
-                  <Calendar className="w-3.5 h-3.5 text-muted-foreground" /> Available for Internship
-                </div>
-                <div className="flex items-center gap-2 text-xs font-mono text-muted-foreground border border-border/50 bg-background/50 rounded-full px-4 py-2 hover:bg-muted hover:text-foreground hover:-translate-y-0.5 hover:shadow-md transition-all cursor-default">
-                  <Award className="w-3.5 h-3.5 text-muted-foreground" /> B.E CSE — 2027
+              {/* IDE Content */}
+              <div className="p-6 md:p-8 font-mono text-sm md:text-base text-gray-300 overflow-x-auto flex-1 flex">
+                <div className="flex gap-6 w-full">
+                  {/* Line Numbers */}
+                  <div className="text-gray-600 select-none flex flex-col text-right font-medium">
+                    {Array.from({length: 13}).map((_, i) => <span key={i}>{i+1}</span>)}
+                  </div>
+                  
+                  {/* Code */}
+                  <div className="flex flex-col whitespace-pre">
+                    <p><span className="text-[#ff7b72]">const</span> <span className="text-[#79c0ff]">developer</span> <span className="text-[#ff7b72]">=</span> {'{'}</p>
+                    <p className="ml-4"><span className="text-[#d2a8ff]">name</span>: <span className="text-[#a5d6ff]">'Sridhar'</span>,</p>
+                    <p className="ml-4"><span className="text-[#d2a8ff]">role</span>: <span className="text-[#a5d6ff]">'Full Stack Developer'</span>,</p>
+                    <p className="ml-4"><span className="text-[#d2a8ff]">passion</span>: <span className="text-[#a5d6ff]">'Building seamless applications'</span>,</p>
+                    <p className="ml-4"><span className="text-[#d2a8ff]">location</span>: <span className="text-[#a5d6ff]">'Tamil Nadu, India'</span>,</p>
+                    <p className="ml-4"><span className="text-[#d2a8ff]">status</span>: <span className="text-[#a5d6ff]">'Available for Internship'</span>,</p>
+                    <p className="ml-4"><span className="text-[#d2a8ff]">techStack</span>: [</p>
+                    <p className="ml-8"><span className="text-[#a5d6ff]">'React'</span>, <span className="text-[#a5d6ff]">'Next.js'</span>, <span className="text-[#a5d6ff]">'Node.js'</span>, <span className="text-[#a5d6ff]">'MongoDB'</span></p>
+                    <p className="ml-4">],</p>
+                    <p className="ml-4"><span className="text-[#d2a8ff]">solveProblem</span>: <span className="text-[#ff7b72]">()</span> <span className="text-[#ff7b72]">=&gt;</span> {'{'}</p>
+                    <p className="ml-8"><span className="text-[#ff7b72]">return</span> <span className="text-[#a5d6ff]">'Turning ideas into digital reality'</span>;</p>
+                    <p className="ml-4">{'}'}</p>
+                    <p>{'};'}</p>
+                  </div>
                 </div>
               </div>
             </motion.div>
           </AnimatedSection>
 
-          {/* Highlights (1x1 each) */}
-          {highlights.map((item, i) => (
-            <AnimatedSection key={item.title} delay={0.2 + i * 0.1} className="col-span-1">
-              <motion.div
-                whileHover={{ y: -4 }}
-                className="h-full relative rounded-2xl p-6 border border-border/40 glass-card glass-card-hover group overflow-hidden flex flex-col justify-between transition-all duration-300"
-              >
-                <div>
-                  <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-4 border border-border/50 bg-muted/40 tech-glitch-hover transition-colors">
-                    <item.icon className="w-5 h-5 text-muted-foreground group-hover:text-foreground transition-colors" />
+          {/* Right: Highlights 2x2 Grid */}
+          <div className="lg:col-span-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {highlights.map((item, i) => (
+              <AnimatedSection key={item.title} delay={0.2 + i * 0.1} className="h-full">
+                <motion.div
+                  whileHover={{ y: -4, scale: 1.02 }}
+                  className="h-full rounded-2xl p-6 border border-border/30 bg-card/30 backdrop-blur-sm glass-card-hover group overflow-hidden flex flex-col justify-between shadow-sm hover:border-primary/40 transition-all duration-300"
+                >
+                  <div>
+                    <div className="w-12 h-12 rounded-2xl flex items-center justify-center mb-5 border border-border/50 bg-background/50 shadow-inner group-hover:bg-primary/10 transition-colors duration-500">
+                      <item.icon className="w-6 h-6 text-muted-foreground group-hover:text-primary transition-colors duration-500" />
+                    </div>
+                    <h3 className="text-base font-bold text-foreground mb-2 group-hover:text-primary transition-colors">{item.title}</h3>
+                    <p className="text-xs text-muted-foreground leading-relaxed">{item.desc}</p>
                   </div>
-                  <h3 className="text-sm font-bold text-foreground mb-1.5 transition-colors">{item.title}</h3>
-                  <p className="text-xs text-muted-foreground font-mono leading-relaxed">{item.desc}</p>
-                </div>
-                
-                {/* Metric meter decorator */}
-                <div className="mt-4 w-full h-1 bg-border/20 rounded-full overflow-hidden relative">
-                  <motion.div 
-                    initial={{ width: 0 }}
-                    whileInView={{ width: "100%" }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 1.5, delay: 0.5 + i * 0.1 }}
-                    className="h-full bg-muted-foreground/30"
-                  />
-                </div>
-              </motion.div>
-            </AnimatedSection>
-          ))}
+                </motion.div>
+              </AnimatedSection>
+            ))}
+          </div>
         </div>
 
-        {/* ── Education Section ── */}
-        <AnimatedSection delay={0.5}>
-          <div className="flex items-center gap-3 mb-8 max-w-6xl mx-auto">
-            <div className="w-10 h-10 rounded-xl flex items-center justify-center border border-border/50 bg-muted/40 tech-glitch-hover">
-              <GraduationCap className="w-5 h-5 text-muted-foreground" />
-            </div>
-            <div>
-              <h3 className="text-xl font-bold text-foreground">Education</h3>
-              <p className="text-xs text-muted-foreground font-mono mt-1">academic journey & qualifications</p>
-            </div>
+        {/* ── Bottom: Education Rows ── */}
+        <AnimatedSection delay={0.5} className="mt-24">
+          <div className="flex flex-col items-center mb-16">
+            <p className="font-mono text-sm tracking-[0.3em] text-muted-foreground uppercase mb-4 border border-border/50 bg-muted/30 px-4 py-1.5 rounded-full shadow-sm">
+              — Education
+            </p>
+            <h3 className="text-3xl md:text-4xl font-bold text-foreground tracking-tight">Academic <span className="text-gradient">Background</span></h3>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-6xl mx-auto">
-            {education.map((edu, i) => (
-              <motion.div
-                key={edu.degree + edu.year}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.6 + i * 0.15 }}
-                whileHover={{ y: -4 }}
-                className="relative rounded-2xl p-6 lg:p-8 border border-border/40 border-l-2 border-l-border glass-card glass-card-hover group overflow-hidden flex flex-col justify-between transition-all duration-300"
-              >
-                <div className="relative z-10 mb-8">
-                  {/* Status Pill & Year */}
-                  <div className="flex items-start justify-between gap-2 mb-6">
-                    <span className="text-xs font-mono text-muted-foreground bg-background/50 px-3 py-1.5 rounded-lg border border-border/50">
-                      {edu.year}
-                    </span>
-                    <span className={`text-[10px] font-mono px-2.5 py-1 rounded-full border shrink-0 ${
-                      edu.status === 'Ongoing' 
-                        ? 'text-foreground bg-foreground/5 border-border/80' 
-                        : 'text-muted-foreground bg-background/50 border-border/40'
-                    }`}>
-                      {edu.status}
-                    </span>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+            {/* Widget 1: College (Hero) */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1, duration: 0.6 }}
+              className="md:col-span-2 md:row-span-2 rounded-[32px] p-8 md:p-12 relative overflow-hidden bg-card/60 backdrop-blur-xl border border-border/50 shadow-2xl group hover:border-primary/40 transition-all duration-500"
+            >
+              {/* Giant subtle gradient glow */}
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/15 via-transparent to-transparent opacity-80 pointer-events-none group-hover:scale-110 transition-transform duration-[1.5s]" />
+              <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-primary/10 blur-[100px] rounded-full pointer-events-none group-hover:bg-primary/20 transition-colors duration-700" />
+              
+              <div className="relative z-10 flex flex-col h-full justify-between">
+                <div className="flex justify-between items-start mb-16">
+                  <div className="w-16 h-16 rounded-2xl bg-background border border-border/60 flex items-center justify-center text-primary shadow-[0_0_20px_rgba(var(--primary),0.15)] group-hover:shadow-[0_0_30px_rgba(var(--primary),0.3)] transition-shadow duration-500">
+                    <GraduationCap size={32} />
                   </div>
-
-                  {/* Institution & Degree */}
-                  <h4 className="text-lg font-bold text-foreground mb-3 transition-colors">{edu.institution}</h4>
-                  <p className="text-sm text-muted-foreground font-mono leading-relaxed">{edu.degree}</p>
+                  <span className="px-5 py-2 rounded-full bg-primary/10 text-primary border border-primary/20 text-xs font-mono font-bold tracking-widest uppercase shadow-sm">
+                    {education[0].status}
+                  </span>
                 </div>
-
-                {/* Score representation bar */}
-                <div className="relative z-10 mt-auto pt-5 border-t border-border/20 flex flex-col gap-2">
-                  <div className="flex justify-between items-center text-xs font-mono">
-                    <span className="text-muted-foreground text-[10px]">ACHIEVEMENT SCORE:</span>
-                    <span className="text-foreground font-bold text-[11px]">{edu.score}</span>
-                  </div>
-                  <div className="w-full h-1 bg-border/20 rounded-full overflow-hidden">
-                    <motion.div 
-                      initial={{ width: 0 }}
-                      whileInView={{ 
-                        width: edu.score.includes("7.82") 
-                          ? "78.2%" 
-                          : edu.score.includes("89") 
-                          ? "89.67%" 
-                          : "100%" 
-                      }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 1.2, delay: 0.8 + i * 0.15 }}
-                      className="h-full bg-muted-foreground/30"
-                    />
+                
+                <div>
+                  <span className="text-sm font-mono text-muted-foreground uppercase tracking-widest block mb-4 flex items-center gap-3">
+                    {education[0].year}
+                    <div className="h-px bg-border/60 flex-1" />
+                  </span>
+                  <h4 className="text-3xl md:text-5xl font-black text-foreground tracking-tight mb-4 leading-tight">
+                    {education[0].institution}
+                  </h4>
+                  <p className="text-lg md:text-xl font-medium text-muted-foreground mb-10">
+                    {education[0].degree}
+                  </p>
+                  
+                  <div className="inline-flex items-center rounded-2xl bg-background/80 border border-border/60 backdrop-blur-md shadow-inner overflow-hidden group/score cursor-default">
+                    <div className="px-6 py-4 bg-muted/30 border-r border-border/50">
+                      <span className="text-xs font-mono text-muted-foreground uppercase tracking-widest">Score</span>
+                    </div>
+                    <div className="px-6 py-4">
+                      <span className="text-2xl font-black text-primary font-mono tracking-tight group-hover/score:text-foreground transition-colors">{education[0].score.split(': ')[1]}</span>
+                    </div>
                   </div>
                 </div>
-              </motion.div>
-            ))}
+              </div>
+            </motion.div>
+
+            {/* Widget 2: HSC */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2, duration: 0.6 }}
+              whileHover={{ y: -4 }}
+              className="md:col-span-1 md:row-span-1 rounded-[32px] p-8 relative overflow-hidden bg-muted/20 border border-border/40 hover:bg-muted/40 transition-all duration-300 shadow-sm hover:shadow-md"
+            >
+              <div className="flex flex-col h-full justify-between">
+                <div className="flex justify-between items-center mb-10">
+                  <span className="text-[11px] font-mono text-muted-foreground uppercase tracking-widest bg-background/50 px-3 py-1.5 rounded-full border border-border/50">
+                    {education[1].year}
+                  </span>
+                  <div className="w-8 h-8 rounded-full bg-background border border-border/50 flex items-center justify-center text-muted-foreground shadow-sm">
+                    <CheckCircle2 size={14} />
+                  </div>
+                </div>
+                <div>
+                  <h4 className="text-xl font-bold text-foreground mb-2 leading-snug">{education[1].institution}</h4>
+                  <p className="text-sm text-muted-foreground mb-6 line-clamp-2">{education[1].degree}</p>
+                  <div className="inline-flex items-center gap-2">
+                    <span className="text-[10px] font-mono text-muted-foreground uppercase tracking-widest">Score</span>
+                    <span className="text-lg font-bold font-mono text-foreground bg-background px-3 py-1 rounded-lg border border-border/40">{education[1].score}</span>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Widget 3: SSLC */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.3, duration: 0.6 }}
+              whileHover={{ y: -4 }}
+              className="md:col-span-1 md:row-span-1 rounded-[32px] p-8 relative overflow-hidden bg-muted/20 border border-border/40 hover:bg-muted/40 transition-all duration-300 shadow-sm hover:shadow-md"
+            >
+              <div className="flex flex-col h-full justify-between">
+                <div className="flex justify-between items-center mb-10">
+                  <span className="text-[11px] font-mono text-muted-foreground uppercase tracking-widest bg-background/50 px-3 py-1.5 rounded-full border border-border/50">
+                    {education[2].year}
+                  </span>
+                  <div className="w-8 h-8 rounded-full bg-background border border-border/50 flex items-center justify-center text-muted-foreground shadow-sm">
+                    <CheckCircle2 size={14} />
+                  </div>
+                </div>
+                <div>
+                  <h4 className="text-xl font-bold text-foreground mb-2 leading-snug">{education[2].institution}</h4>
+                  <p className="text-sm text-muted-foreground mb-6 line-clamp-2">{education[2].degree}</p>
+                  <div className="inline-flex items-center gap-2">
+                    <span className="text-[10px] font-mono text-muted-foreground uppercase tracking-widest">Score</span>
+                    <span className="text-lg font-bold font-mono text-foreground bg-background px-3 py-1 rounded-lg border border-border/40">{education[2].score}</span>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
           </div>
         </AnimatedSection>
         

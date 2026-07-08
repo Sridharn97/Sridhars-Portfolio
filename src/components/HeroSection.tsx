@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Linkedin, Instagram, Twitter, Github, FileText, ArrowDown, Code } from "lucide-react";
-import heroImage from "@/assets/hero-portrait.jpg";
+import { useTheme } from "next-themes";
+import { useEffect, useState } from "react";
 
 const socials = [
   { icon: Linkedin, href: "https://www.linkedin.com/in/sridhar-n-896a7b293", label: "LinkedIn" },
@@ -11,6 +12,18 @@ const socials = [
 ];
 
 const HeroSection = () => {
+  const { resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Determine the correct image based on theme. Fallback to dark theme image initially.
+  const profileImage = mounted && resolvedTheme === "light" 
+    ? "/Profile picture for white theme.png" 
+    : "/Profile for black theme.jpg";
+
   return (
     <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden noise">
       {/* Subtle grid bg */}
@@ -98,8 +111,8 @@ const HeroSection = () => {
             <div className="relative group">
               {/* Profile Image container */}
               <div className="w-72 h-72 md:w-96 md:h-96 rounded-full overflow-hidden border-2 border-primary/20 relative ai-circuit-corners shadow-[0_0_40px_rgba(0,0,0,0.5)]">
-                <img src={heroImage} alt="Sridhar" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
-                <div className="absolute inset-0 bg-gradient-to-t from-background/70 to-transparent" />
+                <img key={profileImage} src={profileImage} alt="Sridhar" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                <div className="absolute inset-0 bg-gradient-to-t from-background/70 to-transparent pointer-events-none" />
 
                 {/* AI Scan Overlay */}
                 <div className="ai-scan-overlay">
