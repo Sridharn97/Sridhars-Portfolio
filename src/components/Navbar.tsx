@@ -122,7 +122,7 @@ const Navbar = () => {
             {!shrunk && (
               <a
                 href="#contact"
-                className="group relative hidden xl:inline-flex items-center gap-2 bg-foreground text-background border border-border/50 px-6 py-2.5 rounded-lg text-sm font-medium font-mono hover:shadow-[0_0_15px_rgba(255,255,255,0.1)] transition-all overflow-hidden z-10"
+                className="group relative hidden xl:inline-flex items-center gap-2 bg-foreground text-background border border-border/50 px-6 py-2.5 rounded-lg text-sm font-medium font-mono hover:shadow-[0_0_15px_rgba(0,0,0,0.2)] dark:hover:shadow-[0_0_15px_rgba(255,255,255,0.1)] transition-all overflow-hidden z-10"
               >
                 <div className="absolute inset-0 w-0 bg-primary/20 group-hover:w-full transition-all duration-500 ease-out z-0" />
                 <span className="relative z-10">Hire_Me()</span>

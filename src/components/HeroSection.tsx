@@ -46,8 +46,8 @@ const HeroSection = () => {
       
       {/* Dynamic Background Gradient Mesh */}
       <div className="absolute inset-0 pointer-events-none opacity-30">
-        <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-primary/30 blur-[100px] rounded-full mix-blend-screen" />
-        <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-purple-500/20 blur-[120px] rounded-full mix-blend-screen" />
+        <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-primary/30 blur-[100px] rounded-full dark:mix-blend-screen" />
+        <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-purple-500/20 blur-[120px] rounded-full dark:mix-blend-screen" />
       </div>
 
       <div className="container mx-auto px-6 relative z-10 pt-20">
@@ -61,22 +61,22 @@ const HeroSection = () => {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: "easeOut" }}
-              className="w-full rounded-xl overflow-hidden glass-card border border-border/50 shadow-2xl relative mb-8 backdrop-blur-xl"
+              className="w-full rounded-xl overflow-hidden glass-card border border-border/50 shadow-2xl relative mb-8 backdrop-blur-xl bg-slate-950 dark:bg-background/20"
             >
               {/* Mac Window Header */}
-              <div className="bg-muted/40 px-4 py-3 flex items-center gap-2 border-b border-border/50">
+              <div className="bg-slate-900 dark:bg-muted/40 px-4 py-3 flex items-center gap-2 border-b border-border/50">
                  <div className="flex gap-2">
                      <div className="w-3 h-3 rounded-full bg-red-500/80 shadow-sm" />
                      <div className="w-3 h-3 rounded-full bg-yellow-500/80 shadow-sm" />
                      <div className="w-3 h-3 rounded-full bg-green-500/80 shadow-sm" />
                  </div>
                  <div className="flex-1 flex justify-center">
-                     <p className="font-mono text-[10px] sm:text-xs text-muted-foreground flex items-center gap-2"><Code size={14}/> sridhar-portfolio.tsx</p>
+                     <p className="font-mono text-[10px] sm:text-xs text-slate-400 dark:text-muted-foreground flex items-center gap-2"><Code size={14}/> sridhar-portfolio.tsx</p>
                  </div>
               </div>
               
               {/* Code Content */}
-              <div className="p-5 sm:p-8 font-mono text-[13px] sm:text-sm md:text-base leading-relaxed overflow-x-auto text-foreground/90">
+              <div className="p-5 sm:p-8 font-mono text-[13px] sm:text-sm md:text-base leading-relaxed overflow-x-auto text-slate-200 dark:text-foreground/90">
                  <motion.div variants={containerVariants} initial="hidden" animate="visible" className="flex flex-col gap-3 whitespace-nowrap">
                     
                     <motion.div variants={itemVariants}>
@@ -92,11 +92,11 @@ const HeroSection = () => {
                     </motion.div>
                     
                     <motion.div variants={itemVariants} className="mt-4 whitespace-normal">
-                        <span className="text-muted-foreground italic">{"// Passionate about crafting dynamic, interactive, and user-centric web experiences."}</span>
+                        <span className="text-slate-400 dark:text-muted-foreground italic">{"// Passionate about crafting dynamic, interactive, and user-centric web experiences."}</span>
                     </motion.div>
                     
                     <motion.div variants={itemVariants} className="mt-2 flex items-center">
-                        <span className="text-blue-400">developer</span>.<span className="text-yellow-200">execute</span>(); <span className="ml-1 animate-pulse font-bold text-foreground">_</span>
+                        <span className="text-blue-400">developer</span>.<span className="text-yellow-200">execute</span>(); <span className="ml-1 animate-pulse font-bold text-slate-200 dark:text-foreground">_</span>
                     </motion.div>
                  </motion.div>
               </div>
@@ -160,27 +160,27 @@ const HeroSection = () => {
               <motion.div 
                   animate={{ y: [-15, 10, -15], rotate: [-2, 5, -2] }} 
                   transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-                  className="absolute -top-6 -left-6 md:-top-10 md:-left-10 px-4 py-2 glass backdrop-blur-xl rounded-full border border-border/50 text-xs md:text-sm font-mono flex items-center gap-2 shadow-[0_0_20px_rgba(0,255,255,0.1)] z-20 pointer-events-none"
+                  className="absolute -top-6 -left-6 md:-top-10 md:-left-10 px-4 py-2 glass backdrop-blur-xl bg-background/80 rounded-full border border-border/50 text-xs md:text-sm font-mono flex items-center gap-2 shadow-[0_0_20px_rgba(0,255,255,0.1)] z-20 pointer-events-none"
               >
-                <span className="text-cyan-400">{"<"}</span>React <span className="text-cyan-400">{"/>"}</span>
+                <span className="text-cyan-600 dark:text-cyan-400">{"<"}</span>React <span className="text-cyan-600 dark:text-cyan-400">{"/>"}</span>
               </motion.div>
 
               {/* Floating Tech Component 2: TS */}
               <motion.div 
                   animate={{ y: [15, -10, 15], rotate: [5, -2, 5] }} 
                   transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-                  className="absolute -bottom-6 -right-6 md:-bottom-10 md:-right-10 px-4 py-2 glass backdrop-blur-xl rounded-full border border-border/50 text-xs md:text-sm font-mono flex items-center gap-2 shadow-[0_0_20px_rgba(59,130,246,0.1)] z-20 pointer-events-none"
+                  className="absolute -bottom-6 -right-6 md:-bottom-10 md:-right-10 px-4 py-2 glass backdrop-blur-xl bg-background/80 rounded-full border border-border/50 text-xs md:text-sm font-mono flex items-center gap-2 shadow-[0_0_20px_rgba(59,130,246,0.1)] z-20 pointer-events-none"
               >
-                <span className="text-blue-500">.ts</span> {`{ ... }`}
+                <span className="text-blue-600 dark:text-blue-400">.ts</span> {`{ ... }`}
               </motion.div>
 
               {/* Floating Tech Component 3: Node.js */}
               <motion.div 
                   animate={{ y: [-10, 15, -10], rotate: [-5, 2, -5] }} 
                   transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-                  className="absolute top-1/2 -right-8 md:-right-16 -translate-y-1/2 px-4 py-2 glass backdrop-blur-xl rounded-full border border-border/50 text-xs md:text-sm font-mono flex items-center gap-2 shadow-[0_0_20px_rgba(34,197,94,0.1)] z-20 pointer-events-none"
+                  className="absolute top-1/2 -right-8 md:-right-16 -translate-y-1/2 px-4 py-2 glass backdrop-blur-xl bg-background/80 rounded-full border border-border/50 text-xs md:text-sm font-mono flex items-center gap-2 shadow-[0_0_20px_rgba(34,197,94,0.1)] z-20 pointer-events-none"
               >
-                <span className="text-green-500">{`{ Node }`}</span>
+                <span className="text-green-600 dark:text-green-500">{`{ Node }`}</span>
               </motion.div>
 
               {/* Main Profile Image Container */}
