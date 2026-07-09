@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Linkedin, Instagram, Twitter, Github, FileText, Code, ArrowRight } from "lucide-react";
+import { Linkedin, Instagram, Twitter, Github, FileText, Code, ArrowRight, Terminal } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 
@@ -110,22 +110,16 @@ const HeroSection = () => {
               className="flex flex-col sm:flex-row items-center gap-6 w-full"
             >
               {/* Resume Button */}
-              <div className="relative group p-[2px] rounded-xl overflow-hidden inline-flex w-full sm:w-auto">
-                {/* Spinning Gradient Background */}
-                <div className="absolute inset-0 bg-gradient-to-r from-primary via-purple-500 to-primary animate-[spin_3s_linear_infinite] opacity-70 group-hover:opacity-100 transition-opacity duration-300" />
-                
-                {/* Inner Button */}
-                <a
-                  href="https://drive.google.com/drive/folders/108GQzc5uf22Rfgv5FM_17-0cBQL5P-sJ?usp=drive_link"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="relative flex items-center justify-center w-full sm:w-auto gap-3 bg-background px-8 py-3.5 rounded-[10px] text-foreground font-medium hover:bg-background/80 transition-colors z-10"
-                >
-                  <FileText size={18} />
-                  Download Resume
-                  <ArrowRight size={16} className="opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all duration-300" />
-                </a>
-              </div>
+              <a
+                href="https://drive.google.com/drive/folders/108GQzc5uf22Rfgv5FM_17-0cBQL5P-sJ?usp=drive_link"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group relative flex items-center justify-center w-full sm:w-auto gap-3 bg-foreground/5 border border-border/50 px-8 py-3.5 rounded-lg text-foreground font-mono text-sm hover:bg-foreground/10 hover:border-foreground/30 hover:shadow-lg transition-all z-10 overflow-hidden"
+              >
+                <div className="absolute inset-0 w-0 bg-primary/10 group-hover:w-full transition-all duration-500 ease-out z-0" />
+                <Terminal size={16} className="relative z-10 text-muted-foreground group-hover:text-primary transition-colors" />
+                <span className="relative z-10 font-semibold tracking-wide">./download_resume.sh</span>
+              </a>
 
               {/* Social Icons */}
               <div className="flex items-center gap-4">
