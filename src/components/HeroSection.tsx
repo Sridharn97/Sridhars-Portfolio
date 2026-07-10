@@ -1,4 +1,4 @@
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, useMotionValue, useSpring } from "framer-motion";
 import { Linkedin, Instagram, Twitter, Github, Terminal, ChevronDown } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useEffect, useState, useRef } from "react";
@@ -9,6 +9,87 @@ const socials = [
   { icon: Twitter, href: "https://x.com/SrIdharN09", label: "Twitter", color: "#1DA1F2" },
   { icon: Github, href: "https://github.com/Sridharn97", label: "GitHub", color: "#888888" },
 ];
+
+const ProfileImage = ({ profileImage }: { profileImage: string }) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const mouseXSpring = useSpring(x, { stiffness: 150, damping: 15 });
+  const mouseYSpring = useSpring(y, { stiffness: 150, damping: 15 });
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["15deg", "-15deg"]);
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-15deg", "15deg"]);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    if (!ref.current) return;
+    const rect = ref.current.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+    x.set(mouseX / width - 0.5);
+    y.set(mouseY / height - 0.5);
+  };
+
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.8 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 1, ease: "easeOut", delay: 0.3 }}
+      className="flex-1 flex justify-center items-center relative w-full mt-12 lg:mt-0 perspective-1000"
+      style={{ perspective: "1000px" }}
+    >
+      <motion.div
+        ref={ref}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+        style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
+        className="relative w-64 h-64 sm:w-80 sm:h-80 md:w-96 md:h-96 lg:w-[450px] lg:h-[450px] rounded-full p-2 bg-primary/5 shadow-2xl hover:shadow-[0_0_60px_rgba(var(--primary),0.3)] transition-shadow duration-700 group z-10 cursor-crosshair"
+      >
+        {/* Orbital Ring with Text */}
+        <div className="absolute inset-[-40px] pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-700" style={{ transform: "translateZ(-10px)" }}>
+          <svg viewBox="0 0 100 100" className="w-full h-full animate-[spin_20s_linear_infinite]">
+            <path id="circlePath" d="M 50, 50 m -50, 0 a 50,50 0 1,1 100,0 a 50,50 0 1,1 -100,0" fill="none" />
+            <text className="text-[7.5px] font-mono font-bold fill-primary uppercase tracking-[0.25em]">
+              <textPath href="#circlePath" startOffset="0%">
+                • SRIDHAR N • FULL STACK DEVELOPER • SRIDHAR N • FULL STACK DEVELOPER 
+              </textPath>
+            </text>
+          </svg>
+        </div>
+
+        {/* Orbiting particles */}
+        <div className="absolute inset-[-20px] rounded-full border border-primary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-700 animate-[spin_10s_linear_infinite] pointer-events-none" style={{ transform: "translateZ(10px)" }}>
+          <div className="absolute top-0 left-1/2 w-3 h-3 bg-primary rounded-full shadow-[0_0_15px_rgba(var(--primary),1)] -translate-x-1/2 -translate-y-1/2" />
+        </div>
+        <div className="absolute inset-[-20px] rounded-full border border-primary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-700 animate-[spin_15s_linear_infinite_reverse] pointer-events-none" style={{ transform: "translateZ(10px)" }}>
+          <div className="absolute bottom-0 left-1/2 w-2 h-2 bg-purple-500 rounded-full shadow-[0_0_15px_rgba(168,85,247,1)] -translate-x-1/2 translate-y-1/2" />
+        </div>
+
+        {/* Animated Glow Behind Image */}
+        <div className="absolute inset-0 rounded-full bg-primary/20 blur-3xl opacity-40 group-hover:opacity-80 transition-opacity duration-700 animate-pulse-slow pointer-events-none" style={{ transform: "translateZ(-20px)" }} />
+        
+        {/* The Image Itself */}
+        <div className="relative w-full h-full rounded-full overflow-hidden border-2 border-primary/30 bg-background flex items-center justify-center shadow-inner" style={{ transform: "translateZ(30px)" }}>
+          <img 
+            src={profileImage} 
+            alt="Sridhar N" 
+            className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+          />
+          <div className="absolute inset-0 bg-primary/10 mix-blend-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+          <div className="ai-scan-overlay" />
+        </div>
+        
+        {/* Inner Ring Glow */}
+        <div className="absolute inset-2 rounded-full border border-white/20 pointer-events-none z-30 opacity-50 group-hover:opacity-100 transition-opacity duration-500" style={{ transform: "translateZ(40px)" }} />
+      </motion.div>
+    </motion.div>
+  );
+};
 
 const HeroSection = () => {
   const { resolvedTheme } = useTheme();
@@ -146,31 +227,7 @@ const HeroSection = () => {
         </motion.div>
 
         {/* RIGHT HALF: Big Profile Image */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1, ease: "easeOut", delay: 0.3 }}
-          className="flex-1 flex justify-center items-center relative w-full mt-12 lg:mt-0"
-        >
-          {/* Big Profile Avatar */}
-          <div className="relative w-64 h-64 sm:w-80 sm:h-80 md:w-96 md:h-96 lg:w-[450px] lg:h-[450px] rounded-full p-2 bg-primary/20 shadow-xl hover:shadow-[0_0_40px_rgba(var(--primary),0.3)] transition-shadow duration-700 group z-10">
-            {/* Animated Glow Behind Image */}
-            <div className="absolute inset-0 rounded-full bg-primary/20 blur-xl opacity-40 group-hover:opacity-60 transition-opacity duration-700 animate-pulse-slow" />
-            
-            {/* The Image Itself */}
-            <div className="relative w-full h-full rounded-full overflow-hidden border-2 border-primary/30 bg-background flex items-center justify-center">
-              <img 
-                key={profileImage}
-                src={profileImage} 
-                alt="Sridhar N" 
-                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
-              />
-            </div>
-            
-            {/* Inner Ring Glow */}
-            <div className="absolute inset-2 rounded-full border border-white/10 pointer-events-none z-30" />
-          </div>
-        </motion.div>
+        <ProfileImage profileImage={profileImage} />
 
       </div>
     </motion.section>
