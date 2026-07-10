@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
-import { Linkedin, Instagram, Twitter, Github, FileText, Code, ArrowRight, Terminal } from "lucide-react";
+import { Linkedin, Instagram, Twitter, Github, Terminal, ChevronDown } from "lucide-react";
 import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 const socials = [
   { icon: Linkedin, href: "https://www.linkedin.com/in/sridhar-n-896a7b293", label: "LinkedIn", color: "#0077b5" },
@@ -13,6 +13,7 @@ const socials = [
 const HeroSection = () => {
   const { resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setMounted(true);
@@ -22,189 +23,142 @@ const HeroSection = () => {
     ? "/Profile picture for white theme.png" 
     : "/Profile for black theme.jpg";
 
-  // Stagger Animations for IDE Text
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.3, delayChildren: 0.2 }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, x: -10 },
-    visible: { opacity: 1, x: 0, transition: { duration: 0.4 } }
-  };
-
-  const buttonVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6, delay: 1.5 } }
-  };
-
   return (
-    <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <section ref={containerRef} id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 pb-12">
       
-      {/* Dynamic Background Gradient Mesh */}
-      <div className="absolute inset-0 pointer-events-none opacity-30">
-        <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-primary/30 blur-[100px] rounded-full dark:mix-blend-screen" />
-        <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-purple-500/20 blur-[120px] rounded-full dark:mix-blend-screen" />
+      {/* Dynamic Background Mesh */}
+      <div className="absolute inset-0 pointer-events-none opacity-40 dark:opacity-30">
+        <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-primary/30 blur-[120px] rounded-full dark:mix-blend-screen mix-blend-multiply animate-pulse" style={{ animationDuration: '4s' }} />
+        <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-purple-500/20 blur-[120px] rounded-full dark:mix-blend-screen mix-blend-multiply animate-pulse" style={{ animationDuration: '6s', animationDelay: '2s' }} />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-blue-500/10 blur-[150px] rounded-full dark:mix-blend-screen mix-blend-multiply" />
       </div>
 
-      <div className="container mx-auto px-6 relative z-10 pt-20">
-        <div className="flex flex-col lg:flex-row items-center justify-between gap-16 lg:gap-12">
-          
-          {/* LEFT: IDE / Terminal Window & Buttons */}
-          <div className="flex-1 flex flex-col items-center lg:items-start text-left w-full max-w-2xl">
-            
-            {/* The Code Editor Window */}
-            <motion.div 
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-              className="w-full rounded-xl overflow-hidden glass-card border border-border/50 shadow-2xl relative mb-8 backdrop-blur-xl bg-slate-950 dark:bg-background/20"
-            >
-              {/* Mac Window Header */}
-              <div className="bg-slate-900 dark:bg-muted/40 px-4 py-3 flex items-center gap-2 border-b border-border/50">
-                 <div className="flex gap-2">
-                     <div className="w-3 h-3 rounded-full bg-red-500/80 shadow-sm" />
-                     <div className="w-3 h-3 rounded-full bg-yellow-500/80 shadow-sm" />
-                     <div className="w-3 h-3 rounded-full bg-green-500/80 shadow-sm" />
-                 </div>
-                 <div className="flex-1 flex justify-center">
-                     <p className="font-mono text-[10px] sm:text-xs text-slate-400 dark:text-muted-foreground flex items-center gap-2"><Code size={14}/> sridhar-portfolio.tsx</p>
-                 </div>
-              </div>
-              
-              {/* Code Content */}
-              <div className="p-5 sm:p-8 font-mono text-[13px] sm:text-sm md:text-base leading-relaxed overflow-x-auto text-slate-200 dark:text-foreground/90">
-                 <motion.div variants={containerVariants} initial="hidden" animate="visible" className="flex flex-col gap-3 whitespace-nowrap">
-                    
-                    <motion.div variants={itemVariants}>
-                        <span className="text-purple-400">import</span> {`{ Developer }`} <span className="text-purple-400">from</span> <span className="text-emerald-400">"@sridhar/core"</span>;
-                    </motion.div>
-                    
-                    <motion.div variants={itemVariants} className="mt-4">
-                        <span className="text-purple-400">const</span> <span className="text-blue-400">profile</span> <span className="text-purple-400">=</span> <span className="text-yellow-300">"Sridhar N"</span>;
-                    </motion.div>
-                    
-                    <motion.div variants={itemVariants}>
-                        <span className="text-purple-400">const</span> <span className="text-blue-400">role</span> <span className="text-purple-400">=</span> <span className="text-emerald-400">"Full Stack Developer"</span>;
-                    </motion.div>
-                    
-                    <motion.div variants={itemVariants} className="mt-4 whitespace-normal">
-                        <span className="text-slate-400 dark:text-muted-foreground italic">{"// Passionate about crafting dynamic, interactive, and user-centric web experiences."}</span>
-                    </motion.div>
-                    
-                    <motion.div variants={itemVariants} className="mt-2 flex items-center">
-                        <span className="text-blue-400">developer</span>.<span className="text-yellow-200">execute</span>(); <span className="ml-1 animate-pulse font-bold text-slate-200 dark:text-foreground">_</span>
-                    </motion.div>
-                 </motion.div>
-              </div>
-            </motion.div>
-
-            {/* Bottom Actions Row */}
-            <motion.div 
-              variants={buttonVariants}
-              initial="hidden"
-              animate="visible"
-              className="flex flex-col sm:flex-row items-center gap-6 w-full"
-            >
-              {/* Resume Button */}
-              <a
-                href="https://drive.google.com/drive/folders/108GQzc5uf22Rfgv5FM_17-0cBQL5P-sJ?usp=drive_link"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group relative flex items-center justify-center w-full sm:w-auto gap-3 bg-foreground/5 border border-border/50 px-8 py-3.5 rounded-lg text-foreground font-mono text-sm hover:bg-foreground/10 hover:border-foreground/30 hover:shadow-lg transition-all z-10 overflow-hidden"
-              >
-                <div className="absolute inset-0 w-0 bg-primary/10 group-hover:w-full transition-all duration-500 ease-out z-0" />
-                <Terminal size={16} className="relative z-10 text-muted-foreground group-hover:text-primary transition-colors" />
-                <span className="relative z-10 font-semibold tracking-wide">./download_resume.sh</span>
-              </a>
-
-              {/* Social Icons */}
-              <div className="flex items-center gap-4">
-                {socials.map((social) => (
-                  <a
-                    key={social.label}
-                    href={social.href}
-                    aria-label={social.label}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="relative group w-11 h-11 flex items-center justify-center rounded-xl glass border border-border/50 hover:-translate-y-1 transition-all duration-300 z-10"
-                  >
-                    <div 
-                      className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-40 blur-md transition-opacity duration-300 z-0"
-                      style={{ backgroundColor: social.color }}
-                    />
-                    <social.icon 
-                      size={18} 
-                      className="text-muted-foreground group-hover:text-foreground transition-colors duration-300 relative z-10"
-                    />
-                  </a>
-                ))}
-              </div>
-            </motion.div>
-            
-          </div>
-
-          {/* RIGHT: Floating Profile & Tech Components */}
+      <div className="container mx-auto px-6 relative z-10 flex flex-col lg:flex-row items-center justify-between gap-16 lg:gap-12 min-h-[calc(100vh-8rem)] pt-12">
+        
+        {/* LEFT HALF: Text & Buttons */}
+        <motion.div 
+          className="flex-1 flex flex-col items-center lg:items-start text-center lg:text-left w-full"
+        >
+          {/* Availability Badge */}
           <motion.div 
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1, delay: 0.2, ease: "easeOut" }}
-            className="flex-1 flex justify-center lg:justify-end mt-12 lg:mt-0"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+            className="mb-8 inline-flex items-center gap-2 px-4 py-2 rounded-full glass border border-border/50 shadow-lg backdrop-blur-md"
           >
-            <div className="relative group w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 flex items-center justify-center">
-              
-              {/* Floating Tech Component 1: React */}
-              <motion.div 
-                  animate={{ y: [-15, 10, -15], rotate: [-2, 5, -2] }} 
-                  transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-                  className="absolute -top-6 -left-6 md:-top-10 md:-left-10 px-4 py-2 glass backdrop-blur-xl bg-background/80 rounded-full border border-border/50 text-xs md:text-sm font-mono flex items-center gap-2 shadow-[0_0_20px_rgba(0,255,255,0.1)] z-20 pointer-events-none"
-              >
-                <span className="text-cyan-600 dark:text-cyan-400">{"<"}</span>React <span className="text-cyan-600 dark:text-cyan-400">{"/>"}</span>
-              </motion.div>
+            <span className="relative flex h-3 w-3">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+            </span>
+            <span className="text-sm font-medium tracking-wide text-muted-foreground">Available for Opportunities</span>
+          </motion.div>
 
-              {/* Floating Tech Component 2: TS */}
-              <motion.div 
-                  animate={{ y: [15, -10, 15], rotate: [5, -2, 5] }} 
-                  transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-                  className="absolute -bottom-6 -right-6 md:-bottom-10 md:-right-10 px-4 py-2 glass backdrop-blur-xl bg-background/80 rounded-full border border-border/50 text-xs md:text-sm font-mono flex items-center gap-2 shadow-[0_0_20px_rgba(59,130,246,0.1)] z-20 pointer-events-none"
-              >
-                <span className="text-blue-600 dark:text-blue-400">.ts</span> {`{ ... }`}
-              </motion.div>
+          {/* Massive Name */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
+            className="relative z-10 w-full"
+          >
+            <h1 className="text-5xl sm:text-7xl lg:text-8xl xl:text-9xl font-black tracking-tighter text-glow leading-tight mb-4">
+              <span className="bg-clip-text text-transparent bg-gradient-to-b from-foreground via-foreground/90 to-foreground/30">
+                SRIDHAR N
+              </span>
+            </h1>
+          </motion.div>
 
-              {/* Floating Tech Component 3: Node.js */}
-              <motion.div 
-                  animate={{ y: [-10, 15, -10], rotate: [-5, 2, -5] }} 
-                  transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-                  className="absolute top-1/2 -right-8 md:-right-16 -translate-y-1/2 px-4 py-2 glass backdrop-blur-xl bg-background/80 rounded-full border border-border/50 text-xs md:text-sm font-mono flex items-center gap-2 shadow-[0_0_20px_rgba(34,197,94,0.1)] z-20 pointer-events-none"
-              >
-                <span className="text-green-600 dark:text-green-500">{`{ Node }`}</span>
-              </motion.div>
+          {/* Subtitle / Role */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut", delay: 0.4 }}
+            className="flex flex-col items-center lg:items-start gap-6 relative z-10 mt-2"
+          >
+            <div className="flex items-center gap-4 w-full justify-center lg:justify-start">
+              <div className="h-[2px] w-8 sm:w-16 bg-gradient-to-r from-transparent to-primary/80 rounded-full lg:hidden" />
+              <h2 className="text-lg sm:text-xl md:text-2xl font-mono text-primary font-bold tracking-[0.2em] uppercase">
+                Full Stack Developer
+              </h2>
+              <div className="h-[2px] w-8 sm:w-16 bg-gradient-to-l from-transparent to-primary/80 rounded-full lg:bg-gradient-to-r" />
+            </div>
+            
+            <p className="text-muted-foreground text-base sm:text-lg md:text-xl max-w-xl leading-relaxed">
+              Crafting immersive digital experiences with modern web technologies. 
+              Bridging the gap between beautiful design and robust engineering.
+            </p>
+          </motion.div>
 
-              {/* Main Profile Image Container */}
-              <div className="relative z-10 w-full h-full rounded-full overflow-hidden border-2 border-border/50 bg-background shadow-2xl transition-transform duration-700 group-hover:scale-[1.03]">
-                  
-                  {/* Subtle Code Brackets overlay just for flavor */}
-                  <div className="absolute inset-0 flex items-center justify-between p-4 pointer-events-none z-20 opacity-0 group-hover:opacity-40 transition-opacity duration-500">
-                      <span className="font-mono text-6xl text-primary font-thin">{"<"}</span>
-                      <span className="font-mono text-6xl text-primary font-thin">{">"}</span>
-                  </div>
+          {/* Action Buttons */}
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut", delay: 0.6 }}
+            className="flex flex-col sm:flex-row items-center gap-6 mt-10 relative z-50 w-full"
+          >
+            {/* Glowing Resume Button */}
+            <a
+              href="https://drive.google.com/drive/folders/108GQzc5uf22Rfgv5FM_17-0cBQL5P-sJ?usp=drive_link"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group relative flex items-center justify-center gap-3 px-8 py-4 rounded-xl font-bold text-primary-foreground bg-primary overflow-hidden transition-all duration-300 hover:scale-105 active:scale-95 shadow-[0_0_30px_-10px_rgba(var(--primary),0.6)] hover:shadow-[0_0_50px_-15px_rgba(var(--primary),0.8)] border border-primary/50 w-full sm:w-auto"
+            >
+              <div className="absolute inset-0 bg-white/20 group-hover:translate-x-full transition-transform duration-500 ease-out -skew-x-12 -translate-x-full" />
+              <Terminal size={18} className="relative z-10" />
+              <span className="relative z-10 tracking-wider">DOWNLOAD RESUME</span>
+            </a>
 
-                  <img 
-                    key={profileImage} 
-                    src={profileImage} 
-                    alt="Sridhar" 
-                    className="w-full h-full object-cover grayscale-[15%] group-hover:grayscale-0 transition-all duration-700" 
+            {/* Social Icons Dock */}
+            <div className="flex items-center gap-2 p-2 rounded-2xl glass border border-border/50 shadow-xl bg-card/60 backdrop-blur-xl">
+              {socials.map((social) => (
+                <a
+                  key={social.label}
+                  href={social.href}
+                  aria-label={social.label}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="relative group w-12 h-12 flex items-center justify-center rounded-xl hover:bg-muted/80 transition-all duration-300 z-10"
+                >
+                  <div 
+                    className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-20 blur-md transition-opacity duration-300 z-0"
+                    style={{ backgroundColor: social.color }}
                   />
-                  
-                  {/* Inner ring glow */}
-                  <div className="absolute inset-0 rounded-full border border-white/5 pointer-events-none z-30" />
-              </div>
+                  <social.icon 
+                    size={22} 
+                    className="text-muted-foreground group-hover:text-foreground transition-all duration-300 relative z-10 group-hover:scale-110"
+                  />
+                </a>
+              ))}
             </div>
           </motion.div>
-        </div>
+        </motion.div>
+
+        {/* RIGHT HALF: Big Profile Image */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1, ease: "easeOut", delay: 0.3 }}
+          className="flex-1 flex justify-center items-center relative w-full mt-12 lg:mt-0"
+        >
+          {/* Big Profile Avatar */}
+          <div className="relative w-64 h-64 sm:w-80 sm:h-80 md:w-96 md:h-96 lg:w-[450px] lg:h-[450px] rounded-full p-2 bg-primary/20 shadow-xl hover:shadow-[0_0_40px_rgba(var(--primary),0.3)] transition-shadow duration-700 group z-10">
+            {/* Animated Glow Behind Image */}
+            <div className="absolute inset-0 rounded-full bg-primary/20 blur-xl opacity-40 group-hover:opacity-60 transition-opacity duration-700 animate-pulse-slow" />
+            
+            {/* The Image Itself */}
+            <div className="relative w-full h-full rounded-full overflow-hidden border-2 border-primary/30 bg-background flex items-center justify-center">
+              <img 
+                key={profileImage}
+                src={profileImage} 
+                alt="Sridhar N" 
+                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+              />
+            </div>
+            
+            {/* Inner Ring Glow */}
+            <div className="absolute inset-2 rounded-full border border-white/10 pointer-events-none z-30" />
+          </div>
+        </motion.div>
+
       </div>
     </section>
   );
