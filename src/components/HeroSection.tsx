@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { Linkedin, Instagram, Twitter, Github, Terminal, ChevronDown } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useEffect, useState, useRef } from "react";
@@ -14,6 +14,14 @@ const HeroSection = () => {
   const { resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end start"],
+  });
+
+  const opacity = useTransform(scrollYProgress, [0, 1], [1, 0]);
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.8]);
+  const y = useTransform(scrollYProgress, [0, 1], [0, 200]);
 
   useEffect(() => {
     setMounted(true);
@@ -24,7 +32,12 @@ const HeroSection = () => {
     : "/Profile for black theme.jpg";
 
   return (
-    <section ref={containerRef} id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 pb-12">
+    <motion.section 
+      ref={containerRef} 
+      id="home" 
+      className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 pb-12"
+      style={{ opacity, scale, y }}
+    >
       
       {/* Dynamic Background Mesh (Optimized for performance) */}
       <div className="absolute inset-0 pointer-events-none opacity-40 dark:opacity-30 contain-strict">
@@ -160,7 +173,7 @@ const HeroSection = () => {
         </motion.div>
 
       </div>
-    </section>
+    </motion.section>
   );
 };
 
