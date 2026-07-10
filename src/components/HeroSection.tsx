@@ -1,4 +1,4 @@
-import { motion, useScroll, useTransform, useMotionValue, useSpring } from "framer-motion";
+import { motion, useScroll, useTransform, useMotionValue, useSpring, MotionValue } from "framer-motion";
 import { Linkedin, Instagram, Twitter, Github, Terminal, ChevronDown } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useEffect, useState, useRef } from "react";
@@ -9,6 +9,106 @@ const socials = [
   { icon: Twitter, href: "https://x.com/SrIdharN09", label: "Twitter", color: "#1DA1F2" },
   { icon: Github, href: "https://github.com/Sridharn97", label: "GitHub", color: "#888888" },
 ];
+
+const SpotlightButton = () => {
+  const divRef = useRef<HTMLAnchorElement>(null);
+  const [isFocused, setIsFocused] = useState(false);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [opacity, setOpacity] = useState(0);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (!divRef.current || isFocused) return;
+    const div = divRef.current;
+    const rect = div.getBoundingClientRect();
+    setPosition({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+  };
+
+  return (
+    <a
+      ref={divRef}
+      href="https://drive.google.com/drive/folders/108GQzc5uf22Rfgv5FM_17-0cBQL5P-sJ?usp=drive_link"
+      target="_blank"
+      rel="noopener noreferrer"
+      onMouseMove={handleMouseMove}
+      onFocus={() => { setIsFocused(true); setOpacity(1); }}
+      onBlur={() => { setIsFocused(false); setOpacity(0); }}
+      onMouseEnter={() => setOpacity(1)}
+      onMouseLeave={() => setOpacity(0)}
+      className="group relative flex items-center justify-center gap-3 px-8 py-4 rounded-xl font-bold text-primary-foreground bg-primary overflow-hidden transition-all duration-300 hover:scale-105 active:scale-95 shadow-[0_0_30px_-10px_rgba(var(--primary),0.6)] hover:shadow-[0_0_50px_-15px_rgba(var(--primary),0.8)] border border-primary/50 w-full sm:w-auto"
+    >
+      <div
+        className="pointer-events-none absolute -inset-px opacity-0 transition duration-300 z-20"
+        style={{
+          opacity,
+          background: `radial-gradient(150px circle at ${position.x}px ${position.y}px, rgba(255,255,255,.25), transparent 40%)`,
+        }}
+      />
+      <div className="absolute inset-0 bg-white/20 group-hover:translate-x-full transition-transform duration-500 ease-out -skew-x-12 -translate-x-full" />
+      <Terminal size={18} className="relative z-10 group-hover:animate-bounce" />
+      <span className="relative z-10 tracking-wider">DOWNLOAD RESUME</span>
+    </a>
+  );
+};
+
+const SocialDock = () => {
+  let mouseX = useMotionValue(Infinity);
+
+  return (
+    <motion.div 
+      onMouseMove={(e) => mouseX.set(e.clientX)}
+      onMouseLeave={() => mouseX.set(Infinity)}
+      className="flex items-center gap-2 p-2 rounded-2xl glass border border-border/50 shadow-xl bg-card/60 backdrop-blur-xl h-[64px]"
+    >
+      {socials.map((social) => (
+        <DockIcon key={social.label} mouseX={mouseX} social={social} />
+      ))}
+    </motion.div>
+  );
+};
+
+const DockIcon = ({ mouseX, social }: { mouseX: MotionValue<number>, social: any }) => {
+  const ref = useRef<HTMLAnchorElement>(null);
+  
+  let distance = useTransform(mouseX, (val) => {
+    let bounds = ref.current?.getBoundingClientRect() ?? { x: 0, width: 0 };
+    return val - bounds.x - bounds.width / 2;
+  });
+
+  let widthSync = useTransform(distance, [-100, 0, 100], [48, 80, 48]);
+  let width = useSpring(widthSync, { mass: 0.1, stiffness: 200, damping: 15 });
+
+  return (
+    <motion.a
+      ref={ref}
+      style={{ width, height: width }}
+      href={social.href}
+      aria-label={social.label}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="relative group flex items-center justify-center rounded-xl hover:bg-muted/80 transition-colors z-10 overflow-visible"
+    >
+      <div 
+        className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-20 blur-md transition-opacity duration-300 z-0"
+        style={{ backgroundColor: social.color }}
+      />
+      
+      {/* Tooltip */}
+      <div className="absolute -top-12 opacity-0 group-hover:opacity-100 group-hover:-translate-y-1 transition-all duration-300 pointer-events-none z-50 flex flex-col items-center">
+        <span className="bg-popover text-popover-foreground text-xs font-bold px-3 py-1.5 rounded-lg shadow-xl whitespace-nowrap border border-border/50">
+          {social.label}
+        </span>
+        <div className="w-2 h-2 bg-popover border-b border-r border-border/50 transform rotate-45 -mt-1.5" />
+      </div>
+
+      <motion.div style={{ scale: useTransform(width, [48, 80], [1, 1.4]) }}>
+        <social.icon 
+          size={22} 
+          className="text-muted-foreground group-hover:text-foreground transition-colors relative z-10"
+        />
+      </motion.div>
+    </motion.a>
+  );
+};
 
 const ProfileImage = ({ profileImage }: { profileImage: string }) => {
   const ref = useRef<HTMLDivElement>(null);
@@ -189,40 +289,11 @@ const HeroSection = () => {
             transition={{ duration: 0.8, ease: "easeOut", delay: 0.6 }}
             className="flex flex-col sm:flex-row items-center gap-6 mt-10 relative z-50 w-full"
           >
-            {/* Glowing Resume Button */}
-            <a
-              href="https://drive.google.com/drive/folders/108GQzc5uf22Rfgv5FM_17-0cBQL5P-sJ?usp=drive_link"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group relative flex items-center justify-center gap-3 px-8 py-4 rounded-xl font-bold text-primary-foreground bg-primary overflow-hidden transition-all duration-300 hover:scale-105 active:scale-95 shadow-[0_0_30px_-10px_rgba(var(--primary),0.6)] hover:shadow-[0_0_50px_-15px_rgba(var(--primary),0.8)] border border-primary/50 w-full sm:w-auto"
-            >
-              <div className="absolute inset-0 bg-white/20 group-hover:translate-x-full transition-transform duration-500 ease-out -skew-x-12 -translate-x-full" />
-              <Terminal size={18} className="relative z-10" />
-              <span className="relative z-10 tracking-wider">DOWNLOAD RESUME</span>
-            </a>
+            {/* Glowing Spotlight Resume Button */}
+            <SpotlightButton />
 
-            {/* Social Icons Dock */}
-            <div className="flex items-center gap-2 p-2 rounded-2xl glass border border-border/50 shadow-xl bg-card/60 backdrop-blur-xl">
-              {socials.map((social) => (
-                <a
-                  key={social.label}
-                  href={social.href}
-                  aria-label={social.label}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="relative group w-12 h-12 flex items-center justify-center rounded-xl hover:bg-muted/80 transition-all duration-300 z-10"
-                >
-                  <div 
-                    className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-20 blur-md transition-opacity duration-300 z-0"
-                    style={{ backgroundColor: social.color }}
-                  />
-                  <social.icon 
-                    size={22} 
-                    className="text-muted-foreground group-hover:text-foreground transition-all duration-300 relative z-10 group-hover:scale-110"
-                  />
-                </a>
-              ))}
-            </div>
+            {/* Mac OS Style Social Dock */}
+            <SocialDock />
           </motion.div>
         </motion.div>
 
