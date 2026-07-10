@@ -77,7 +77,7 @@ const AboutSection = () => {
                 </div>
                 <div className="flex items-center gap-2 text-xs font-mono text-muted-foreground bg-background/10 px-3 py-1 rounded-md">
                   <Terminal className="w-3.5 h-3.5" />
-                  <span>sridhar.ts</span>
+                  <span>sridhar.js</span>
                 </div>
                 <div className="w-10" /> {/* Spacer for centering */}
               </div>

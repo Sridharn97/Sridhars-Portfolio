@@ -80,8 +80,8 @@ const Navbar = () => {
             {navItems.map((item) => {
               const isActive = activeSection === item.href.slice(1);
               
-              let ext = ".ts";
-              if (item.label === "Home" || item.label === "Projects") ext = ".tsx";
+              let ext = ".js";
+              if (item.label === "Home" || item.label === "Projects") ext = ".jsx";
               if (item.label === "Skills") ext = ".json";
               if (item.label === "Contact") ext = ".env";
 
@@ -176,8 +176,8 @@ const Navbar = () => {
             <div className="flex flex-col items-center justify-center h-full gap-4 px-6">
               {navItems.map((item, i) => {
                 const isActive = activeSection === item.href.slice(1);
-                let ext = ".ts";
-                if (item.label === "Home" || item.label === "Projects") ext = ".tsx";
+                let ext = ".js";
+                if (item.label === "Home" || item.label === "Projects") ext = ".jsx";
                 if (item.label === "Skills") ext = ".json";
                 if (item.label === "Contact") ext = ".env";
 
