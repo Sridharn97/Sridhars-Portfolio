@@ -135,7 +135,7 @@ const ProjectsSection = () => {
                   {/* Image Presentation */}
                   <div className="w-full lg:w-3/5 group relative perspective">
                     {/* Decorative background glow */}
-                    <div className="absolute inset-0 bg-primary/20 blur-[100px] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                    <div className="absolute inset-0 bg-primary/20 blur-[100px] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700 transform-gpu contain-strict" />
                     
                     <motion.div 
                       whileHover={{ scale: 1.02, rotateY: isEven ? -2 : 2, rotateX: 2 }}

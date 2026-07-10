@@ -26,11 +26,11 @@ const HeroSection = () => {
   return (
     <section ref={containerRef} id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 pb-12">
       
-      {/* Dynamic Background Mesh */}
-      <div className="absolute inset-0 pointer-events-none opacity-40 dark:opacity-30">
-        <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-primary/30 blur-[120px] rounded-full dark:mix-blend-screen mix-blend-multiply animate-pulse" style={{ animationDuration: '4s' }} />
-        <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-purple-500/20 blur-[120px] rounded-full dark:mix-blend-screen mix-blend-multiply animate-pulse" style={{ animationDuration: '6s', animationDelay: '2s' }} />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-blue-500/10 blur-[150px] rounded-full dark:mix-blend-screen mix-blend-multiply" />
+      {/* Dynamic Background Mesh (Optimized for performance) */}
+      <div className="absolute inset-0 pointer-events-none opacity-40 dark:opacity-30 contain-strict">
+        <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-primary/30 blur-[100px] rounded-full animate-pulse-slow transform-gpu will-change-[opacity]" />
+        <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-purple-500/20 blur-[100px] rounded-full animate-pulse-slow transform-gpu will-change-[opacity]" style={{ animationDelay: '2s' }} />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-blue-500/10 blur-[120px] rounded-full transform-gpu" />
       </div>
 
       <div className="container mx-auto px-6 relative z-10 flex flex-col lg:flex-row items-center justify-between gap-16 lg:gap-12 min-h-[calc(100vh-8rem)] pt-12">

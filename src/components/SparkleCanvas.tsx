@@ -148,6 +148,11 @@ const SparkleCanvas = () => {
         window.addEventListener("click", onClick);
 
         const loop = () => {
+            if (particlesRef.current.length === 0) {
+                rafRef.current = requestAnimationFrame(loop);
+                return; // Skip heavy canvas operations when empty
+            }
+
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
             particlesRef.current = particlesRef.current.filter((p) => p.alpha > 0.01);
@@ -178,6 +183,11 @@ const SparkleCanvas = () => {
                     ctx.fill();
                     ctx.restore();
                 }
+            }
+
+            // Clear completely if all particles just faded out to avoid ghosting
+            if (particlesRef.current.length === 0) {
+                 ctx.clearRect(0, 0, canvas.width, canvas.height);
             }
 
             rafRef.current = requestAnimationFrame(loop);

@@ -151,8 +151,8 @@ const AboutSection = () => {
               className="md:col-span-2 md:row-span-2 rounded-[32px] p-8 md:p-12 relative overflow-hidden bg-card/60 backdrop-blur-xl border border-border/50 shadow-2xl group hover:border-primary/40 transition-all duration-500"
             >
               {/* Giant subtle gradient glow */}
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/15 via-transparent to-transparent opacity-80 pointer-events-none group-hover:scale-110 transition-transform duration-[1.5s]" />
-              <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-primary/10 blur-[100px] rounded-full pointer-events-none group-hover:bg-primary/20 transition-colors duration-700" />
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/15 via-transparent to-transparent opacity-80 pointer-events-none group-hover:scale-110 transition-transform duration-[1.5s] transform-gpu" />
+              <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-primary/10 blur-[100px] rounded-full pointer-events-none group-hover:bg-primary/20 transition-colors duration-700 transform-gpu will-change-transform" />
               
               <div className="relative z-10 flex flex-col h-full justify-between">
                 <div className="flex justify-between items-start mb-16">
