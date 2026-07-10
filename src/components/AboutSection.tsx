@@ -1,5 +1,6 @@
 import AnimatedSection from "./AnimatedSection";
-import { motion } from "framer-motion";
+import { motion, useMotionTemplate, useMotionValue } from "framer-motion";
+import { MouseEvent as ReactMouseEvent } from "react";
 import {
   Code2,
   Layers,
@@ -40,6 +41,73 @@ const education = [
     status: "Completed",
   },
 ];
+
+const HighlightCard = ({ item, i }: { item: typeof highlights[0], i: number }) => {
+  let mouseX = useMotionValue(0);
+  let mouseY = useMotionValue(0);
+
+  function handleMouseMove({ currentTarget, clientX, clientY }: ReactMouseEvent) {
+    let { left, top } = currentTarget.getBoundingClientRect();
+    mouseX.set(clientX - left);
+    mouseY.set(clientY - top);
+  }
+
+  return (
+    <AnimatedSection delay={0.2 + i * 0.1} className="h-full">
+      <motion.div
+        onMouseMove={handleMouseMove}
+        whileHover={{ y: -4, scale: 1.02 }}
+        className="group relative h-full rounded-2xl border border-border/30 bg-card/30 backdrop-blur-sm overflow-hidden flex flex-col justify-between shadow-sm transition-all duration-300 cursor-crosshair"
+      >
+        {/* Glow effect that follows mouse */}
+        <motion.div
+          className="pointer-events-none absolute -inset-px rounded-xl opacity-0 transition duration-300 group-hover:opacity-100"
+          style={{
+            background: useMotionTemplate`
+              radial-gradient(
+                250px circle at ${mouseX}px ${mouseY}px,
+                hsl(var(--primary) / 0.15),
+                transparent 80%
+              )
+            `,
+          }}
+        />
+        
+        {/* Border highlight effect that follows mouse */}
+        <motion.div
+          className="pointer-events-none absolute -inset-px rounded-xl opacity-0 transition duration-300 group-hover:opacity-100 z-10"
+          style={{
+            background: useMotionTemplate`
+              radial-gradient(
+                200px circle at ${mouseX}px ${mouseY}px,
+                hsl(var(--primary) / 0.5),
+                transparent 80%
+              )
+            `,
+            WebkitMask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+            WebkitMaskComposite: "xor",
+            maskComposite: "exclude",
+            padding: "1px"
+          }}
+        />
+
+        <div className="p-6 relative z-20 h-full flex flex-col justify-between">
+          <div>
+            <div className="w-12 h-12 rounded-2xl flex items-center justify-center mb-5 border border-border/50 bg-background/50 shadow-inner overflow-hidden relative group-hover:border-primary/30 transition-colors duration-500">
+              <div className="absolute inset-0 bg-primary/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out" />
+              <item.icon className="w-6 h-6 text-muted-foreground group-hover:text-primary transition-all duration-500 relative z-10 group-hover:scale-110 group-hover:rotate-6" />
+            </div>
+            <h3 className="text-base font-bold text-foreground mb-2 group-hover:text-primary transition-colors">{item.title}</h3>
+            <p className="text-xs text-muted-foreground leading-relaxed">{item.desc}</p>
+          </div>
+          
+          {/* Subtle tech accent lines on hover */}
+          <div className="absolute bottom-0 left-6 right-6 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-700 ease-out" />
+        </div>
+      </motion.div>
+    </AnimatedSection>
+  );
+};
 
 const AboutSection = () => {
   return (
@@ -114,20 +182,7 @@ const AboutSection = () => {
           {/* Right: Highlights 2x2 Grid */}
           <div className="lg:col-span-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
             {highlights.map((item, i) => (
-              <AnimatedSection key={item.title} delay={0.2 + i * 0.1} className="h-full">
-                <motion.div
-                  whileHover={{ y: -4, scale: 1.02 }}
-                  className="h-full rounded-2xl p-6 border border-border/30 bg-card/30 backdrop-blur-sm glass-card-hover group overflow-hidden flex flex-col justify-between shadow-sm hover:border-primary/40 transition-all duration-300"
-                >
-                  <div>
-                    <div className="w-12 h-12 rounded-2xl flex items-center justify-center mb-5 border border-border/50 bg-background/50 shadow-inner group-hover:bg-primary/10 transition-colors duration-500">
-                      <item.icon className="w-6 h-6 text-muted-foreground group-hover:text-primary transition-colors duration-500" />
-                    </div>
-                    <h3 className="text-base font-bold text-foreground mb-2 group-hover:text-primary transition-colors">{item.title}</h3>
-                    <p className="text-xs text-muted-foreground leading-relaxed">{item.desc}</p>
-                  </div>
-                </motion.div>
-              </AnimatedSection>
+              <HighlightCard key={item.title} item={item} i={i} />
             ))}
           </div>
         </div>
