@@ -191,62 +191,68 @@ const ProfileImage = ({ profileImage }: { profileImage: string }) => {
   );
 };
 
-const InteractiveName = ({ text }: { text: string }) => {
-  const ref = useRef<HTMLHeadingElement>(null);
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-  const opacity = useMotionValue(0);
+const MacDockLetter = ({ letter, mouseX }: { letter: string, mouseX: MotionValue<number> }) => {
+  const ref = useRef<HTMLSpanElement>(null);
+  
+  let distance = useTransform(mouseX, (val) => {
+    let bounds = ref.current?.getBoundingClientRect() ?? { x: 0, width: 0 };
+    return val - bounds.x - bounds.width / 2;
+  });
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLHeadingElement>) => {
-    if (!ref.current) return;
-    const rect = ref.current.getBoundingClientRect();
-    mouseX.set(e.clientX - rect.left);
-    mouseY.set(e.clientY - rect.top);
-  };
+  // Size scale
+  let scaleSync = useTransform(distance, [-100, 0, 100], [1, 1.4, 1]);
+  let scale = useSpring(scaleSync, { mass: 0.1, stiffness: 200, damping: 15 });
 
-  const handleMouseEnter = () => opacity.set(1);
-  const handleMouseLeave = () => opacity.set(0);
+  // Upward translation
+  let ySync = useTransform(distance, [-100, 0, 100], [0, -15, 0]);
+  let y = useSpring(ySync, { mass: 0.1, stiffness: 200, damping: 15 });
+
+  // Highlight opacity for the shiny version
+  let shinyOpacitySync = useTransform(distance, [-100, 0, 100], [0, 1, 0]);
+  let shinyOpacity = useSpring(shinyOpacitySync, { mass: 0.1, stiffness: 200, damping: 15 });
 
   return (
-    <div
-      className="relative z-10 w-full group cursor-crosshair"
-      onMouseMove={handleMouseMove}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
+    <motion.span
+      ref={ref}
+      style={{ 
+        scale, 
+        y,
+        display: "inline-block",
+        transformOrigin: "bottom center"
+      }}
+      className={`relative cursor-crosshair ${letter === ' ' ? 'w-4 sm:w-8' : ''}`}
     >
-      <h1 
-        ref={ref}
-        className="text-5xl sm:text-7xl lg:text-8xl xl:text-9xl font-black tracking-tighter text-glow leading-tight mb-4 relative"
+      {/* Base Text */}
+      <span className="bg-clip-text text-transparent bg-gradient-to-b from-foreground via-foreground/90 to-foreground/30 block relative z-10">
+        {letter === ' ' ? '\u00A0' : letter}
+      </span>
+      
+      {/* Cyan/Primary Glow when near mouse */}
+      <motion.span 
+        className="absolute inset-0 bg-clip-text text-transparent bg-gradient-to-b from-primary via-primary/80 to-primary/20 blur-[2px] pointer-events-none z-0"
+        style={{ opacity: shinyOpacity }}
       >
-        {/* Base Text */}
-        <span className="bg-clip-text text-transparent bg-gradient-to-b from-foreground via-foreground/90 to-foreground/30 relative z-10 block transition-transform duration-300 group-hover:scale-[1.02]">
-          {text}
-        </span>
-        
-        {/* Glow effect that follows mouse */}
-        <motion.div
-          className="pointer-events-none absolute -inset-4 z-0 opacity-0 transition-opacity duration-300"
-          style={{ opacity }}
-        >
-          <motion.div
-            className="absolute inset-0 bg-primary/40 blur-3xl rounded-full"
-            style={{
-              x: useTransform(mouseX, (v) => v - 150),
-              y: useTransform(mouseY, (v) => v - 150),
-              width: 300,
-              height: 300,
-            }}
-          />
-        </motion.div>
+        {letter === ' ' ? '\u00A0' : letter}
+      </motion.span>
+    </motion.span>
+  );
+};
 
-        {/* Shimmer sweep text overlay */}
-        <span 
-          className="absolute inset-0 bg-clip-text text-transparent bg-[linear-gradient(110deg,transparent,45%,rgba(255,255,255,0.8),55%,transparent)] bg-[length:250%_100%] animate-[shimmer-sweep_3s_infinite] z-20 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500 block group-hover:scale-[1.02]"
-        >
-          {text}
-        </span>
+const InteractiveName = ({ text }: { text: string }) => {
+  let mouseX = useMotionValue(Infinity);
+
+  return (
+    <motion.div
+      onMouseMove={(e) => mouseX.set(e.clientX)}
+      onMouseLeave={() => mouseX.set(Infinity)}
+      className="relative z-10 w-full group mb-4 flex flex-wrap"
+    >
+      <h1 className="text-5xl sm:text-7xl lg:text-8xl xl:text-9xl font-black tracking-tighter text-glow leading-tight flex w-full justify-center lg:justify-start">
+        {text.split("").map((letter, i) => (
+          <MacDockLetter key={i} letter={letter} mouseX={mouseX} />
+        ))}
       </h1>
-    </div>
+    </motion.div>
   );
 };
 
