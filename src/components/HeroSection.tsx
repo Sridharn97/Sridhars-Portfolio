@@ -191,6 +191,65 @@ const ProfileImage = ({ profileImage }: { profileImage: string }) => {
   );
 };
 
+const InteractiveName = ({ text }: { text: string }) => {
+  const ref = useRef<HTMLHeadingElement>(null);
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const opacity = useMotionValue(0);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLHeadingElement>) => {
+    if (!ref.current) return;
+    const rect = ref.current.getBoundingClientRect();
+    mouseX.set(e.clientX - rect.left);
+    mouseY.set(e.clientY - rect.top);
+  };
+
+  const handleMouseEnter = () => opacity.set(1);
+  const handleMouseLeave = () => opacity.set(0);
+
+  return (
+    <div
+      className="relative z-10 w-full group cursor-crosshair"
+      onMouseMove={handleMouseMove}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
+      <h1 
+        ref={ref}
+        className="text-5xl sm:text-7xl lg:text-8xl xl:text-9xl font-black tracking-tighter text-glow leading-tight mb-4 relative"
+      >
+        {/* Base Text */}
+        <span className="bg-clip-text text-transparent bg-gradient-to-b from-foreground via-foreground/90 to-foreground/30 relative z-10 block transition-transform duration-300 group-hover:scale-[1.02]">
+          {text}
+        </span>
+        
+        {/* Glow effect that follows mouse */}
+        <motion.div
+          className="pointer-events-none absolute -inset-4 z-0 opacity-0 transition-opacity duration-300"
+          style={{ opacity }}
+        >
+          <motion.div
+            className="absolute inset-0 bg-primary/40 blur-3xl rounded-full"
+            style={{
+              x: useTransform(mouseX, (v) => v - 150),
+              y: useTransform(mouseY, (v) => v - 150),
+              width: 300,
+              height: 300,
+            }}
+          />
+        </motion.div>
+
+        {/* Shimmer sweep text overlay */}
+        <span 
+          className="absolute inset-0 bg-clip-text text-transparent bg-[linear-gradient(110deg,transparent,45%,rgba(255,255,255,0.8),55%,transparent)] bg-[length:250%_100%] animate-[shimmer-sweep_3s_infinite] z-20 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500 block group-hover:scale-[1.02]"
+        >
+          {text}
+        </span>
+      </h1>
+    </div>
+  );
+};
+
 const HeroSection = () => {
   const { resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
@@ -238,13 +297,15 @@ const HeroSection = () => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
-            className="mb-8 inline-flex items-center gap-2 px-4 py-2 rounded-full glass border border-border/50 shadow-lg backdrop-blur-md"
+            className="mb-8 inline-flex items-center gap-2 px-4 py-2 rounded-full glass border border-border/50 shadow-lg backdrop-blur-md relative overflow-hidden group cursor-pointer"
           >
+            <div className="absolute inset-0 bg-gradient-to-r from-primary/0 via-primary/10 to-primary/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000 ease-in-out" />
             <span className="relative flex h-3 w-3">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
             </span>
-            <span className="text-sm font-medium tracking-wide text-muted-foreground">Available for Opportunities</span>
+            <span className="text-sm font-medium tracking-wide text-muted-foreground group-hover:text-foreground transition-colors relative z-10">Available for Opportunities</span>
+            <div className="absolute inset-0 rounded-full border border-primary/0 group-hover:border-primary/50 transition-colors duration-500 z-0" />
           </motion.div>
 
           {/* Massive Name */}
@@ -254,11 +315,7 @@ const HeroSection = () => {
             transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
             className="relative z-10 w-full"
           >
-            <h1 className="text-5xl sm:text-7xl lg:text-8xl xl:text-9xl font-black tracking-tighter text-glow leading-tight mb-4">
-              <span className="bg-clip-text text-transparent bg-gradient-to-b from-foreground via-foreground/90 to-foreground/30">
-                SRIDHAR N
-              </span>
-            </h1>
+            <InteractiveName text="SRIDHAR N" />
           </motion.div>
 
           {/* Subtitle / Role */}
