@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
-import { motion, AnimatePresence, useMotionValue, useSpring, useTransform, useScroll } from "framer-motion";
+import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from "framer-motion";
 import AnimatedSection from "./AnimatedSection";
-import { ExternalLink, Github, Layers, ArrowRight, Sparkles } from "lucide-react";
+import { ExternalLink, Github, Layers, ArrowRight, Sparkles, Cpu } from "lucide-react";
 
 interface Project {
   title: string;
@@ -64,40 +64,28 @@ const projects: Project[] = [
   },
 ];
 
-const ProjectCard = ({ project, index }: { project: Project; index: number }) => {
+const Solid3DProjectCard = ({ project, index }: { project: Project; index: number }) => {
   const isEven = index % 2 === 0;
-  const ref = useRef<HTMLDivElement>(null);
-  
-  // 3D Tilt Setup
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  // 3D Motion Physics Setup
   const x = useMotionValue(0);
   const y = useMotionValue(0);
+  const mouseXSpring = useSpring(x, { stiffness: 140, damping: 18 });
+  const mouseYSpring = useSpring(y, { stiffness: 140, damping: 18 });
 
-  const mouseXSpring = useSpring(x, { stiffness: 150, damping: 15 });
-  const mouseYSpring = useSpring(y, { stiffness: 150, damping: 15 });
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["8deg", "-8deg"]);
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-8deg", "8deg"]);
 
-  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["5deg", "-5deg"]);
-  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-5deg", "5deg"]);
+  // Multi Z-Depth Transformations
+  const titleZ = useTransform(mouseXSpring, [-0.5, 0.5], ["30px", "50px"]);
+  const imageZ = useTransform(mouseYSpring, [-0.5, 0.5], ["20px", "40px"]);
 
-  // Parallax Setup
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "end start"],
-  });
-  const yImage = useTransform(scrollYProgress, [0, 1], ["-10%", "10%"]);
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    if (!ref.current) return;
-    const rect = ref.current.getBoundingClientRect();
-    const width = rect.width;
-    const height = rect.height;
-    const mouseX = e.clientX - rect.left;
-    const mouseY = e.clientY - rect.top;
-    
-    const xPct = mouseX / width - 0.5;
-    const yPct = mouseY / height - 0.5;
-    
-    x.set(xPct);
-    y.set(yPct);
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    x.set(e.clientX - rect.left - rect.width / 2);
+    y.set(e.clientY - rect.top - rect.height / 2);
   };
 
   const handleMouseLeave = () => {
@@ -106,125 +94,102 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
   };
 
   return (
-    <motion.div
-      layout
-      initial={{ opacity: 0, y: 50 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-100px" }}
-      exit={{ opacity: 0, scale: 0.95 }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
-      className={`flex flex-col ${isEven ? 'lg:flex-row' : 'lg:flex-row-reverse'} items-center gap-12 lg:gap-20 group relative`}
-    >
-      
-      {/* 3D Image Presentation */}
-      <div className="w-full lg:w-3/5 perspective-1000 relative" style={{ perspective: "1000px" }}>
-        <div className="absolute inset-0 bg-primary/20 blur-[120px] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700 transform-gpu pointer-events-none" />
-        
-        <motion.div 
-          ref={ref}
-          onMouseMove={handleMouseMove}
-          onMouseLeave={handleMouseLeave}
-          style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
-          className="relative rounded-3xl overflow-hidden glass-card aspect-video cursor-crosshair ai-circuit-corners shadow-2xl z-10"
+    <div style={{ perspective: "1200px" }} className="w-full">
+      <motion.div
+        ref={cardRef}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+        style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
+        data-cursor="project"
+        className={`solid-card p-8 sm:p-10 border border-white/10 flex flex-col ${
+          isEven ? "lg:flex-row" : "lg:flex-row-reverse"
+        } items-center gap-10 lg:gap-14 group transition-shadow duration-500 hover:border-cyan-400/50 project-card-3d`}
+      >
+        {/* Layer 2: 3D Image Frame */}
+        <motion.div
+          style={{ translateZ: imageZ }}
+          className="w-full lg:w-1/2 aspect-video rounded-xl overflow-hidden border border-white/15 bg-slate-950 relative shadow-2xl group-hover:border-cyan-400/60 transition-colors"
         >
-          {/* Parallax Image */}
-          <motion.div 
-            style={{ y: yImage, scale: 1.15 }}
-            className="w-full h-full origin-center"
-          >
-            <img
-              src={project.image}
-              alt={project.title}
-              className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
-            />
-          </motion.div>
-          
-          <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent opacity-80 pointer-events-none" />
-          <div className="ai-scan-overlay" />
-          
-          {/* Floating Category Badge (Glassmorphic) */}
-          <motion.div 
-            style={{ translateZ: "40px" }}
-            className="absolute top-6 left-6 flex items-center gap-2 px-4 py-2 rounded-full glass border-glow text-xs font-mono font-bold tracking-widest uppercase text-foreground z-20 shadow-lg pointer-events-none"
-          >
-            <Layers className="w-3.5 h-3.5 text-primary" />
-            {project.category}
-          </motion.div>
+          <img
+            src={project.image}
+            alt={project.title}
+            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+          />
+          <div className="absolute inset-0 bg-slate-950/40 mix-blend-multiply" />
 
-          {/* View Links Overlay (Enhanced) */}
-          <div className="absolute inset-0 bg-background/60 backdrop-blur-md opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-center justify-center gap-6 z-30">
-            <motion.a 
-              whileHover={{ scale: 1.05, y: -5 }} 
-              whileTap={{ scale: 0.95 }}
-              href={project.github} 
-              target="_blank" 
-              rel="noreferrer" 
-              className="flex items-center gap-3 px-6 py-3 rounded-xl border border-primary/50 text-foreground glass hover:bg-primary/20 text-sm font-bold font-mono uppercase tracking-widest transition-all duration-300 shadow-[0_0_20px_rgba(var(--primary),0.2)]"
-            >
-              <Github size={18} /> Code
-            </motion.a>
-            {project.demo && (
-              <motion.a 
-                whileHover={{ scale: 1.05, y: -5 }} 
-                whileTap={{ scale: 0.95 }}
-                href={project.demo} 
-                target="_blank" 
-                rel="noreferrer" 
-                className="flex items-center gap-3 px-6 py-3 rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 text-sm font-bold font-mono uppercase tracking-widest transition-all duration-300 shadow-[0_0_30px_rgba(var(--primary),0.6)]"
-              >
-                <ExternalLink size={18} /> Live Demo
-              </motion.a>
-            )}
+          {/* Solid Category Badge */}
+          <div className="absolute top-4 left-4 flex items-center gap-2 px-3 py-1.5 rounded-md solid-card-secondary border border-cyan-400/40 font-mono text-xs text-cyan-300 font-bold uppercase tracking-wider">
+            <Layers size={14} />
+            <span>{project.category}</span>
           </div>
         </motion.div>
-      </div>
 
-      {/* Project Info (Bento-style layout feeling) */}
-      <div className="w-full lg:w-2/5 flex flex-col justify-center relative">
-        {/* Subtle background element */}
-        <div className="absolute -z-10 top-0 left-0 w-32 h-32 bg-primary/10 rounded-full blur-[60px] opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
-        
-        <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-6 leading-tight flex items-center gap-3">
-          {project.title}
-          <Sparkles className="w-6 h-6 text-primary opacity-0 group-hover:opacity-100 group-hover:animate-pulse transition-opacity" />
-        </h3>
-        
-        <div className="glass-card p-6 rounded-2xl mb-8 relative overflow-hidden group/desc">
-          <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-transparent opacity-0 group-hover/desc:opacity-100 transition-opacity duration-500 pointer-events-none" />
-          <p className="text-muted-foreground text-lg leading-relaxed font-sans relative z-10">
-            {project.description}
-          </p>
-        </div>
-
-        <div className="flex flex-wrap gap-2 mb-10">
-          {project.tags.map((tag) => (
-            <span 
-              key={tag} 
-              className="px-4 py-2 text-xs font-mono font-bold tracking-widest text-muted-foreground glass border border-border/50 rounded-lg hover:border-primary/50 hover:text-primary transition-all cursor-default shadow-sm magnetic-hover hover:shadow-[0_0_15px_rgba(var(--primary),0.3)]"
-            >
-              {tag}
+        {/* Layer 3 & 4: Title, Information & Badges */}
+        <div className="w-full lg:w-1/2 flex flex-col justify-between">
+          <div>
+            <span className="text-[10px] font-mono text-cyan-400 uppercase tracking-widest block mb-2">
+              PROJECT // 0{index + 1}
             </span>
-          ))}
-        </div>
 
-        <div className="flex items-center gap-6 mt-auto">
-          <a 
-            href={project.github} 
-            target="_blank" 
-            rel="noreferrer" 
-            className="group/btn flex items-center gap-2 px-6 py-3 rounded-full text-sm font-bold font-mono uppercase tracking-widest text-foreground bg-secondary/50 hover:bg-primary hover:text-primary-foreground transition-all duration-300 shadow-sm"
-          >
-            Explore Project 
-            <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
-          </a>
-        </div>
-      </div>
+            {/* Title with Z-shift */}
+            <motion.h3
+              style={{ translateZ: titleZ }}
+              className="text-3xl sm:text-4xl font-black text-white mb-4 leading-tight flex items-center gap-3"
+            >
+              {project.title}
+              <Sparkles className="text-cyan-400 opacity-0 group-hover:opacity-100 transition-opacity" size={20} />
+            </motion.h3>
 
-    </motion.div>
+            <div className="solid-card-secondary p-5 border border-white/10 mb-6">
+              <p className="text-slate-300 font-sans text-sm sm:text-base leading-relaxed">
+                {project.description}
+              </p>
+            </div>
+
+            {/* Layer 4: Tech Badges */}
+            <div className="flex flex-wrap gap-2 mb-8">
+              {project.tags.map((tag) => (
+                <span
+                  key={tag}
+                  className="px-3 py-1.5 rounded-md bg-slate-950 border border-white/10 text-xs font-mono text-cyan-300 font-bold tracking-wider uppercase shadow-sm"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* Layer 5: Physical 3D Action Buttons */}
+          <div className="flex items-center gap-4 flex-wrap">
+            <a
+              href={project.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-3d-primary px-6 py-3 font-mono text-xs tracking-wider flex items-center gap-2 uppercase"
+            >
+              <Github size={16} />
+              <span>EXPLORE CODE</span>
+            </a>
+
+            {project.demo && (
+              <a
+                href={project.demo}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-3d-secondary px-6 py-3 font-mono text-xs tracking-wider flex items-center gap-2 uppercase"
+              >
+                <ExternalLink size={16} />
+                <span>LIVE DEMO</span>
+              </a>
+            )}
+          </div>
+        </div>
+      </motion.div>
+    </div>
   );
 };
 
-const ProjectsSection = () => {
+export const ProjectsSection = () => {
   const [activeCategory, setActiveCategory] = useState<string>("All");
   const categories = ["All", "MERN Stack", "Next.js / React", "Python & Java"];
 
@@ -233,46 +198,41 @@ const ProjectsSection = () => {
     : projects.filter(p => p.category === activeCategory);
 
   return (
-    <section id="projects" className="py-24 relative scroll-mt-24 bg-background overflow-hidden">
-      {/* Background Neural Grid */}
-      <div className="absolute inset-0 neural-grid opacity-30 pointer-events-none" />
-      
-      <div className="section-divider mb-16 relative z-10" />
+    <section id="projects" className="py-28 relative scroll-mt-24 overflow-hidden z-10">
+      {/* Giant Low Contrast Background Typography */}
+      <div className="bg-giant-text">PROJECTS</div>
+
+      <div className="section-divider-dimensional mb-20" />
+
       <div className="container mx-auto px-6 max-w-7xl relative z-10">
         
-        {/* Header & Filters */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-24 gap-8">
-          <AnimatedSection className="flex-1">
-            <p className="font-mono text-sm tracking-[0.3em] text-muted-foreground uppercase mb-4 glass px-4 py-1.5 rounded-full shadow-sm w-fit inline-flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-              Selected Work
-            </p>
-            <h2 className="text-4xl md:text-5xl lg:text-7xl font-bold tracking-tight">
-              Featured <span className="text-gradient">projects</span>
+        {/* Header & Filter Controls */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-8">
+          <AnimatedSection>
+            <div className="font-mono text-xs tracking-[0.3em] text-cyan-400 uppercase mb-3 border border-cyan-400/40 bg-slate-950 px-4 py-1.5 rounded-md shadow-lg inline-flex items-center gap-2">
+              <Cpu size={14} /> 05 / FEATURED SHOWCASE
+            </div>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight text-white uppercase">
+              FEATURED <span className="text-gradient">ENGINEERING PROJECTS</span>
             </h2>
           </AnimatedSection>
 
+          {/* Category Filter Pills (Solid Surface) */}
           <AnimatedSection delay={0.15}>
-            <div className="flex flex-wrap items-center gap-2 p-2 rounded-2xl border border-border/40 glass-card shadow-lg w-fit relative overflow-hidden">
-              <div className="absolute inset-0 bg-primary/5 blur-xl pointer-events-none" />
+            <div className="flex flex-wrap items-center gap-2 p-1.5 rounded-xl solid-card-secondary border border-white/10">
               {categories.map((cat) => {
                 const isActive = activeCategory === cat;
                 return (
                   <button
                     key={cat}
                     onClick={() => setActiveCategory(cat)}
-                    className={`relative px-5 py-2.5 text-xs font-bold font-mono uppercase rounded-xl tracking-wider transition-all duration-300 ${
-                      isActive ? "text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-secondary/50"
+                    className={`px-4 py-2 rounded-lg font-mono text-xs font-bold transition-all uppercase ${
+                      isActive
+                        ? "bg-cyan-500 text-slate-950 shadow-[0_0_15px_rgba(0,240,255,0.4)]"
+                        : "text-slate-400 hover:text-white"
                     }`}
                   >
-                    {isActive && (
-                      <motion.span
-                        layoutId="active-project-category"
-                        className="absolute inset-0 rounded-xl bg-primary z-0 shadow-[0_0_15px_rgba(var(--primary),0.6)]"
-                        transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                      />
-                    )}
-                    <span className="relative z-10">{cat}</span>
+                    {cat}
                   </button>
                 );
               })}
@@ -280,18 +240,18 @@ const ProjectsSection = () => {
           </AnimatedSection>
         </div>
 
-        {/* Cinematic Projects List */}
-        <div className="flex flex-col gap-32">
+        {/* 3D Projects Showcase List */}
+        <div className="flex flex-col gap-16">
           <AnimatePresence mode="popLayout">
             {filteredProjects.map((project, i) => (
-              <ProjectCard key={project.title} project={project} index={i} />
+              <Solid3DProjectCard key={project.title} project={project} index={i} />
             ))}
           </AnimatePresence>
         </div>
+
       </div>
     </section>
   );
 };
 
 export default ProjectsSection;
-

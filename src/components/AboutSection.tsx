@@ -1,5 +1,5 @@
 import AnimatedSection from "./AnimatedSection";
-import { motion, useMotionTemplate, useMotionValue, useSpring, useTransform, useScroll } from "framer-motion";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { MouseEvent as ReactMouseEvent, useRef } from "react";
 import {
   Code2,
@@ -8,7 +8,8 @@ import {
   Rocket,
   GraduationCap,
   Terminal,
-  CheckCircle2
+  CheckCircle2,
+  Cpu
 } from "lucide-react";
 
 const highlights = [
@@ -42,113 +43,48 @@ const education = [
   },
 ];
 
-const HighlightCard = ({ item, i }: { item: typeof highlights[0], i: number }) => {
-  let mouseX = useMotionValue(0);
-  let mouseY = useMotionValue(0);
-
-  function handleMouseMove({ currentTarget, clientX, clientY }: ReactMouseEvent) {
-    let { left, top } = currentTarget.getBoundingClientRect();
-    mouseX.set(clientX - left);
-    mouseY.set(clientY - top);
-  }
-
+const SolidHighlightCard = ({ item, i }: { item: typeof highlights[0]; i: number }) => {
   return (
-    <AnimatedSection delay={0.2 + i * 0.1} className="h-full">
+    <AnimatedSection delay={0.1 + i * 0.1} className="h-full">
       <motion.div
-        onMouseMove={handleMouseMove}
-        whileHover={{ scale: 1.02 }}
-        className="group relative h-full rounded-2xl border border-border/30 bg-card/30 backdrop-blur-xl overflow-hidden flex flex-col justify-between shadow-sm transition-all duration-500 cursor-crosshair hover:shadow-2xl hover:shadow-primary/5"
+        whileHover={{ y: -4, scale: 1.02 }}
+        className="solid-card p-6 h-full flex flex-col justify-between cursor-crosshair border border-white/10 group"
       >
-        {/* Glow effect that follows mouse */}
-        <motion.div
-          className="pointer-events-none absolute -inset-px rounded-xl opacity-0 transition duration-500 group-hover:opacity-100"
-          style={{
-            background: useMotionTemplate`
-              radial-gradient(
-                300px circle at ${mouseX}px ${mouseY}px,
-                hsl(var(--primary) / 0.15),
-                transparent 80%
-              )
-            `,
-          }}
-        />
-        
-        {/* Border highlight effect that follows mouse */}
-        <motion.div
-          className="pointer-events-none absolute -inset-px rounded-xl opacity-0 transition duration-500 group-hover:opacity-100 z-10"
-          style={{
-            background: useMotionTemplate`
-              radial-gradient(
-                200px circle at ${mouseX}px ${mouseY}px,
-                hsl(var(--primary) / 0.6),
-                transparent 80%
-              )
-            `,
-            WebkitMask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-            WebkitMaskComposite: "xor",
-            maskComposite: "exclude",
-            padding: "1px"
-          }}
-        />
-
-        <div className="p-6 relative z-20 h-full flex flex-col justify-between">
-          <div>
-            <div className="w-12 h-12 rounded-2xl flex items-center justify-center mb-5 border border-border/50 bg-background/50 shadow-inner overflow-hidden relative group-hover:border-primary/40 transition-colors duration-700">
-              <div className="absolute inset-0 bg-primary/20 translate-y-full group-hover:translate-y-0 transition-transform duration-700 ease-[0.16,1,0.3,1]" />
-              <item.icon className="w-6 h-6 text-muted-foreground group-hover:text-primary transition-all duration-700 relative z-10 group-hover:scale-110" />
-            </div>
-            <h3 className="text-base font-bold text-foreground mb-2 group-hover:text-primary transition-colors">{item.title}</h3>
-            <p className="text-xs text-muted-foreground leading-relaxed">{item.desc}</p>
+        <div>
+          <div className="w-12 h-12 rounded-xl bg-slate-900 border border-cyan-400/30 flex items-center justify-center mb-4 text-cyan-400 group-hover:scale-110 group-hover:border-cyan-400 transition-all shadow-md">
+            <item.icon size={24} />
           </div>
-          
-          {/* Subtle tech accent lines on hover */}
-          <div className="absolute bottom-0 left-6 right-6 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-1000 ease-[0.16,1,0.3,1]" />
+          <h3 className="text-lg font-bold text-white mb-1 group-hover:text-cyan-400 transition-colors">
+            {item.title}
+          </h3>
+          <p className="text-xs text-slate-400 font-sans leading-relaxed">{item.desc}</p>
+        </div>
+        <div className="text-[9px] font-mono text-cyan-400/60 uppercase tracking-widest mt-4">
+          SYS.CARD_0{i + 1}
         </div>
       </motion.div>
     </AnimatedSection>
   );
 };
 
-const AppleTextReveal = ({ text }: { text: string }) => {
-  const words = text.split(" ");
-  return (
-    <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight flex gap-3 flex-wrap justify-center">
-      {words.map((word, i) => (
-        <motion.span
-          key={i}
-          initial={{ opacity: 0, y: 20, filter: "blur(10px)" }}
-          whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 1, delay: i * 0.15, ease: [0.16, 1, 0.3, 1] }}
-          className={word === "code" ? "text-gradient" : ""}
-        >
-          {word}
-        </motion.span>
-      ))}
-    </h2>
-  );
-};
-
-const MacIDEWindow = () => {
+const Solid3DMacIDE = () => {
   const ref = useRef<HTMLDivElement>(null);
   const x = useMotionValue(0);
   const y = useMotionValue(0);
-  
-  const mouseXSpring = useSpring(x, { stiffness: 100, damping: 20 });
-  const mouseYSpring = useSpring(y, { stiffness: 100, damping: 20 });
-  
-  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["3deg", "-3deg"]);
-  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-3deg", "3deg"]);
+
+  const mouseXSpring = useSpring(x, { stiffness: 120, damping: 18 });
+  const mouseYSpring = useSpring(y, { stiffness: 120, damping: 18 });
+
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["6deg", "-6deg"]);
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-6deg", "6deg"]);
 
   const handleMouseMove = (e: ReactMouseEvent<HTMLDivElement>) => {
     if (!ref.current) return;
     const rect = ref.current.getBoundingClientRect();
-    const width = rect.width;
-    const height = rect.height;
     const mouseX = e.clientX - rect.left;
     const mouseY = e.clientY - rect.top;
-    x.set(mouseX / width - 0.5);
-    y.set(mouseY / height - 0.5);
+    x.set(mouseX / rect.width - 0.5);
+    y.set(mouseY / rect.height - 0.5);
   };
 
   const handleMouseLeave = () => {
@@ -157,210 +93,155 @@ const MacIDEWindow = () => {
   };
 
   return (
-    <motion.div
-      ref={ref}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
-      className="h-full rounded-2xl overflow-hidden border border-border/40 bg-[#0d1117]/80 backdrop-blur-3xl shadow-2xl flex flex-col group transition-shadow duration-700 hover:shadow-[0_0_60px_rgba(var(--primary),0.15)] hover:border-border/80 perspective-1000"
-    >
-      <div style={{ transform: "translateZ(20px)", transformStyle: "preserve-3d" }} className="flex flex-col h-full w-full">
+    <div style={{ perspective: "1200px" }} className="w-full h-full">
+      <motion.div
+        ref={ref}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+        style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
+        className="solid-card border-2 border-white/10 p-0 shadow-2xl relative overflow-hidden h-full flex flex-col group"
+      >
         {/* IDE Header */}
-        <div className="bg-[#161b22]/90 backdrop-blur-md px-4 py-3 flex items-center justify-between border-b border-border/40" style={{ transform: "translateZ(10px)" }}>
+        <div className="bg-slate-950 px-5 py-3 flex items-center justify-between border-b border-white/10">
           <div className="flex items-center gap-2">
-            <div className="w-3 h-3 rounded-full bg-[#ff5f56] shadow-[0_0_5px_rgba(255,95,86,0.5)] border border-black/10" />
-            <div className="w-3 h-3 rounded-full bg-[#ffbd2e] shadow-[0_0_5px_rgba(255,189,46,0.5)] border border-black/10" />
-            <div className="w-3 h-3 rounded-full bg-[#27c93f] shadow-[0_0_5px_rgba(39,201,63,0.5)] border border-black/10" />
+            <div className="w-3 h-3 rounded-full bg-red-500/80 border border-red-600" />
+            <div className="w-3 h-3 rounded-full bg-amber-500/80 border border-amber-600" />
+            <div className="w-3 h-3 rounded-full bg-green-500/80 border border-green-600" />
           </div>
-          <div className="flex items-center gap-2 text-xs font-mono text-muted-foreground bg-background/20 px-3 py-1 rounded-md">
-            <Terminal className="w-3.5 h-3.5" />
-            <span>sridhar.js</span>
+          <div className="flex items-center gap-2 text-xs font-mono text-cyan-400 bg-slate-900 border border-cyan-400/30 px-3 py-1 rounded">
+            <Terminal size={14} />
+            <span>sridhar_profile.config.ts</span>
           </div>
-          <div className="w-10" /> {/* Spacer for centering */}
+          <span className="text-[10px] font-mono text-slate-500">SYS.IDE</span>
         </div>
 
-        {/* IDE Content */}
-        <div className="p-6 md:p-8 font-mono text-sm md:text-base text-gray-300 overflow-x-auto flex-1 flex" style={{ transform: "translateZ(30px)" }}>
-          <div className="flex gap-6 w-full">
-            {/* Line Numbers */}
-            <div className="text-gray-600 select-none flex flex-col text-right font-medium">
-              {Array.from({length: 13}).map((_, i) => <span key={i}>{i+1}</span>)}
+        {/* IDE Code Editor Body */}
+        <div className="p-6 font-mono text-sm text-slate-300 bg-[#07090e] flex-1 overflow-x-auto">
+          <div className="flex gap-6">
+            <div className="text-slate-600 select-none flex flex-col text-right font-semibold">
+              {Array.from({ length: 12 }).map((_, i) => (
+                <span key={i}>{i + 1}</span>
+              ))}
             </div>
-            
-            {/* Code */}
-            <div className="flex flex-col whitespace-pre relative">
-              {/* Subtle sweeping highlight over code */}
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:animate-[shimmer-sweep_3s_infinite] pointer-events-none" />
-              
-              <p><span className="text-[#ff7b72]">const</span> <span className="text-[#79c0ff]">developer</span> <span className="text-[#ff7b72]">=</span> {'{'}</p>
-              <p className="ml-4"><span className="text-[#d2a8ff]">name</span>: <span className="text-[#a5d6ff]">'Sridhar'</span>,</p>
-              <p className="ml-4"><span className="text-[#d2a8ff]">role</span>: <span className="text-[#a5d6ff]">'Full Stack Developer'</span>,</p>
-              <p className="ml-4"><span className="text-[#d2a8ff]">passion</span>: <span className="text-[#a5d6ff]">'Building seamless applications'</span>,</p>
-              <p className="ml-4"><span className="text-[#d2a8ff]">location</span>: <span className="text-[#a5d6ff]">'Tamil Nadu, India'</span>,</p>
-              <p className="ml-4"><span className="text-[#d2a8ff]">status</span>: <span className="text-[#a5d6ff]">'Available for Internship'</span>,</p>
-              <p className="ml-4"><span className="text-[#d2a8ff]">techStack</span>: [</p>
-              <p className="ml-8"><span className="text-[#a5d6ff]">'React'</span>, <span className="text-[#a5d6ff]">'Next.js'</span>, <span className="text-[#a5d6ff]">'Node.js'</span>, <span className="text-[#a5d6ff]">'MongoDB'</span></p>
-              <p className="ml-4">],</p>
-              <p className="ml-4"><span className="text-[#d2a8ff]">solveProblem</span>: <span className="text-[#ff7b72]">()</span> <span className="text-[#ff7b72]">=&gt;</span> {'{'}</p>
-              <p className="ml-8"><span className="text-[#ff7b72]">return</span> <span className="text-[#a5d6ff]">'Turning ideas into digital reality'</span>;</p>
+
+            <div className="whitespace-pre">
+              <p><span className="text-purple-400 font-bold">export const</span> <span className="text-cyan-300 font-bold">developerProfile</span> = {'{'}</p>
+              <p className="ml-4"><span className="text-cyan-400">fullName</span>: <span className="text-emerald-300">'Sridhar N'</span>,</p>
+              <p className="ml-4"><span className="text-cyan-400">role</span>: <span className="text-emerald-300">'Full Stack Developer'</span>,</p>
+              <p className="ml-4"><span className="text-cyan-400">education</span>: <span className="text-emerald-300">'Sri Eshwar College of Engineering'</span>,</p>
+              <p className="ml-4"><span className="text-cyan-400">location</span>: <span className="text-emerald-300">'Tamil Nadu, India'</span>,</p>
+              <p className="ml-4"><span className="text-cyan-400">coreTech</span>: [<span className="text-amber-300">'React'</span>, <span className="text-amber-300">'Next.js'</span>, <span className="text-amber-300">'Node.js'</span>, <span className="text-amber-300">'MongoDB'</span>],</p>
+              <p className="ml-4"><span className="text-cyan-400">motto</span>: <span className="text-emerald-300">'Architecting solid dimensional web systems'</span>,</p>
+              <p className="ml-4"><span className="text-purple-400">buildSystem</span>: <span className="text-blue-400">async ()</span> =&gt; {'{'}</p>
+              <p className="ml-8"><span className="text-purple-400">return</span> <span className="text-emerald-300">'Bridging full-stack engineering & creative UI'</span>;</p>
               <p className="ml-4">{'}'}</p>
               <p>{'};'}</p>
             </div>
           </div>
         </div>
-      </div>
-    </motion.div>
+      </motion.div>
+    </div>
   );
 };
 
-const AboutSection = () => {
+export const AboutSection = () => {
   return (
-    <section id="about" className="py-24 relative scroll-mt-24 overflow-hidden">
-      <div className="section-divider mb-16" />
-      <div className="container mx-auto px-6 max-w-7xl">
+    <section id="about" className="py-28 relative scroll-mt-24 overflow-hidden z-10">
+      {/* Low Contrast 3D Giant Background Typography */}
+      <div className="bg-giant-text">ABOUT</div>
 
-        {/* ── Header ── */}
+      <div className="section-divider-dimensional mb-20" />
+      <div className="container mx-auto px-6 max-w-7xl relative z-10">
+
+        {/* Section Marker Header */}
         <AnimatedSection>
           <div className="flex flex-col items-center text-center mb-16">
-            <p className="font-mono text-sm tracking-[0.3em] text-muted-foreground uppercase mb-4 border border-border/50 bg-muted/30 px-4 py-1.5 rounded-full shadow-sm">
-              — Who I Am
-            </p>
-            <AppleTextReveal text="Behind the code" />
+            <div className="font-mono text-xs tracking-[0.3em] text-cyan-400 uppercase mb-3 border border-cyan-400/40 bg-slate-950 px-4 py-1.5 rounded-md shadow-lg inline-flex items-center gap-2">
+              <Cpu size={14} /> 01 / ABOUT SYSTEM
+            </div>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight text-white uppercase">
+              BEHIND THE <span className="text-gradient">CODE & ARCHITECTURE</span>
+            </h2>
           </div>
         </AnimatedSection>
 
-        {/* ── Top Split: IDE Bio & Highlights ── */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-24" style={{ perspective: "1000px" }}>
-          
-          {/* Left: IDE Window */}
-          <AnimatedSection delay={0.1} className="lg:col-span-7 h-full w-full">
-            <MacIDEWindow />
+        {/* IDE & Highlights 3D Composition */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-24 items-stretch">
+          <AnimatedSection delay={0.1} className="lg:col-span-7 h-full">
+            <Solid3DMacIDE />
           </AnimatedSection>
 
-          {/* Right: Highlights 2x2 Grid */}
           <div className="lg:col-span-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
             {highlights.map((item, i) => (
-              <HighlightCard key={item.title} item={item} i={i} />
+              <SolidHighlightCard key={item.title} item={item} i={i} />
             ))}
           </div>
         </div>
 
-        {/* ── Bottom: Education Rows ── */}
-        <AnimatedSection delay={0.5} className="mt-24">
-          <div className="flex flex-col items-center mb-16">
-            <p className="font-mono text-sm tracking-[0.3em] text-muted-foreground uppercase mb-4 border border-border/50 bg-muted/30 px-4 py-1.5 rounded-full shadow-sm">
-              — Education
-            </p>
-            <h3 className="text-3xl md:text-4xl font-bold text-foreground tracking-tight">Academic <span className="text-gradient">Background</span></h3>
+        {/* Academic Background Section */}
+        <AnimatedSection delay={0.3} className="mt-20">
+          <div className="flex flex-col items-center mb-14 text-center">
+            <div className="font-mono text-xs tracking-[0.3em] text-cyan-400 uppercase mb-3 border border-cyan-400/40 bg-slate-950 px-4 py-1.5 rounded-md shadow-lg">
+              ACADEMIC REPOSITORY
+            </div>
+            <h3 className="text-3xl md:text-4xl font-bold text-white">
+              EDUCATION & <span className="text-gradient">QUALIFICATIONS</span>
+            </h3>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
-            {/* Widget 1: College (Hero) */}
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.1, duration: 0.6 }}
-              className="md:col-span-2 md:row-span-2 rounded-[32px] p-8 md:p-12 relative overflow-hidden bg-card/60 backdrop-blur-xl border border-border/50 shadow-2xl group hover:border-primary/40 transition-all duration-500"
-            >
-              {/* Giant subtle gradient glow */}
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/15 via-transparent to-transparent opacity-80 pointer-events-none group-hover:scale-110 transition-transform duration-[1.5s] transform-gpu" />
-              <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-primary/10 blur-[100px] rounded-full pointer-events-none group-hover:bg-primary/20 transition-colors duration-700 transform-gpu will-change-transform" />
-              
-              <div className="relative z-10 flex flex-col h-full justify-between">
-                <div className="flex justify-between items-start mb-16">
-                  <div className="w-16 h-16 rounded-2xl bg-background border border-border/60 flex items-center justify-center text-primary shadow-[0_0_20px_rgba(var(--primary),0.15)] group-hover:shadow-[0_0_30px_rgba(var(--primary),0.3)] transition-shadow duration-500">
-                    <GraduationCap size={32} />
-                  </div>
-                  <span className="px-5 py-2 rounded-full bg-primary/10 text-primary border border-primary/20 text-xs font-mono font-bold tracking-widest uppercase shadow-sm">
-                    {education[0].status}
-                  </span>
+            {/* College Hero Widget */}
+            <div className="md:col-span-2 solid-card p-8 sm:p-10 border border-white/10 flex flex-col justify-between relative overflow-hidden">
+              <div className="flex justify-between items-start mb-8">
+                <div className="w-14 h-14 rounded-xl bg-slate-900 border border-cyan-400/40 flex items-center justify-center text-cyan-400 shadow-lg">
+                  <GraduationCap size={30} />
                 </div>
-                
-                <div>
-                  <span className="text-sm font-mono text-muted-foreground uppercase tracking-widest block mb-4 flex items-center gap-3">
-                    {education[0].year}
-                    <div className="h-px bg-border/60 flex-1" />
-                  </span>
-                  <h4 className="text-3xl md:text-5xl font-black text-foreground tracking-tight mb-4 leading-tight">
-                    {education[0].institution}
-                  </h4>
-                  <p className="text-lg md:text-xl font-medium text-muted-foreground mb-10">
-                    {education[0].degree}
-                  </p>
-                  
-                  <div className="inline-flex items-center rounded-2xl bg-background/80 border border-border/60 backdrop-blur-md shadow-inner overflow-hidden group/score cursor-default">
-                    <div className="px-6 py-4 bg-muted/30 border-r border-border/50">
-                      <span className="text-xs font-mono text-muted-foreground uppercase tracking-widest">Score</span>
-                    </div>
-                    <div className="px-6 py-4">
-                      <span className="text-2xl font-black text-primary font-mono tracking-tight group-hover/score:text-foreground transition-colors">{education[0].score.split(': ')[1]}</span>
-                    </div>
-                  </div>
-                </div>
+                <span className="px-4 py-1.5 rounded bg-cyan-500/10 text-cyan-300 border border-cyan-400/40 text-xs font-mono font-bold uppercase tracking-widest">
+                  {education[0].status}
+                </span>
               </div>
-            </motion.div>
 
-            {/* Widget 2: HSC */}
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.2, duration: 0.6 }}
-              whileHover={{ y: -4 }}
-              className="md:col-span-1 md:row-span-1 rounded-[32px] p-8 relative overflow-hidden bg-muted/20 border border-border/40 hover:bg-muted/40 transition-all duration-300 shadow-sm hover:shadow-md"
-            >
-              <div className="flex flex-col h-full justify-between">
-                <div className="flex justify-between items-center mb-10">
-                  <span className="text-[11px] font-mono text-muted-foreground uppercase tracking-widest bg-background/50 px-3 py-1.5 rounded-full border border-border/50">
-                    {education[1].year}
-                  </span>
-                  <div className="w-8 h-8 rounded-full bg-background border border-border/50 flex items-center justify-center text-muted-foreground shadow-sm">
-                    <CheckCircle2 size={14} />
-                  </div>
-                </div>
-                <div>
-                  <h4 className="text-xl font-bold text-foreground mb-2 leading-snug">{education[1].institution}</h4>
-                  <p className="text-sm text-muted-foreground mb-6 line-clamp-2">{education[1].degree}</p>
-                  <div className="inline-flex items-center gap-2">
-                    <span className="text-[10px] font-mono text-muted-foreground uppercase tracking-widest">Score</span>
-                    <span className="text-lg font-bold font-mono text-foreground bg-background px-3 py-1 rounded-lg border border-border/40">{education[1].score}</span>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
+              <div>
+                <span className="text-xs font-mono text-cyan-400 uppercase tracking-widest block mb-2">
+                  {education[0].year}
+                </span>
+                <h4 className="text-2xl sm:text-4xl font-black text-white mb-2 leading-snug">
+                  {education[0].institution}
+                </h4>
+                <p className="text-slate-300 text-base font-medium mb-6">
+                  {education[0].degree}
+                </p>
 
-            {/* Widget 3: SSLC */}
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.3, duration: 0.6 }}
-              whileHover={{ y: -4 }}
-              className="md:col-span-1 md:row-span-1 rounded-[32px] p-8 relative overflow-hidden bg-muted/20 border border-border/40 hover:bg-muted/40 transition-all duration-300 shadow-sm hover:shadow-md"
-            >
-              <div className="flex flex-col h-full justify-between">
-                <div className="flex justify-between items-center mb-10">
-                  <span className="text-[11px] font-mono text-muted-foreground uppercase tracking-widest bg-background/50 px-3 py-1.5 rounded-full border border-border/50">
-                    {education[2].year}
-                  </span>
-                  <div className="w-8 h-8 rounded-full bg-background border border-border/50 flex items-center justify-center text-muted-foreground shadow-sm">
-                    <CheckCircle2 size={14} />
-                  </div>
-                </div>
-                <div>
-                  <h4 className="text-xl font-bold text-foreground mb-2 leading-snug">{education[2].institution}</h4>
-                  <p className="text-sm text-muted-foreground mb-6 line-clamp-2">{education[2].degree}</p>
-                  <div className="inline-flex items-center gap-2">
-                    <span className="text-[10px] font-mono text-muted-foreground uppercase tracking-widest">Score</span>
-                    <span className="text-lg font-bold font-mono text-foreground bg-background px-3 py-1 rounded-lg border border-border/40">{education[2].score}</span>
-                  </div>
+                <div className="inline-flex items-center rounded-lg solid-card-secondary p-3 border border-cyan-400/40">
+                  <span className="text-xs font-mono text-slate-400 uppercase tracking-widest mr-3">SCORE:</span>
+                  <span className="text-xl font-bold font-mono text-cyan-300">{education[0].score.split(': ')[1]}</span>
                 </div>
               </div>
-            </motion.div>
+            </div>
+
+            {/* HSC & SSLC Cards */}
+            <div className="flex flex-col gap-6">
+              {education.slice(1).map((item) => (
+                <div key={item.degree} className="solid-card p-6 border border-white/10 flex flex-col justify-between">
+                  <div className="flex justify-between items-center mb-4">
+                    <span className="text-xs font-mono text-cyan-400 tracking-widest bg-slate-900 px-2.5 py-1 rounded border border-white/10">
+                      {item.year}
+                    </span>
+                    <CheckCircle2 size={16} className="text-cyan-400" />
+                  </div>
+                  <div>
+                    <h4 className="text-lg font-bold text-white mb-1">{item.institution}</h4>
+                    <p className="text-xs text-slate-400 mb-3">{item.degree}</p>
+                    <span className="text-xs font-mono font-bold text-cyan-300 bg-slate-950 px-2.5 py-1 rounded border border-cyan-400/30">
+                      Score: {item.score}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </AnimatedSection>
-        
+
       </div>
     </section>
   );

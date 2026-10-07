@@ -1,19 +1,18 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { motion, useMotionValue, useSpring } from "framer-motion";
-import { useTheme } from "next-themes";
 
-const CustomCursor = () => {
+export const CustomCursor = () => {
   const [visible, setVisible] = useState(false);
-  const [hovered, setHovered] = useState(false);
-  const { resolvedTheme } = useTheme();
+  const [hoverType, setHoverType] = useState<"project" | "button" | "image" | "cert" | "default" | null>(null);
+  const [cursorText, setCursorText] = useState<string>("");
 
-  // Position of the core dot (instant tracking)
+  // Position of core dot (instant tracking)
   const dotX = useMotionValue(-100);
   const dotY = useMotionValue(-100);
 
-  // Position of the outer ring (spring physics for lag effect)
-  const ringX = useSpring(dotX, { stiffness: 220, damping: 24 });
-  const ringY = useSpring(dotY, { stiffness: 220, damping: 24 });
+  // Position of trailing ring (spring physics)
+  const ringX = useSpring(dotX, { stiffness: 240, damping: 22 });
+  const ringY = useSpring(dotY, { stiffness: 240, damping: 22 });
 
   useEffect(() => {
     const move = (e: MouseEvent) => {
@@ -24,19 +23,30 @@ const CustomCursor = () => {
 
     const leave = () => setVisible(false);
 
-    // Track when hovering over clickable elements
     const handleMouseOver = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
-      const isClickable =
-        target.closest("a") ||
-        target.closest("button") ||
-        target.closest("input") ||
-        target.closest("textarea") ||
-        target.closest("[role='button']") ||
-        target.closest(".clickable") ||
-        target.closest(".magnetic-hover");
 
-      setHovered(!!isClickable);
+      const projectEl = target.closest("[data-cursor='project']") || target.closest(".project-card-3d");
+      const buttonEl = target.closest("button") || target.closest(".btn-3d-primary") || target.closest(".btn-3d-secondary") || target.closest("a");
+      const certEl = target.closest("[data-cursor='cert']") || target.closest(".cert-vault-card");
+      const imageEl = target.closest("img");
+
+      if (projectEl) {
+        setHoverType("project");
+        setCursorText("VIEW PROJECT");
+      } else if (certEl) {
+        setHoverType("cert");
+        setCursorText("VERIFY");
+      } else if (buttonEl) {
+        setHoverType("button");
+        setCursorText("EXPLORE →");
+      } else if (imageEl) {
+        setHoverType("image");
+        setCursorText("OPEN");
+      } else {
+        setHoverType(null);
+        setCursorText("");
+      }
     };
 
     window.addEventListener("mousemove", move);
@@ -54,11 +64,13 @@ const CustomCursor = () => {
     return null;
   }
 
+  const isHovered = !!hoverType;
+
   return (
     <>
-      {/* Inner solid core dot */}
+      {/* Central Core Dot */}
       <motion.div
-        className="fixed top-0 left-0 w-2 h-2 rounded-full bg-primary pointer-events-none z-[9999] mix-blend-difference"
+        className="fixed top-0 left-0 w-2.5 h-2.5 rounded-full bg-cyan-400 pointer-events-none z-[9999] shadow-[0_0_10px_#00f0ff]"
         style={{
           x: dotX,
           y: dotY,
@@ -66,15 +78,15 @@ const CustomCursor = () => {
           translateY: "-50%",
         }}
         animate={{
-          scale: hovered ? 0.6 : 1,
+          scale: isHovered ? 0.4 : 1,
           opacity: visible ? 1 : 0,
         }}
         transition={{ type: "spring", stiffness: 350, damping: 25 }}
       />
 
-      {/* Outer spring trailing ring */}
+      {/* Trailing 3D Outer Ring with Contextual Text */}
       <motion.div
-        className="fixed top-0 left-0 rounded-full border pointer-events-none z-[9999]"
+        className="fixed top-0 left-0 rounded-full pointer-events-none z-[9998] flex items-center justify-center font-mono font-bold text-[9px] tracking-widest text-cyan-300 border border-cyan-400/40 bg-slate-950/80 shadow-[0_0_20px_rgba(0,240,255,0.25)]"
         style={{
           x: ringX,
           y: ringY,
@@ -82,18 +94,24 @@ const CustomCursor = () => {
           translateY: "-50%",
         }}
         animate={{
-          width: hovered ? 56 : 30,
-          height: hovered ? 56 : 30,
-          borderColor: hovered 
-            ? (resolvedTheme === "dark" ? "hsl(190 90% 50%)" : "hsl(240 5.9% 10%)") 
-            : (resolvedTheme === "dark" ? "rgba(255, 255, 255, 0.25)" : "rgba(0, 0, 0, 0.2)"),
-          backgroundColor: hovered 
-            ? (resolvedTheme === "dark" ? "rgba(190, 90, 50, 0.05)" : "rgba(0, 0, 0, 0.03)") 
-            : "rgba(0, 0, 0, 0)",
+          width: isHovered ? (hoverType === "project" ? 110 : 90) : 34,
+          height: isHovered ? (hoverType === "project" ? 110 : 90) : 34,
+          borderColor: isHovered ? "rgba(0, 240, 255, 0.8)" : "rgba(255, 255, 255, 0.2)",
           opacity: visible ? 1 : 0,
         }}
         transition={{ type: "spring", stiffness: 220, damping: 20 }}
-      />
+      >
+        {cursorText && (
+          <motion.span
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0 }}
+            className="text-center px-2 select-none uppercase font-bold text-[10px] text-cyan-300 whitespace-nowrap"
+          >
+            {cursorText}
+          </motion.span>
+        )}
+      </motion.div>
     </>
   );
 };

@@ -8,23 +8,26 @@ import CertificationsSection from "@/components/CertificationsSection";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
 import CustomCursor from "@/components/CustomCursor";
-import SparkleCanvas from "@/components/SparkleCanvas";
-import BackgroundGlow from "@/components/BackgroundGlow";
+import { Background3DGrid } from "@/components/3D/Background3DGrid";
 
 const Index = () => {
   return (
-    <div className="bg-background text-foreground min-h-screen">
-      <BackgroundGlow />
-      <SparkleCanvas />
+    <div className="bg-[#04060a] text-foreground min-h-screen relative overflow-x-hidden selection:bg-cyan-500/30 selection:text-white">
+      {/* 3D Infinite Perspective Grid Background */}
+      <Background3DGrid />
       <CustomCursor />
       <Navbar />
-      <HeroSection />
-      <AboutSection />
-      <SkillsSection />
-      <InternshipsSection />
-      <ProjectsSection />
-      <CertificationsSection />
-      <ContactSection />
+      
+      <main className="relative z-10">
+        <HeroSection />
+        <AboutSection />
+        <SkillsSection />
+        <InternshipsSection />
+        <ProjectsSection />
+        <CertificationsSection />
+        <ContactSection />
+      </main>
+
       <Footer />
     </div>
   );

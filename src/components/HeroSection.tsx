@@ -1,7 +1,8 @@
-import { motion, useScroll, useTransform, useMotionValue, useSpring, MotionValue } from "framer-motion";
-import { Linkedin, Instagram, Twitter, Github, Terminal, ChevronDown } from "lucide-react";
+import { motion, useScroll, useTransform, useMotionValue, useSpring } from "framer-motion";
+import { Linkedin, Instagram, Twitter, Github, Terminal, ChevronDown, Cpu, ShieldCheck, Zap } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useEffect, useState, useRef } from "react";
+import { HeroCoreScene } from "./3D/HeroCoreScene";
 
 const socials = [
   { icon: Linkedin, href: "https://www.linkedin.com/in/sridhar-n-896a7b293", label: "LinkedIn", color: "#0077b5" },
@@ -10,124 +11,65 @@ const socials = [
   { icon: Github, href: "https://github.com/Sridharn97", label: "GitHub", color: "#888888" },
 ];
 
-const SpotlightButton = () => {
-  const divRef = useRef<HTMLAnchorElement>(null);
-  const [isFocused, setIsFocused] = useState(false);
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-  const [opacity, setOpacity] = useState(0);
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    if (!divRef.current || isFocused) return;
-    const div = divRef.current;
-    const rect = div.getBoundingClientRect();
-    setPosition({ x: e.clientX - rect.left, y: e.clientY - rect.top });
-  };
-
+const Physical3DButton = () => {
   return (
     <a
-      ref={divRef}
       href="https://drive.google.com/drive/folders/108GQzc5uf22Rfgv5FM_17-0cBQL5P-sJ?usp=drive_link"
       target="_blank"
       rel="noopener noreferrer"
-      onMouseMove={handleMouseMove}
-      onFocus={() => { setIsFocused(true); setOpacity(1); }}
-      onBlur={() => { setIsFocused(false); setOpacity(0); }}
-      onMouseEnter={() => setOpacity(1)}
-      onMouseLeave={() => setOpacity(0)}
-      className="group relative flex items-center justify-center gap-3 px-8 py-4 rounded-xl font-bold text-primary-foreground bg-primary overflow-hidden transition-all duration-300 hover:scale-105 active:scale-95 shadow-[0_0_30px_-10px_rgba(var(--primary),0.6)] hover:shadow-[0_0_50px_-15px_rgba(var(--primary),0.8)] border border-primary/50 w-full sm:w-auto"
+      className="btn-3d-primary flex items-center justify-center gap-3 px-8 py-4 font-mono font-bold tracking-widest text-sm uppercase w-full sm:w-auto"
     >
-      <div
-        className="pointer-events-none absolute -inset-px opacity-0 transition duration-300 z-20"
-        style={{
-          opacity,
-          background: `radial-gradient(150px circle at ${position.x}px ${position.y}px, rgba(255,255,255,.25), transparent 40%)`,
-        }}
-      />
-      <div className="absolute inset-0 bg-white/20 group-hover:translate-x-full transition-transform duration-500 ease-out -skew-x-12 -translate-x-full" />
-      <Terminal size={18} className="relative z-10 group-hover:animate-bounce" />
-      <span className="relative z-10 tracking-wider">DOWNLOAD RESUME</span>
+      <Terminal size={18} className="animate-bounce" />
+      <span>DOWNLOAD RESUME</span>
     </a>
   );
 };
 
-const SocialDock = () => {
-  let mouseX = useMotionValue(Infinity);
-
+const SocialDock3D = () => {
   return (
-    <motion.div 
-      onMouseMove={(e) => mouseX.set(e.clientX)}
-      onMouseLeave={() => mouseX.set(Infinity)}
-      className="flex items-center gap-2 p-2 rounded-2xl glass border border-border/50 shadow-xl bg-card/60 backdrop-blur-xl h-[64px]"
-    >
+    <div className="flex items-center gap-3 p-2.5 rounded-xl solid-card-secondary border border-white/10 shadow-2xl">
       {socials.map((social) => (
-        <DockIcon key={social.label} mouseX={mouseX} social={social} />
+        <a
+          key={social.label}
+          href={social.href}
+          aria-label={social.label}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="w-11 h-11 rounded-lg bg-slate-900 border border-white/10 flex items-center justify-center text-slate-300 hover:text-cyan-400 hover:border-cyan-400 hover:scale-110 transition-all shadow-md group relative"
+        >
+          <social.icon size={20} />
+          <span className="absolute -top-10 opacity-0 group-hover:opacity-100 transition-opacity bg-slate-950 text-cyan-300 text-[10px] font-mono font-bold px-2 py-1 rounded border border-cyan-400/40 pointer-events-none whitespace-nowrap shadow-xl">
+            {social.label}
+          </span>
+        </a>
       ))}
-    </motion.div>
+    </div>
   );
 };
 
-const DockIcon = ({ mouseX, social }: { mouseX: MotionValue<number>, social: any }) => {
-  const ref = useRef<HTMLAnchorElement>(null);
-  
-  let distance = useTransform(mouseX, (val) => {
-    let bounds = ref.current?.getBoundingClientRect() ?? { x: 0, width: 0 };
-    return val - bounds.x - bounds.width / 2;
-  });
+/* -------------------------------------------------------------
+   3D INNOVATIVE PROFILE PHOTO DISPLAY
+   ------------------------------------------------------------- */
+const Profile3DFrame = ({ profileImage }: { profileImage: string }) => {
+  const cardRef = useRef<HTMLDivElement>(null);
 
-  let widthSync = useTransform(distance, [-100, 0, 100], [48, 80, 48]);
-  let width = useSpring(widthSync, { mass: 0.1, stiffness: 200, damping: 15 });
-
-  return (
-    <motion.a
-      ref={ref}
-      style={{ width, height: width }}
-      href={social.href}
-      aria-label={social.label}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="relative group flex items-center justify-center rounded-xl hover:bg-muted/80 transition-colors z-10 overflow-visible"
-    >
-      <div 
-        className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-20 blur-md transition-opacity duration-300 z-0"
-        style={{ backgroundColor: social.color }}
-      />
-      
-      {/* Tooltip */}
-      <div className="absolute -top-12 opacity-0 group-hover:opacity-100 group-hover:-translate-y-1 transition-all duration-300 pointer-events-none z-50 flex flex-col items-center">
-        <span className="bg-popover text-popover-foreground text-xs font-bold px-3 py-1.5 rounded-lg shadow-xl whitespace-nowrap border border-border/50">
-          {social.label}
-        </span>
-        <div className="w-2 h-2 bg-popover border-b border-r border-border/50 transform rotate-45 -mt-1.5" />
-      </div>
-
-      <motion.div style={{ scale: useTransform(width, [48, 80], [1, 1.4]) }}>
-        <social.icon 
-          size={22} 
-          className="text-muted-foreground group-hover:text-foreground transition-colors relative z-10"
-        />
-      </motion.div>
-    </motion.a>
-  );
-};
-
-const ProfileImage = ({ profileImage }: { profileImage: string }) => {
-  const ref = useRef<HTMLDivElement>(null);
+  // Interactive Mouse Tilt
   const x = useMotionValue(0);
   const y = useMotionValue(0);
-  const mouseXSpring = useSpring(x, { stiffness: 150, damping: 15 });
-  const mouseYSpring = useSpring(y, { stiffness: 150, damping: 15 });
-  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["15deg", "-15deg"]);
-  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-15deg", "15deg"]);
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    if (!ref.current) return;
-    const rect = ref.current.getBoundingClientRect();
-    const width = rect.width;
-    const height = rect.height;
+  const mouseXSpring = useSpring(x, { stiffness: 150, damping: 18 });
+  const mouseYSpring = useSpring(y, { stiffness: 150, damping: 18 });
+
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["14deg", "-14deg"]);
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-14deg", "14deg"]);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
     const mouseX = e.clientX - rect.left;
     const mouseY = e.clientY - rect.top;
-    x.set(mouseX / width - 0.5);
-    y.set(mouseY / height - 0.5);
+    x.set(mouseX / rect.width - 0.5);
+    y.set(mouseY / rect.height - 0.5);
   };
 
   const handleMouseLeave = () => {
@@ -136,234 +78,213 @@ const ProfileImage = ({ profileImage }: { profileImage: string }) => {
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.8 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 1, ease: "easeOut", delay: 0.3 }}
-      className="flex-1 flex justify-center items-center relative w-full mt-12 lg:mt-0 perspective-1000"
-      style={{ perspective: "1000px" }}
-    >
+    <div style={{ perspective: "1200px" }} className="w-full flex items-center justify-center">
       <motion.div
-        ref={ref}
+        ref={cardRef}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
         style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
-        className="relative w-64 h-64 sm:w-80 sm:h-80 md:w-96 md:h-96 lg:w-[450px] lg:h-[450px] rounded-full p-2 bg-primary/5 shadow-2xl hover:shadow-[0_0_60px_rgba(var(--primary),0.3)] transition-shadow duration-700 group z-10 cursor-crosshair"
+        className="relative w-72 h-72 sm:w-[380px] sm:h-[380px] lg:w-[450px] lg:h-[450px] cursor-crosshair group flex items-center justify-center"
       >
-        {/* Orbital Ring with Text */}
-        <div className="absolute inset-[-40px] pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-700" style={{ transform: "translateZ(-10px)" }}>
-          <svg viewBox="0 0 100 100" className="w-full h-full animate-[spin_20s_linear_infinite]">
-            <path id="circlePath" d="M 50, 50 m -50, 0 a 50,50 0 1,1 100,0 a 50,50 0 1,1 -100,0" fill="none" />
-            <text className="text-[7.5px] font-mono font-bold fill-primary uppercase tracking-[0.25em]">
-              <textPath href="#circlePath" startOffset="0%">
-                • SRIDHAR N • FULL STACK DEVELOPER • SRIDHAR N • FULL STACK DEVELOPER 
+        {/* Layer 1: Ambient Cyan & Purple Glowing Backdrop (-30px) */}
+        <div
+          className="absolute inset-[-20px] rounded-full bg-gradient-to-tr from-cyan-500/30 via-indigo-500/20 to-purple-500/30 blur-3xl opacity-60 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"
+          style={{ transform: "translateZ(-30px)" }}
+        />
+
+        {/* Layer 2: Outer Rotating Cybernetic SVG Text Orbit (-10px) */}
+        <div
+          className="absolute inset-[-45px] pointer-events-none opacity-80 group-hover:opacity-100 transition-opacity duration-700"
+          style={{ transform: "translateZ(-10px)" }}
+        >
+          <svg viewBox="0 0 100 100" className="w-full h-full animate-[spin_24s_linear_infinite]">
+            <path id="heroProfileCircle" d="M 50, 50 m -45, 0 a 45,45 0 1,1 90,0 a 45,45 0 1,1 -90,0" fill="none" />
+            <text className="text-[6.5px] font-mono font-bold fill-cyan-300 uppercase tracking-[0.28em] drop-shadow-[0_0_8px_#00f0ff]">
+              <textPath href="#heroProfileCircle" startOffset="0%">
+                • SRIDHAR N • FULL STACK DEVELOPER • DIGITAL CORE • INNOVATION •
               </textPath>
             </text>
           </svg>
         </div>
 
-        {/* Orbiting particles */}
-        <div className="absolute inset-[-20px] rounded-full border border-primary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-700 animate-[spin_10s_linear_infinite] pointer-events-none" style={{ transform: "translateZ(10px)" }}>
-          <div className="absolute top-0 left-1/2 w-3 h-3 bg-primary rounded-full shadow-[0_0_15px_rgba(var(--primary),1)] -translate-x-1/2 -translate-y-1/2" />
+        {/* Layer 3: Orbiting 3D Tech Satellite Nodes (10px) */}
+        <div
+          className="absolute inset-[-25px] rounded-full border border-cyan-400/30 opacity-70 group-hover:opacity-100 transition-opacity animate-[spin_12s_linear_infinite] pointer-events-none"
+          style={{ transform: "translateZ(10px)" }}
+        >
+          <div className="absolute top-0 left-1/2 w-4 h-4 bg-cyan-400 rounded-full shadow-[0_0_15px_#00f0ff] -translate-x-1/2 -translate-y-1/2 border border-white" />
         </div>
-        <div className="absolute inset-[-20px] rounded-full border border-primary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-700 animate-[spin_15s_linear_infinite_reverse] pointer-events-none" style={{ transform: "translateZ(10px)" }}>
-          <div className="absolute bottom-0 left-1/2 w-2 h-2 bg-purple-500 rounded-full shadow-[0_0_15px_rgba(168,85,247,1)] -translate-x-1/2 translate-y-1/2" />
+        <div
+          className="absolute inset-[-25px] rounded-full border border-purple-500/30 opacity-70 group-hover:opacity-100 transition-opacity animate-[spin_18s_linear_infinite_reverse] pointer-events-none"
+          style={{ transform: "translateZ(10px)" }}
+        >
+          <div className="absolute bottom-0 left-1/2 w-3 h-3 bg-purple-400 rounded-full shadow-[0_0_15px_#a855f7] -translate-x-1/2 translate-y-1/2 border border-white" />
         </div>
 
-        {/* Animated Glow Behind Image */}
-        <div className="absolute inset-0 rounded-full bg-primary/20 blur-3xl opacity-40 group-hover:opacity-80 transition-opacity duration-700 animate-pulse-slow pointer-events-none" style={{ transform: "translateZ(-20px)" }} />
-        
-        {/* The Image Itself */}
-        <div className="relative w-full h-full rounded-full overflow-hidden border-2 border-primary/30 bg-background flex items-center justify-center shadow-inner" style={{ transform: "translateZ(30px)" }}>
-          <img 
-            src={profileImage} 
-            alt="Sridhar N" 
-            className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
-          />
-          <div className="absolute inset-0 bg-primary/10 mix-blend-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-          <div className="ai-scan-overlay" />
+        {/* Layer 4: Solid 3D Metallic Frame Container (0px) */}
+        <div
+          className="w-full h-full rounded-[36px] solid-card border-2 border-cyan-400/50 p-4 shadow-[0_20px_50px_rgba(0,0,0,0.9),0_0_40px_rgba(0,240,255,0.25)] relative overflow-hidden flex items-center justify-center transition-all duration-500 group-hover:border-cyan-400"
+          style={{ transform: "translateZ(0px)" }}
+        >
+          {/* Internal Corner Tech Notches */}
+          <div className="absolute top-3 left-3 w-4 h-4 border-t-2 border-l-2 border-cyan-400" />
+          <div className="absolute top-3 right-3 w-4 h-4 border-t-2 border-r-2 border-cyan-400" />
+          <div className="absolute bottom-3 left-3 w-4 h-4 border-b-2 border-l-2 border-cyan-400" />
+          <div className="absolute bottom-3 right-3 w-4 h-4 border-b-2 border-r-2 border-cyan-400" />
+
+          {/* Layer 5: High Resolution Photo Display (+25px Z-Depth) */}
+          <div
+            className="w-full h-full rounded-[28px] overflow-hidden border border-white/20 bg-slate-950 relative shadow-inner flex items-center justify-center"
+            style={{ transform: "translateZ(25px)" }}
+          >
+            <img
+              src={profileImage}
+              alt="Sridhar N"
+              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 filter brightness-[1.05] contrast-[1.05]"
+            />
+
+            {/* Cinematic Overlay Shader & Holographic Laser Line */}
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent opacity-60" />
+            <div className="absolute inset-0 bg-cyan-500/10 mix-blend-overlay pointer-events-none" />
+
+            {/* Animated Laser Scanline */}
+            <div className="absolute top-0 left-0 w-full h-[3px] bg-cyan-400 shadow-[0_0_15px_#00f0ff] opacity-0 group-hover:opacity-100 animate-[scan-vertical_3s_linear_infinite] pointer-events-none" />
+          </div>
+
+          {/* Layer 6: Floating Interactive 3D HUD Badges (+45px Z-Depth) */}
+          <div
+            className="absolute top-6 right-6 bg-slate-950/90 border border-cyan-400/50 px-3 py-1 rounded-md font-mono text-[9px] text-cyan-300 font-bold uppercase tracking-widest shadow-2xl backdrop-blur-md flex items-center gap-1.5"
+            style={{ transform: "translateZ(45px)" }}
+          >
+            <Zap size={11} className="text-cyan-400 animate-pulse" />
+            <span>ONLINE // SYS.01</span>
+          </div>
+
+          <div
+            className="absolute bottom-6 left-6 bg-slate-950/90 border border-purple-400/50 px-3 py-1 rounded-md font-mono text-[9px] text-purple-300 font-bold uppercase tracking-widest shadow-2xl backdrop-blur-md flex items-center gap-1.5"
+            style={{ transform: "translateZ(45px)" }}
+          >
+            <ShieldCheck size={11} className="text-purple-400" />
+            <span>CORE NODE</span>
+          </div>
+
+          <div
+            className="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-slate-950 border-2 border-cyan-400 px-5 py-1.5 rounded-lg font-mono text-[10px] text-cyan-300 font-bold uppercase tracking-widest shadow-[0_10px_25px_rgba(0,0,0,0.9),0_0_15px_rgba(0,240,255,0.4)] whitespace-nowrap z-30"
+            style={{ transform: "translateZ(55px)" }}
+          >
+            01 // CORE_DEVELOPER_NODE
+          </div>
+
         </div>
-        
-        {/* Inner Ring Glow */}
-        <div className="absolute inset-2 rounded-full border border-white/20 pointer-events-none z-30 opacity-50 group-hover:opacity-100 transition-opacity duration-500" style={{ transform: "translateZ(40px)" }} />
       </motion.div>
-    </motion.div>
+    </div>
   );
 };
 
-const MacDockLetter = ({ letter, mouseX }: { letter: string, mouseX: MotionValue<number> }) => {
-  const ref = useRef<HTMLSpanElement>(null);
-  
-  let distance = useTransform(mouseX, (val) => {
-    let bounds = ref.current?.getBoundingClientRect() ?? { x: 0, width: 0 };
-    return val - bounds.x - bounds.width / 2;
-  });
-
-  // Size scale
-  let scaleSync = useTransform(distance, [-100, 0, 100], [1, 1.4, 1]);
-  let scale = useSpring(scaleSync, { mass: 0.1, stiffness: 200, damping: 15 });
-
-  // Upward translation
-  let ySync = useTransform(distance, [-100, 0, 100], [0, -15, 0]);
-  let y = useSpring(ySync, { mass: 0.1, stiffness: 200, damping: 15 });
-
-  // Highlight opacity for the shiny version
-  let shinyOpacitySync = useTransform(distance, [-100, 0, 100], [0, 1, 0]);
-  let shinyOpacity = useSpring(shinyOpacitySync, { mass: 0.1, stiffness: 200, damping: 15 });
-
-  return (
-    <motion.span
-      ref={ref}
-      style={{ 
-        scale, 
-        y,
-        display: "inline-block",
-        transformOrigin: "bottom center"
-      }}
-      className={`relative cursor-crosshair ${letter === ' ' ? 'w-4 sm:w-8' : ''}`}
-    >
-      {/* Base Text */}
-      <span className="bg-clip-text text-transparent bg-gradient-to-b from-foreground via-foreground/90 to-foreground/30 block relative z-10">
-        {letter === ' ' ? '\u00A0' : letter}
-      </span>
-      
-      {/* Cyan/Primary Glow when near mouse */}
-      <motion.span 
-        className="absolute inset-0 bg-clip-text text-transparent bg-gradient-to-b from-primary via-primary/80 to-primary/20 blur-[2px] pointer-events-none z-0"
-        style={{ opacity: shinyOpacity }}
-      >
-        {letter === ' ' ? '\u00A0' : letter}
-      </motion.span>
-    </motion.span>
-  );
-};
-
-const InteractiveName = ({ text }: { text: string }) => {
-  let mouseX = useMotionValue(Infinity);
-
-  return (
-    <motion.div
-      onMouseMove={(e) => mouseX.set(e.clientX)}
-      onMouseLeave={() => mouseX.set(Infinity)}
-      className="relative z-10 w-full group mb-4 flex flex-wrap"
-    >
-      <h1 className="text-5xl sm:text-7xl lg:text-8xl xl:text-9xl font-black tracking-tighter text-glow leading-tight flex w-full justify-center lg:justify-start">
-        {text.split("").map((letter, i) => (
-          <MacDockLetter key={i} letter={letter} mouseX={mouseX} />
-        ))}
-      </h1>
-    </motion.div>
-  );
-};
-
-const HeroSection = () => {
+export const HeroSection = () => {
   const { resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end start"],
   });
 
   const opacity = useTransform(scrollYProgress, [0, 1], [1, 0]);
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.8]);
-  const y = useTransform(scrollYProgress, [0, 1], [0, 200]);
+  const y = useTransform(scrollYProgress, [0, 1], [0, 150]);
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  const profileImage = mounted && resolvedTheme === "light" 
-    ? "/Profile picture for white theme.png" 
+  const profileImage = mounted && resolvedTheme === "light"
+    ? "/Profile picture for white theme.png"
     : "/Profile for black theme.jpg";
 
   return (
-    <motion.section 
-      ref={containerRef} 
-      id="home" 
-      className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 pb-12"
-      style={{ opacity, scale, y }}
+    <motion.section
+      ref={containerRef}
+      id="home"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden pt-28 pb-16 z-10"
+      style={{ opacity, y }}
     >
-      
-      {/* Dynamic Background Mesh (Optimized for performance) */}
-      <div className="absolute inset-0 pointer-events-none opacity-40 dark:opacity-30 contain-strict">
-        <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-primary/30 blur-[100px] rounded-full animate-pulse-slow transform-gpu will-change-[opacity]" />
-        <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-purple-500/20 blur-[100px] rounded-full animate-pulse-slow transform-gpu will-change-[opacity]" style={{ animationDelay: '2s' }} />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-blue-500/10 blur-[120px] rounded-full transform-gpu" />
+      {/* Signature System Coordinates Background Marker */}
+      <div className="absolute top-24 left-8 font-mono text-[10px] text-cyan-400/40 tracking-[0.3em] uppercase pointer-events-none hidden md:block">
+        SYS.01 // BUILD_MODE // FULL_STACK_DEV // 2026
       </div>
 
-      <div className="container mx-auto px-6 relative z-10 flex flex-col lg:flex-row items-center justify-between gap-16 lg:gap-12 min-h-[calc(100vh-8rem)] pt-12">
-        
-        {/* LEFT HALF: Text & Buttons */}
-        <motion.div 
+      <div className="container mx-auto px-6 max-w-7xl relative z-10 flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-16">
+
+        {/* LEFT COLUMN: Dominant 3D Typography & Action Controls */}
+        <motion.div
+          initial={{ opacity: 0, x: -40 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
           className="flex-1 flex flex-col items-center lg:items-start text-center lg:text-left w-full"
         >
-          {/* Availability Badge */}
-          <motion.div 
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-            className="mb-8 inline-flex items-center gap-2 px-4 py-2 rounded-full glass border border-border/50 shadow-lg backdrop-blur-md relative overflow-hidden group cursor-pointer"
-          >
-            <div className="absolute inset-0 bg-gradient-to-r from-primary/0 via-primary/10 to-primary/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000 ease-in-out" />
-            <span className="relative flex h-3 w-3">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+          {/* Availability Status Tag (Solid Dimensional) */}
+          <div className="mb-6 inline-flex items-center gap-3 px-4 py-2 rounded-lg solid-card-secondary border border-cyan-400/30 text-xs font-mono font-bold tracking-widest text-cyan-300 uppercase shadow-lg">
+            <span className="relative flex h-2.5 w-2.5">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-cyan-400"></span>
             </span>
-            <span className="text-sm font-medium tracking-wide text-muted-foreground group-hover:text-foreground transition-colors relative z-10">Available for Opportunities</span>
-            <div className="absolute inset-0 rounded-full border border-primary/0 group-hover:border-primary/50 transition-colors duration-500 z-0" />
-          </motion.div>
+            <span>STATUS: AVAILABLE FOR OPPORTUNITIES</span>
+          </div>
 
-          {/* Massive Name */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
-            className="relative z-10 w-full"
-          >
-            <InteractiveName text="SRIDHAR N" />
-          </motion.div>
+          {/* Massive Dominant Heading with Subtle 3D Text Depth */}
+          <div className="relative mb-4">
+            <h1 className="text-6xl sm:text-7xl lg:text-8xl xl:text-9xl font-black tracking-tighter text-3d-title uppercase leading-none">
+              SRIDHAR<span className="text-cyan-400">.N</span>
+            </h1>
+          </div>
 
-          {/* Subtitle / Role */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut", delay: 0.4 }}
-            className="flex flex-col items-center lg:items-start gap-6 relative z-10 mt-2"
-          >
-            <div className="flex items-center gap-4 w-full justify-center lg:justify-start">
-              <div className="h-[2px] w-8 sm:w-16 bg-gradient-to-r from-transparent to-primary/80 rounded-full lg:hidden" />
-              <h2 className="text-lg sm:text-xl md:text-2xl font-mono text-primary font-bold tracking-[0.2em] uppercase">
-                Full Stack Developer
-              </h2>
-              <div className="h-[2px] w-8 sm:w-16 bg-gradient-to-l from-transparent to-primary/80 rounded-full lg:bg-gradient-to-r" />
+          {/* Subtitle / Technical Role Badge */}
+          <div className="flex flex-col items-center lg:items-start gap-4 mb-8">
+            <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded bg-slate-950 border border-white/10 text-cyan-400 font-mono font-bold text-sm tracking-[0.25em] uppercase">
+              <Cpu size={16} /> FULL STACK DEVELOPER
             </div>
-            
-            <p className="text-muted-foreground text-base sm:text-lg md:text-xl max-w-xl leading-relaxed">
-              Crafting immersive digital experiences with modern web technologies. 
-              Bridging the gap between beautiful design and robust engineering.
+
+            <p className="text-slate-300 text-base sm:text-lg md:text-xl max-w-xl leading-relaxed font-sans font-medium">
+              Architecting high-performance digital environments with modern full-stack web technologies.
+              Bridging complex algorithm design with robust engineering.
             </p>
-          </motion.div>
+          </div>
 
-          {/* Action Buttons */}
-          <motion.div 
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut", delay: 0.6 }}
-            className="flex flex-col sm:flex-row items-center gap-6 mt-10 relative z-50 w-full"
-          >
-            {/* Glowing Spotlight Resume Button */}
-            <SpotlightButton />
-
-            {/* Mac OS Style Social Dock */}
-            <SocialDock />
-          </motion.div>
+          {/* Physical 3D Action Controls */}
+          <div className="flex flex-col sm:flex-row items-center gap-6 mt-4 w-full">
+            <Physical3DButton />
+            <SocialDock3D />
+          </div>
         </motion.div>
 
-        {/* RIGHT HALF: Big Profile Image */}
-        <ProfileImage profileImage={profileImage} />
+        {/* RIGHT COLUMN: Interactive 3D Developer Core Workstation Scene & Prominent 3D Profile Frame */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
+          className="flex-1 w-full relative flex items-center justify-center min-h-[500px] lg:min-h-[600px]"
+        >
+          {/* Interactive Three.js 3D Core Canvas in background of photo */}
+          <div className="w-full h-full absolute inset-0 z-0 scale-110">
+            <HeroCoreScene />
+          </div>
+
+          {/* Prominent Innovative 3D Interactive Profile Photo Frame */}
+          <Profile3DFrame profileImage={profileImage} />
+
+        </motion.div>
 
       </div>
+
+      {/* Scroll Down Indicator */}
+      <a
+        href="#about"
+        className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-slate-400 hover:text-cyan-400 transition-colors font-mono text-xs tracking-widest uppercase"
+      >
+        <span>INITIALIZE_SCROLL</span>
+        <ChevronDown size={18} className="animate-bounce text-cyan-400" />
+      </a>
     </motion.section>
   );
 };
