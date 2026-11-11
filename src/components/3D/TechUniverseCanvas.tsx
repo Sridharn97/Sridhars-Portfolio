@@ -86,7 +86,7 @@ export const TechUniverseCanvas: React.FC = () => {
 
     // Position setup in 3D sphere
     techNodesList.forEach((tech, index) => {
-      let vec = new THREE.Vector3();
+      const vec = new THREE.Vector3();
       if (tech.id === 'core') {
         vec.set(0, 0, 0);
       } else {

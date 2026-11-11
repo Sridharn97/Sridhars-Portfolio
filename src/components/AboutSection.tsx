@@ -1,238 +1,372 @@
 import AnimatedSection from "./AnimatedSection";
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
-import { MouseEvent as ReactMouseEvent, useRef } from "react";
+import { motion } from "framer-motion";
 import {
-  Code2,
-  Layers,
-  Lightbulb,
-  Rocket,
   GraduationCap,
-  Terminal,
   CheckCircle2,
-  Cpu
+  ExternalLink,
+  MapPin,
+  Sparkles,
+  Trophy,
+  Briefcase,
+  Layout,
+  Server,
+  Brain,
+  User,
+  ArrowUpRight
 } from "lucide-react";
 
-const highlights = [
-  { icon: Code2, title: "Clean Code", desc: "Maintainable & scalable architecture" },
-  { icon: Layers, title: "Full Stack", desc: "Front-end to back-end expertise" },
-  { icon: Lightbulb, title: "Problem Solver", desc: "150+ LeetCode problems solved" },
-  { icon: Rocket, title: "Fast Learner", desc: "Always exploring new technologies" },
-];
-
-const education = [
+/* -------------------------------------------------------------
+   EDUCATION DATA
+   ------------------------------------------------------------- */
+const educationList = [
   {
     institution: "Sri Eshwar College of Engineering",
     degree: "B.E — Computer Science & Engineering",
     score: "CGPA: 7.82",
     year: "2023 – 2027",
-    status: "Ongoing",
+    status: "In Progress",
+    highlights: ["Data Structures & Algorithms", "System Design", "Database Systems", "Computer Networks"],
+    isCurrent: true,
   },
   {
     institution: "Chavara Vidya Bhavan",
-    degree: "HSC — Higher Secondary",
+    degree: "HSC — Higher Secondary Certificate",
     score: "89.67%",
     year: "2021 – 2023",
     status: "Completed",
+    highlights: ["Physics, Chemistry, Maths & Computer Science"],
+    isCurrent: false,
   },
   {
     institution: "Chavara Vidya Bhavan",
-    degree: "SSLC — Secondary School",
+    degree: "SSLC — Secondary School Leaving Certificate",
     score: "Pass",
     year: "2020 – 2021",
     status: "Completed",
+    highlights: ["General High School Curriculum"],
+    isCurrent: false,
   },
 ];
 
-const SolidHighlightCard = ({ item, i }: { item: typeof highlights[0]; i: number }) => {
-  return (
-    <AnimatedSection delay={0.1 + i * 0.1} className="h-full">
-      <motion.div
-        whileHover={{ y: -4, scale: 1.02 }}
-        className="solid-card p-6 h-full flex flex-col justify-between cursor-crosshair border border-white/10 group"
-      >
-        <div>
-          <div className="w-12 h-12 rounded-xl bg-slate-900 border border-cyan-400/30 flex items-center justify-center mb-4 text-cyan-400 group-hover:scale-110 group-hover:border-cyan-400 transition-all shadow-md">
-            <item.icon size={24} />
-          </div>
-          <h3 className="text-lg font-bold text-white mb-1 group-hover:text-cyan-400 transition-colors">
-            {item.title}
-          </h3>
-          <p className="text-xs text-slate-400 font-sans leading-relaxed">{item.desc}</p>
-        </div>
-        <div className="text-[9px] font-mono text-cyan-400/60 uppercase tracking-widest mt-4">
-          SYS.CARD_0{i + 1}
-        </div>
-      </motion.div>
-    </AnimatedSection>
-  );
-};
-
-const Solid3DMacIDE = () => {
-  const ref = useRef<HTMLDivElement>(null);
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-
-  const mouseXSpring = useSpring(x, { stiffness: 120, damping: 18 });
-  const mouseYSpring = useSpring(y, { stiffness: 120, damping: 18 });
-
-  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["6deg", "-6deg"]);
-  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-6deg", "6deg"]);
-
-  const handleMouseMove = (e: ReactMouseEvent<HTMLDivElement>) => {
-    if (!ref.current) return;
-    const rect = ref.current.getBoundingClientRect();
-    const mouseX = e.clientX - rect.left;
-    const mouseY = e.clientY - rect.top;
-    x.set(mouseX / rect.width - 0.5);
-    y.set(mouseY / rect.height - 0.5);
-  };
-
-  const handleMouseLeave = () => {
-    x.set(0);
-    y.set(0);
-  };
-
-  return (
-    <div style={{ perspective: "1200px" }} className="w-full h-full">
-      <motion.div
-        ref={ref}
-        onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseLeave}
-        style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
-        className="solid-card border-2 border-white/10 p-0 shadow-2xl relative overflow-hidden h-full flex flex-col group"
-      >
-        {/* IDE Header */}
-        <div className="bg-slate-950 px-5 py-3 flex items-center justify-between border-b border-white/10">
-          <div className="flex items-center gap-2">
-            <div className="w-3 h-3 rounded-full bg-red-500/80 border border-red-600" />
-            <div className="w-3 h-3 rounded-full bg-amber-500/80 border border-amber-600" />
-            <div className="w-3 h-3 rounded-full bg-green-500/80 border border-green-600" />
-          </div>
-          <div className="flex items-center gap-2 text-xs font-mono text-cyan-400 bg-slate-900 border border-cyan-400/30 px-3 py-1 rounded">
-            <Terminal size={14} />
-            <span>sridhar_profile.config.ts</span>
-          </div>
-          <span className="text-[10px] font-mono text-slate-500">SYS.IDE</span>
-        </div>
-
-        {/* IDE Code Editor Body */}
-        <div className="p-6 font-mono text-sm text-slate-300 bg-[#07090e] flex-1 overflow-x-auto">
-          <div className="flex gap-6">
-            <div className="text-slate-600 select-none flex flex-col text-right font-semibold">
-              {Array.from({ length: 12 }).map((_, i) => (
-                <span key={i}>{i + 1}</span>
-              ))}
-            </div>
-
-            <div className="whitespace-pre">
-              <p><span className="text-purple-400 font-bold">export const</span> <span className="text-cyan-300 font-bold">developerProfile</span> = {'{'}</p>
-              <p className="ml-4"><span className="text-cyan-400">fullName</span>: <span className="text-emerald-300">'Sridhar N'</span>,</p>
-              <p className="ml-4"><span className="text-cyan-400">role</span>: <span className="text-emerald-300">'Full Stack Developer'</span>,</p>
-              <p className="ml-4"><span className="text-cyan-400">education</span>: <span className="text-emerald-300">'Sri Eshwar College of Engineering'</span>,</p>
-              <p className="ml-4"><span className="text-cyan-400">location</span>: <span className="text-emerald-300">'Tamil Nadu, India'</span>,</p>
-              <p className="ml-4"><span className="text-cyan-400">coreTech</span>: [<span className="text-amber-300">'React'</span>, <span className="text-amber-300">'Next.js'</span>, <span className="text-amber-300">'Node.js'</span>, <span className="text-amber-300">'MongoDB'</span>],</p>
-              <p className="ml-4"><span className="text-cyan-400">motto</span>: <span className="text-emerald-300">'Architecting solid dimensional web systems'</span>,</p>
-              <p className="ml-4"><span className="text-purple-400">buildSystem</span>: <span className="text-blue-400">async ()</span> =&gt; {'{'}</p>
-              <p className="ml-8"><span className="text-purple-400">return</span> <span className="text-emerald-300">'Bridging full-stack engineering & creative UI'</span>;</p>
-              <p className="ml-4">{'}'}</p>
-              <p>{'};'}</p>
-            </div>
-          </div>
-        </div>
-      </motion.div>
-    </div>
-  );
-};
+/* -------------------------------------------------------------
+   PILLARS DATA
+   ------------------------------------------------------------- */
+const pillars = [
+  {
+    icon: Layout,
+    title: "Frontend Development",
+    desc: "Designing responsive, accessible, and interactive user interfaces with attention to typography, micro-animations, and fluid 60 FPS performance.",
+    tech: ["React", "Next.js", "Tailwind CSS", "Framer Motion"],
+    color: "#00f0ff",
+  },
+  {
+    icon: Server,
+    title: "Backend & Databases",
+    desc: "Architecting reliable REST APIs, database schemas, secure authentication, and seamless communication between server and client applications.",
+    tech: ["Node.js", "Express.js", "MongoDB", "REST APIs"],
+    color: "#a855f7",
+  },
+  {
+    icon: Brain,
+    title: "Algorithmic Mindset",
+    desc: "Applying strong fundamentals in data structures, time complexity analysis, and object-oriented design to craft clean, maintainable code.",
+    tech: ["Data Structures", "Algorithms", "Java", "Python"],
+    color: "#f59e0b",
+  },
+];
 
 export const AboutSection = () => {
   return (
-    <section id="about" className="py-28 relative scroll-mt-24 overflow-hidden z-10">
-      {/* Low Contrast 3D Giant Background Typography */}
+    <section id="about" className="py-20 md:py-24 relative scroll-mt-20 overflow-hidden z-10">
+      {/* Subtle Low-Contrast Giant Background Typography */}
       <div className="bg-giant-text">ABOUT</div>
 
-      <div className="section-divider-dimensional mb-20" />
-      <div className="container mx-auto px-6 max-w-7xl relative z-10">
+      <div className="section-divider-dimensional mb-12 md:mb-16" />
 
-        {/* Section Marker Header */}
+      <div className="container mx-auto px-4 sm:px-6 max-w-6xl relative z-10">
+        {/* Section Header */}
         <AnimatedSection>
-          <div className="flex flex-col items-center text-center mb-16">
-            <div className="font-mono text-xs tracking-[0.3em] text-cyan-400 uppercase mb-3 border border-cyan-400/40 bg-slate-950 px-4 py-1.5 rounded-md shadow-lg inline-flex items-center gap-2">
-              <Cpu size={14} /> 01 / ABOUT SYSTEM
+          <div className="flex flex-col items-center text-center mb-10 md:mb-12">
+            <div className="font-mono text-xs tracking-[0.25em] text-cyan-400 uppercase mb-3 border border-cyan-400/30 bg-slate-950/80 px-3.5 py-1 rounded-full shadow-sm inline-flex items-center gap-2">
+              <User size={13} className="text-cyan-400" />
+              <span>01 / ABOUT ME</span>
             </div>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight text-white uppercase">
-              BEHIND THE <span className="text-gradient">CODE & ARCHITECTURE</span>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-white uppercase">
+              WHO I AM & <span className="text-gradient">WHAT I DO</span>
             </h2>
+            <p className="mt-3 text-slate-400 text-sm sm:text-base max-w-xl mx-auto font-sans leading-relaxed">
+              Full-Stack Developer crafting responsive, performant web applications with clean design and solid engineering.
+            </p>
           </div>
         </AnimatedSection>
 
-        {/* IDE & Highlights 3D Composition */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-24 items-stretch">
+        {/* Top Section: Compact Bio Card + 4 Quick Stat Tiles */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 mb-8 items-stretch">
+          {/* Left: Clean Bio Card (7 Cols) */}
           <AnimatedSection delay={0.1} className="lg:col-span-7 h-full">
-            <Solid3DMacIDE />
+            <div className="solid-card p-6 sm:p-7 h-full flex flex-col justify-between border border-white/10 bg-gradient-to-br from-[#0c1017] via-[#090d14] to-[#0e131d] relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-48 h-48 bg-cyan-500/5 rounded-full blur-3xl pointer-events-none" />
+
+              <div>
+                {/* Status Badges */}
+                <div className="flex flex-wrap items-center gap-2 mb-4">
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 text-xs font-medium">
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                    <span>Available for Roles & Internships</span>
+                  </div>
+
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-900 border border-white/10 text-slate-300 text-xs font-mono">
+                    <MapPin size={12} className="text-cyan-400" />
+                    <span>Tamil Nadu, India</span>
+                  </div>
+                </div>
+
+                {/* Primary Bio Statement */}
+                <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-white mb-3 leading-snug">
+                  Bridging creative frontend design with robust full-stack engineering.
+                </h3>
+
+                <p className="text-slate-300 text-sm leading-relaxed mb-4 font-sans">
+                  I am a Computer Science & Engineering undergraduate at <strong className="text-white font-semibold">Sri Eshwar College of Engineering</strong>.
+                  I enjoy turning complex problems into intuitive, high-performance web applications that look sharp and work flawlessly across devices.
+                </p>
+
+                <p className="text-slate-400 text-xs sm:text-sm leading-relaxed mb-5 font-sans">
+                  My workflow centers on modern web technologies including React, Next.js, Node.js, and MongoDB, paired with a disciplined focus on algorithmic problem solving, clean component architecture, and responsive UI design.
+                </p>
+              </div>
+
+              {/* Core Strength Pills */}
+              <div className="pt-4 border-t border-white/5 flex flex-wrap items-center gap-2">
+                <span className="text-xs font-mono text-cyan-400 uppercase tracking-wider mr-1">Focus:</span>
+                {[
+                  "Full-Stack Web",
+                  "React & Next.js",
+                  "RESTful APIs",
+                  "Data Structures",
+                  "Responsive UI",
+                ].map((item) => (
+                  <span
+                    key={item}
+                    className="text-xs px-2.5 py-1 rounded-md bg-slate-900/90 border border-white/10 text-slate-300 font-sans"
+                  >
+                    {item}
+                  </span>
+                ))}
+              </div>
+            </div>
           </AnimatedSection>
 
-          <div className="lg:col-span-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {highlights.map((item, i) => (
-              <SolidHighlightCard key={item.title} item={item} i={i} />
-            ))}
+          {/* Right: 4 Compact Stat Tiles (5 Cols) */}
+          <div className="lg:col-span-5 grid grid-cols-2 gap-4">
+            {/* Stat 1: LeetCode */}
+            <AnimatedSection delay={0.15} className="h-full">
+              <motion.a
+                href="https://leetcode.com/u/Sridhar_n09/"
+                target="_blank"
+                rel="noopener noreferrer"
+                whileHover={{ y: -3, scale: 1.02 }}
+                className="solid-card p-5 h-full flex flex-col justify-between border border-white/10 bg-gradient-to-br from-[#0c1017] to-[#090d14] group cursor-pointer block"
+              >
+                <div className="flex items-center justify-between mb-2">
+                  <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/25 flex items-center justify-center text-amber-400 group-hover:border-amber-400 transition-colors">
+                    <Trophy size={20} />
+                  </div>
+                  <ArrowUpRight size={16} className="text-slate-500 group-hover:text-amber-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
+                </div>
+                <div>
+                  <div className="text-2xl sm:text-3xl font-black font-mono text-white group-hover:text-amber-300 transition-colors">
+                    150+
+                  </div>
+                  <div className="text-xs font-bold text-slate-200 mt-0.5">LeetCode Solved</div>
+                  <div className="text-[11px] text-slate-400 font-sans mt-1">Problem solving & DSA</div>
+                </div>
+              </motion.a>
+            </AnimatedSection>
+
+            {/* Stat 2: Academics */}
+            <AnimatedSection delay={0.2} className="h-full">
+              <motion.div
+                whileHover={{ y: -3, scale: 1.02 }}
+                className="solid-card p-5 h-full flex flex-col justify-between border border-white/10 bg-gradient-to-br from-[#0c1017] to-[#090d14] group"
+              >
+                <div className="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/25 flex items-center justify-center text-cyan-400 group-hover:border-cyan-400 transition-colors mb-2">
+                  <GraduationCap size={20} />
+                </div>
+                <div>
+                  <div className="text-2xl sm:text-3xl font-black font-mono text-white group-hover:text-cyan-300 transition-colors">
+                    7.82
+                  </div>
+                  <div className="text-xs font-bold text-slate-200 mt-0.5">CGPA in B.E</div>
+                  <div className="text-[11px] text-slate-400 font-sans mt-1">Computer Science & Eng.</div>
+                </div>
+              </motion.div>
+            </AnimatedSection>
+
+            {/* Stat 3: Internships & Training */}
+            <AnimatedSection delay={0.25} className="h-full">
+              <motion.div
+                whileHover={{ y: -3, scale: 1.02 }}
+                className="solid-card p-5 h-full flex flex-col justify-between border border-white/10 bg-gradient-to-br from-[#0c1017] to-[#090d14] group"
+              >
+                <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/25 flex items-center justify-center text-emerald-400 group-hover:border-emerald-400 transition-colors mb-2">
+                  <Briefcase size={20} />
+                </div>
+                <div>
+                  <div className="text-2xl sm:text-3xl font-black font-mono text-white group-hover:text-emerald-300 transition-colors">
+                    3+
+                  </div>
+                  <div className="text-xs font-bold text-slate-200 mt-0.5">Intern & Training</div>
+                  <div className="text-[11px] text-slate-400 font-sans mt-1">ISAII AI, Algotutor, etc.</div>
+                </div>
+              </motion.div>
+            </AnimatedSection>
+
+            {/* Stat 4: Development Philosophy */}
+            <AnimatedSection delay={0.3} className="h-full">
+              <motion.div
+                whileHover={{ y: -3, scale: 1.02 }}
+                className="solid-card p-5 h-full flex flex-col justify-between border border-white/10 bg-gradient-to-br from-[#0c1017] to-[#090d14] group"
+              >
+                <div className="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/25 flex items-center justify-center text-purple-400 group-hover:border-purple-400 transition-colors mb-2">
+                  <Sparkles size={20} />
+                </div>
+                <div>
+                  <div className="text-2xl sm:text-3xl font-black font-mono text-white group-hover:text-purple-300 transition-colors">
+                    100%
+                  </div>
+                  <div className="text-xs font-bold text-slate-200 mt-0.5">Clean & Responsive</div>
+                  <div className="text-[11px] text-slate-400 font-sans mt-1">Pixel-perfect engineering</div>
+                </div>
+              </motion.div>
+            </AnimatedSection>
           </div>
         </div>
 
-        {/* Academic Background Section */}
-        <AnimatedSection delay={0.3} className="mt-20">
-          <div className="flex flex-col items-center mb-14 text-center">
-            <div className="font-mono text-xs tracking-[0.3em] text-cyan-400 uppercase mb-3 border border-cyan-400/40 bg-slate-950 px-4 py-1.5 rounded-md shadow-lg">
-              ACADEMIC REPOSITORY
+        {/* Middle Section: 3 Clean Pillars */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-14 items-stretch">
+          {pillars.map((item, idx) => {
+            const Icon = item.icon;
+            return (
+              <AnimatedSection key={item.title} delay={0.15 + idx * 0.1} className="h-full">
+                <motion.div
+                  whileHover={{ y: -4 }}
+                  className="solid-card p-6 h-full flex flex-col justify-between border border-white/10 bg-gradient-to-br from-[#0b0f16] to-[#080c12] group hover:border-cyan-400/30 transition-all"
+                >
+                  <div>
+                    <div
+                      className="w-12 h-12 rounded-xl flex items-center justify-center mb-4 transition-transform group-hover:scale-105 border"
+                      style={{
+                        backgroundColor: `${item.color}15`,
+                        borderColor: `${item.color}35`,
+                        color: item.color,
+                      }}
+                    >
+                      <Icon size={22} />
+                    </div>
+                    <h4 className="text-base font-bold text-white mb-2 group-hover:text-cyan-300 transition-colors">
+                      {item.title}
+                    </h4>
+                    <p className="text-xs text-slate-400 leading-relaxed font-sans mb-4">
+                      {item.desc}
+                    </p>
+                  </div>
+
+                  <div className="pt-3 border-t border-white/5 flex flex-wrap gap-1.5">
+                    {item.tech.map((t) => (
+                      <span
+                        key={t}
+                        className="text-[11px] font-mono px-2 py-0.5 rounded bg-slate-900 border border-white/10 text-slate-300"
+                      >
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+                </motion.div>
+              </AnimatedSection>
+            );
+          })}
+        </div>
+
+        {/* Bottom Section: Education & Qualifications */}
+        <AnimatedSection delay={0.2}>
+          <div className="flex flex-col items-center mb-8 text-center">
+            <div className="font-mono text-xs tracking-[0.25em] text-cyan-400 uppercase mb-2">
+              ACADEMIC BACKGROUND
             </div>
-            <h3 className="text-3xl md:text-4xl font-bold text-white">
+            <h3 className="text-2xl sm:text-3xl font-bold text-white">
               EDUCATION & <span className="text-gradient">QUALIFICATIONS</span>
             </h3>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
-            {/* College Hero Widget */}
-            <div className="md:col-span-2 solid-card p-8 sm:p-10 border border-white/10 flex flex-col justify-between relative overflow-hidden">
-              <div className="flex justify-between items-start mb-8">
-                <div className="w-14 h-14 rounded-xl bg-slate-900 border border-cyan-400/40 flex items-center justify-center text-cyan-400 shadow-lg">
-                  <GraduationCap size={30} />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            {/* College Hero Card (2 cols) */}
+            <div className="md:col-span-2 solid-card p-6 sm:p-7 border border-white/10 flex flex-col justify-between relative overflow-hidden bg-gradient-to-br from-[#0c1017] via-[#090d14] to-[#0e131d]">
+              <div className="flex justify-between items-start gap-4 mb-5">
+                <div className="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-400/30 flex items-center justify-center text-cyan-400 shadow-sm">
+                  <GraduationCap size={24} />
                 </div>
-                <span className="px-4 py-1.5 rounded bg-cyan-500/10 text-cyan-300 border border-cyan-400/40 text-xs font-mono font-bold uppercase tracking-widest">
-                  {education[0].status}
-                </span>
+                <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-500/15 text-cyan-300 border border-cyan-400/40 text-xs font-mono font-semibold uppercase tracking-wider">
+                  <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-ping" />
+                  <span>{educationList[0].status}</span>
+                </div>
               </div>
 
               <div>
-                <span className="text-xs font-mono text-cyan-400 uppercase tracking-widest block mb-2">
-                  {education[0].year}
+                <span className="text-xs font-mono text-cyan-400 uppercase tracking-widest block mb-1">
+                  {educationList[0].year}
                 </span>
-                <h4 className="text-2xl sm:text-4xl font-black text-white mb-2 leading-snug">
-                  {education[0].institution}
+                <h4 className="text-xl sm:text-2xl font-bold text-white mb-1.5">
+                  {educationList[0].institution}
                 </h4>
-                <p className="text-slate-300 text-base font-medium mb-6">
-                  {education[0].degree}
+                <p className="text-slate-300 text-sm font-medium mb-3">
+                  {educationList[0].degree}
                 </p>
 
-                <div className="inline-flex items-center rounded-lg solid-card-secondary p-3 border border-cyan-400/40">
-                  <span className="text-xs font-mono text-slate-400 uppercase tracking-widest mr-3">SCORE:</span>
-                  <span className="text-xl font-bold font-mono text-cyan-300">{education[0].score.split(': ')[1]}</span>
+                {/* Coursework Tags */}
+                <div className="flex flex-wrap gap-1.5 mb-5">
+                  {educationList[0].highlights.map((h) => (
+                    <span
+                      key={h}
+                      className="text-xs px-2.5 py-0.5 rounded-md bg-slate-900 border border-white/10 text-slate-300 font-sans"
+                    >
+                      {h}
+                    </span>
+                  ))}
+                </div>
+
+                <div className="inline-flex items-center rounded-lg bg-slate-900/90 px-3.5 py-2 border border-cyan-400/30 shadow-inner">
+                  <span className="text-xs font-mono text-slate-400 uppercase tracking-wider mr-2.5">
+                    Score:
+                  </span>
+                  <span className="text-base font-bold font-mono text-cyan-300">
+                    {educationList[0].score}
+                  </span>
                 </div>
               </div>
             </div>
 
-            {/* HSC & SSLC Cards */}
-            <div className="flex flex-col gap-6">
-              {education.slice(1).map((item) => (
-                <div key={item.degree} className="solid-card p-6 border border-white/10 flex flex-col justify-between">
-                  <div className="flex justify-between items-center mb-4">
-                    <span className="text-xs font-mono text-cyan-400 tracking-widest bg-slate-900 px-2.5 py-1 rounded border border-white/10">
+            {/* School Cards (1 col) */}
+            <div className="flex flex-col gap-4">
+              {educationList.slice(1).map((item) => (
+                <div
+                  key={item.degree}
+                  className="solid-card p-5 border border-white/10 flex flex-col justify-between bg-gradient-to-br from-[#0a0e15] to-[#070b10] hover:border-cyan-400/30 transition-all"
+                >
+                  <div className="flex justify-between items-center mb-3">
+                    <span className="text-xs font-mono text-cyan-400 tracking-wider bg-slate-900 px-2 py-0.5 rounded border border-white/10">
                       {item.year}
                     </span>
-                    <CheckCircle2 size={16} className="text-cyan-400" />
+                    <div className="flex items-center gap-1 text-[11px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
+                      <CheckCircle2 size={12} />
+                      <span>Completed</span>
+                    </div>
                   </div>
+
                   <div>
-                    <h4 className="text-lg font-bold text-white mb-1">{item.institution}</h4>
-                    <p className="text-xs text-slate-400 mb-3">{item.degree}</p>
-                    <span className="text-xs font-mono font-bold text-cyan-300 bg-slate-950 px-2.5 py-1 rounded border border-cyan-400/30">
+                    <h5 className="text-sm font-bold text-white mb-0.5">{item.institution}</h5>
+                    <p className="text-xs text-slate-400 mb-2">{item.degree}</p>
+                    <span className="inline-block text-xs font-mono font-bold text-cyan-300 bg-slate-950 px-2.5 py-1 rounded border border-cyan-400/25">
                       Score: {item.score}
                     </span>
                   </div>
@@ -241,7 +375,6 @@ export const AboutSection = () => {
             </div>
           </div>
         </AnimatedSection>
-
       </div>
     </section>
   );
