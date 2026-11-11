@@ -1,52 +1,17 @@
+import { useRef, MouseEvent as ReactMouseEvent } from "react";
 import AnimatedSection from "./AnimatedSection";
-import { motion } from "framer-motion";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import {
   GraduationCap,
+  Cpu,
   CheckCircle2,
-  ExternalLink,
   MapPin,
-  Sparkles,
-  Trophy,
-  Briefcase,
   Layout,
   Server,
   Brain,
   User,
-  ArrowUpRight
+  ShieldCheck
 } from "lucide-react";
-
-/* -------------------------------------------------------------
-   EDUCATION DATA
-   ------------------------------------------------------------- */
-const educationList = [
-  {
-    institution: "Sri Eshwar College of Engineering",
-    degree: "B.E — Computer Science & Engineering",
-    score: "CGPA: 7.82",
-    year: "2023 – 2027",
-    status: "In Progress",
-    highlights: ["Data Structures & Algorithms", "System Design", "Database Systems", "Computer Networks"],
-    isCurrent: true,
-  },
-  {
-    institution: "Chavara Vidya Bhavan",
-    degree: "HSC — Higher Secondary Certificate",
-    score: "89.67%",
-    year: "2021 – 2023",
-    status: "Completed",
-    highlights: ["Physics, Chemistry, Maths & Computer Science"],
-    isCurrent: false,
-  },
-  {
-    institution: "Chavara Vidya Bhavan",
-    degree: "SSLC — Secondary School Leaving Certificate",
-    score: "Pass",
-    year: "2020 – 2021",
-    status: "Completed",
-    highlights: ["General High School Curriculum"],
-    isCurrent: false,
-  },
-];
 
 /* -------------------------------------------------------------
    PILLARS DATA
@@ -54,31 +19,231 @@ const educationList = [
 const pillars = [
   {
     icon: Layout,
-    title: "Frontend Development",
-    desc: "Designing responsive, accessible, and interactive user interfaces with attention to typography, micro-animations, and fluid 60 FPS performance.",
-    tech: ["React", "Next.js", "Tailwind CSS", "Framer Motion"],
+    title: "Frontend Engineering",
+    desc: "Designing responsive, accessible, and reactive interfaces with precision typography, micro-interactions, and fluid 60 FPS performance.",
+    tech: ["React 19", "Next.js", "Tailwind CSS", "Framer Motion"],
     color: "#00f0ff",
   },
   {
     icon: Server,
-    title: "Backend & Databases",
+    title: "Backend & Systems",
     desc: "Architecting reliable REST APIs, database schemas, secure authentication, and seamless communication between server and client applications.",
     tech: ["Node.js", "Express.js", "MongoDB", "REST APIs"],
     color: "#a855f7",
   },
   {
     icon: Brain,
-    title: "Algorithmic Mindset",
+    title: "Algorithmic Rigor",
     desc: "Applying strong fundamentals in data structures, time complexity analysis, and object-oriented design to craft clean, maintainable code.",
     tech: ["Data Structures", "Algorithms", "Java", "Python"],
     color: "#f59e0b",
   },
 ];
 
+/* -------------------------------------------------------------
+   3D TILT HOLOGRAPHIC DEGREE CARD (SRI ESHWAR COLLEGE)
+   ------------------------------------------------------------- */
+const HolographicDegreeChassis = () => {
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  // Mouse tilt physics
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const mouseXSpring = useSpring(x, { stiffness: 120, damping: 18 });
+  const mouseYSpring = useSpring(y, { stiffness: 120, damping: 18 });
+
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["5deg", "-5deg"]);
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-5deg", "5deg"]);
+
+  const handleMouseMove = (e: ReactMouseEvent<HTMLDivElement>) => {
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+    x.set(mouseX / rect.width - 0.5);
+    y.set(mouseY / rect.height - 0.5);
+  };
+
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
+
+  return (
+    <div style={{ perspective: "1200px" }} className="w-full">
+      <motion.div
+        ref={cardRef}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+        style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
+        className="solid-card border-2 border-cyan-500/30 p-6 sm:p-8 md:p-10 relative overflow-hidden bg-gradient-to-br from-[#0c1017] via-[#090d14] to-[#0f1422] shadow-[0_20px_50px_rgba(0,0,0,0.8),0_0_35px_rgba(0,240,255,0.15)] group"
+      >
+        {/* Holographic Laser Corner Notches */}
+        <div className="absolute top-3 left-3 w-4 h-4 border-t-2 border-l-2 border-cyan-400 pointer-events-none" />
+        <div className="absolute top-3 right-3 w-4 h-4 border-t-2 border-r-2 border-cyan-400 pointer-events-none" />
+        <div className="absolute bottom-3 left-3 w-4 h-4 border-b-2 border-l-2 border-cyan-400 pointer-events-none" />
+        <div className="absolute bottom-3 right-3 w-4 h-4 border-b-2 border-r-2 border-cyan-400 pointer-events-none" />
+
+        {/* Ambient Cyan/Purple Glow Backlight */}
+        <div className="absolute -top-16 -right-16 w-72 h-72 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none group-hover:bg-cyan-500/20 transition-all duration-700" />
+        <div className="absolute -bottom-16 -left-16 w-72 h-72 bg-purple-500/10 rounded-full blur-3xl pointer-events-none group-hover:bg-purple-500/15 transition-all duration-700" />
+
+        {/* Header Ribbon */}
+        <div className="flex flex-wrap items-center justify-between gap-3 mb-6 pb-4 border-b border-white/10">
+          <div className="flex items-center gap-3">
+            {/* Rotating Orbital SVG Seal */}
+            <div className="relative w-12 h-12 rounded-2xl bg-cyan-500/10 border border-cyan-400/40 flex items-center justify-center text-cyan-400 shadow-md">
+              <GraduationCap size={24} />
+              <div className="absolute -inset-1 rounded-2xl border border-cyan-400/30 animate-[spin_16s_linear_infinite] pointer-events-none" />
+            </div>
+            <div>
+              <span className="text-[10px] font-mono text-cyan-400 uppercase tracking-widest block font-bold">
+                01 // PRIMARY ACADEMIC DEGREE
+              </span>
+              <span className="text-xs font-mono text-slate-300">
+                GRADUATION PROGRAM
+              </span>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-500/15 text-cyan-300 border border-cyan-400/40 text-xs font-mono font-bold uppercase tracking-wider shadow-sm">
+              <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
+              <span>CURRENT ENROLLMENT (2023 – 2027)</span>
+            </span>
+          </div>
+        </div>
+
+        {/* Main Body */}
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+          <div className="md:col-span-8 space-y-3">
+            <span className="text-xs font-mono text-cyan-400 tracking-widest uppercase block font-semibold">
+              DEPARTMENT OF COMPUTER SCIENCE & ENGINEERING
+            </span>
+            <h4 className="text-2xl sm:text-3xl md:text-4xl font-black text-white leading-tight">
+              Sri Eshwar College of Engineering
+            </h4>
+            <p className="text-slate-200 text-base sm:text-lg font-medium">
+              Bachelor of Engineering (B.E) in Computer Science & Engineering
+            </p>
+            <div className="flex flex-wrap items-center gap-3 pt-2 text-xs font-mono text-slate-400">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-slate-900 border border-white/10 text-slate-300">
+                <MapPin size={13} className="text-cyan-400" />
+                <span>Coimbatore, Tamil Nadu</span>
+              </span>
+            </div>
+          </div>
+
+          <div className="md:col-span-4 flex flex-col justify-center items-start md:items-end">
+            <div className="p-4 rounded-2xl bg-slate-950/90 border border-cyan-400/30 shadow-inner flex flex-col items-center justify-center text-center w-full max-w-[220px]">
+              <div className="w-10 h-10 rounded-full bg-cyan-500/10 border border-cyan-400/40 flex items-center justify-center text-cyan-400 mb-2 shadow-sm">
+                <ShieldCheck size={20} />
+              </div>
+              <span className="text-xs font-mono text-cyan-300 uppercase tracking-wider font-bold">
+                DEGREE STATUS
+              </span>
+              <span className="text-sm font-bold text-white mt-0.5">
+                ACTIVE PROGRAM
+              </span>
+              <span className="text-[10px] text-slate-400 font-mono mt-1">
+                Class of 2023 – 2027
+              </span>
+            </div>
+          </div>
+        </div>
+      </motion.div>
+    </div>
+  );
+};
+
+/* -------------------------------------------------------------
+   SECONDARY ACADEMIC CREDENTIALS (HSC & SSLC)
+   ------------------------------------------------------------- */
+const SecondaryHolographicCards = () => {
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-6">
+      {/* HSC Card */}
+      <motion.div
+        whileHover={{ y: -4, scale: 1.01 }}
+        className="solid-card p-6 sm:p-7 border border-white/10 bg-gradient-to-br from-[#0c1017] to-[#090d14] relative overflow-hidden group hover:border-purple-400/40 transition-all shadow-lg"
+      >
+        <div className="absolute top-0 right-0 w-36 h-36 bg-purple-500/10 rounded-full blur-2xl pointer-events-none group-hover:bg-purple-500/20 transition-all" />
+
+        <div className="flex items-center justify-between mb-4">
+          <span className="text-xs font-mono text-purple-400 tracking-wider bg-slate-900 px-3 py-1 rounded-md border border-white/10 font-bold">
+            2021 – 2023
+          </span>
+
+          <span className="text-xs font-mono text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-md border border-emerald-500/20 inline-flex items-center gap-1.5">
+            <CheckCircle2 size={13} />
+            <span>Completed</span>
+          </span>
+        </div>
+
+        <div>
+          <span className="text-[10px] font-mono text-purple-400 uppercase tracking-widest block font-bold mb-1">
+            02 // HIGHER SECONDARY
+          </span>
+          <h5 className="text-xl font-bold text-white mb-1 group-hover:text-purple-300 transition-colors">
+            Chavara Vidya Bhavan
+          </h5>
+          <p className="text-sm text-slate-300 mb-3 font-sans">
+            Higher Secondary Certificate (HSC)
+          </p>
+
+          <div className="pt-3 border-t border-white/5 flex items-center justify-between text-xs font-mono text-slate-400">
+            <span>Secondary Education</span>
+            <span className="text-slate-300 font-bold">Verified Graduation</span>
+          </div>
+        </div>
+      </motion.div>
+
+      {/* SSLC Card */}
+      <motion.div
+        whileHover={{ y: -4, scale: 1.01 }}
+        className="solid-card p-6 sm:p-7 border border-white/10 bg-gradient-to-br from-[#0c1017] to-[#090d14] relative overflow-hidden group hover:border-emerald-400/40 transition-all shadow-lg"
+      >
+        <div className="absolute top-0 right-0 w-36 h-36 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none group-hover:bg-emerald-500/20 transition-all" />
+
+        <div className="flex items-center justify-between mb-4">
+          <span className="text-xs font-mono text-emerald-400 tracking-wider bg-slate-900 px-3 py-1 rounded-md border border-white/10 font-bold">
+            2020 – 2021
+          </span>
+
+          <span className="text-xs font-mono text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-md border border-emerald-500/20 inline-flex items-center gap-1.5">
+            <CheckCircle2 size={13} />
+            <span>Completed</span>
+          </span>
+        </div>
+
+        <div>
+          <span className="text-[10px] font-mono text-emerald-400 uppercase tracking-widest block font-bold mb-1">
+            03 // SECONDARY SCHOOLING
+          </span>
+          <h5 className="text-xl font-bold text-white mb-1 group-hover:text-emerald-300 transition-colors">
+            Chavara Vidya Bhavan
+          </h5>
+          <p className="text-sm text-slate-300 mb-3 font-sans">
+            Secondary School Leaving Certificate (SSLC)
+          </p>
+
+          <div className="pt-3 border-t border-white/5 flex items-center justify-between text-xs font-mono text-slate-400">
+            <span>Secondary School Education</span>
+            <span className="text-slate-300 font-bold">Verified Graduation</span>
+          </div>
+        </div>
+      </motion.div>
+    </div>
+  );
+};
+
+/* -------------------------------------------------------------
+   MAIN ABOUT SECTION EXPORT
+   ------------------------------------------------------------- */
 export const AboutSection = () => {
   return (
     <section id="about" className="py-20 md:py-24 relative scroll-mt-20 overflow-hidden z-10">
-      {/* Subtle Low-Contrast Giant Background Typography */}
+      {/* Giant Low-Contrast Background Typography */}
       <div className="bg-giant-text">ABOUT</div>
 
       <div className="section-divider-dimensional mb-12 md:mb-16" />
@@ -100,16 +265,15 @@ export const AboutSection = () => {
           </div>
         </AnimatedSection>
 
-        {/* Top Section: Compact Bio Card + 4 Quick Stat Tiles */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 mb-8 items-stretch">
-          {/* Left: Clean Bio Card (7 Cols) */}
-          <AnimatedSection delay={0.1} className="lg:col-span-7 h-full">
-            <div className="solid-card p-6 sm:p-7 h-full flex flex-col justify-between border border-white/10 bg-gradient-to-br from-[#0c1017] via-[#090d14] to-[#0e131d] relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-48 h-48 bg-cyan-500/5 rounded-full blur-3xl pointer-events-none" />
+        {/* Top Section: Bio Card + 3 Pillars */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 mb-14 items-stretch">
+          {/* Bio Card (12 cols) */}
+          <AnimatedSection delay={0.1} className="lg:col-span-12">
+            <div className="solid-card p-6 sm:p-8 border border-white/10 bg-gradient-to-br from-[#0c1017] via-[#090d14] to-[#0e131d] relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-500/5 rounded-full blur-3xl pointer-events-none" />
 
-              <div>
-                {/* Status Badges */}
-                <div className="flex flex-wrap items-center gap-2 mb-4">
+              <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
+                <div className="flex flex-wrap items-center gap-2">
                   <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 text-xs font-medium">
                     <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
                     <span>Available for Roles & Internships</span>
@@ -121,259 +285,85 @@ export const AboutSection = () => {
                   </div>
                 </div>
 
-                {/* Primary Bio Statement */}
-                <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-white mb-3 leading-snug">
-                  Bridging creative frontend design with robust full-stack engineering.
-                </h3>
-
-                <p className="text-slate-300 text-sm leading-relaxed mb-4 font-sans">
-                  I am a Computer Science & Engineering undergraduate at <strong className="text-white font-semibold">Sri Eshwar College of Engineering</strong>.
-                  I enjoy turning complex problems into intuitive, high-performance web applications that look sharp and work flawlessly across devices.
-                </p>
-
-                <p className="text-slate-400 text-xs sm:text-sm leading-relaxed mb-5 font-sans">
-                  My workflow centers on modern web technologies including React, Next.js, Node.js, and MongoDB, paired with a disciplined focus on algorithmic problem solving, clean component architecture, and responsive UI design.
-                </p>
+                <div className="text-xs font-mono text-cyan-300 bg-cyan-500/10 border border-cyan-400/30 px-3 py-1 rounded-full">
+                  Full Stack Engineer & CS Undergrad
+                </div>
               </div>
 
-              {/* Core Strength Pills */}
-              <div className="pt-4 border-t border-white/5 flex flex-wrap items-center gap-2">
-                <span className="text-xs font-mono text-cyan-400 uppercase tracking-wider mr-1">Focus:</span>
-                {[
-                  "Full-Stack Web",
-                  "React & Next.js",
-                  "RESTful APIs",
-                  "Data Structures",
-                  "Responsive UI",
-                ].map((item) => (
-                  <span
-                    key={item}
-                    className="text-xs px-2.5 py-1 rounded-md bg-slate-900/90 border border-white/10 text-slate-300 font-sans"
-                  >
-                    {item}
-                  </span>
-                ))}
+              <h3 className="text-xl sm:text-2xl font-bold text-white mb-3 leading-snug">
+                Bridging creative frontend design with robust full-stack engineering.
+              </h3>
+
+              <p className="text-slate-300 text-sm leading-relaxed mb-4 font-sans max-w-4xl">
+                I am a Computer Science & Engineering undergraduate at <strong className="text-white font-semibold">Sri Eshwar College of Engineering</strong>.
+                I focus on architecting modern, high-performance web systems across the full stack—from intuitive, accessible React and Next.js interfaces to reliable Node.js backends and optimized database architectures.
+              </p>
+
+              {/* 3 Core Strength Pillars Nested Cleanly */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4 border-t border-white/5">
+                {pillars.map((item) => {
+                  const Icon = item.icon;
+                  return (
+                    <div
+                      key={item.title}
+                      className="rounded-xl p-4 bg-slate-950/70 border border-white/5 hover:border-cyan-400/30 transition-all flex flex-col justify-between"
+                    >
+                      <div>
+                        <div
+                          className="w-9 h-9 rounded-lg flex items-center justify-center mb-2.5 border"
+                          style={{
+                            backgroundColor: `${item.color}15`,
+                            borderColor: `${item.color}35`,
+                            color: item.color,
+                          }}
+                        >
+                          <Icon size={18} />
+                        </div>
+                        <h4 className="text-sm font-bold text-white mb-1">{item.title}</h4>
+                        <p className="text-[11px] text-slate-400 font-sans leading-relaxed mb-3">
+                          {item.desc}
+                        </p>
+                      </div>
+                      <div className="flex flex-wrap gap-1">
+                        {item.tech.map((t) => (
+                          <span
+                            key={t}
+                            className="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-900 border border-white/10 text-slate-300"
+                          >
+                            {t}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             </div>
           </AnimatedSection>
-
-          {/* Right: 4 Compact Stat Tiles (5 Cols) */}
-          <div className="lg:col-span-5 grid grid-cols-2 gap-4">
-            {/* Stat 1: LeetCode */}
-            <AnimatedSection delay={0.15} className="h-full">
-              <motion.a
-                href="https://leetcode.com/u/Sridhar_n09/"
-                target="_blank"
-                rel="noopener noreferrer"
-                whileHover={{ y: -3, scale: 1.02 }}
-                className="solid-card p-5 h-full flex flex-col justify-between border border-white/10 bg-gradient-to-br from-[#0c1017] to-[#090d14] group cursor-pointer block"
-              >
-                <div className="flex items-center justify-between mb-2">
-                  <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/25 flex items-center justify-center text-amber-400 group-hover:border-amber-400 transition-colors">
-                    <Trophy size={20} />
-                  </div>
-                  <ArrowUpRight size={16} className="text-slate-500 group-hover:text-amber-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
-                </div>
-                <div>
-                  <div className="text-2xl sm:text-3xl font-black font-mono text-white group-hover:text-amber-300 transition-colors">
-                    150+
-                  </div>
-                  <div className="text-xs font-bold text-slate-200 mt-0.5">LeetCode Solved</div>
-                  <div className="text-[11px] text-slate-400 font-sans mt-1">Problem solving & DSA</div>
-                </div>
-              </motion.a>
-            </AnimatedSection>
-
-            {/* Stat 2: Academics */}
-            <AnimatedSection delay={0.2} className="h-full">
-              <motion.div
-                whileHover={{ y: -3, scale: 1.02 }}
-                className="solid-card p-5 h-full flex flex-col justify-between border border-white/10 bg-gradient-to-br from-[#0c1017] to-[#090d14] group"
-              >
-                <div className="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/25 flex items-center justify-center text-cyan-400 group-hover:border-cyan-400 transition-colors mb-2">
-                  <GraduationCap size={20} />
-                </div>
-                <div>
-                  <div className="text-2xl sm:text-3xl font-black font-mono text-white group-hover:text-cyan-300 transition-colors">
-                    7.82
-                  </div>
-                  <div className="text-xs font-bold text-slate-200 mt-0.5">CGPA in B.E</div>
-                  <div className="text-[11px] text-slate-400 font-sans mt-1">Computer Science & Eng.</div>
-                </div>
-              </motion.div>
-            </AnimatedSection>
-
-            {/* Stat 3: Internships & Training */}
-            <AnimatedSection delay={0.25} className="h-full">
-              <motion.div
-                whileHover={{ y: -3, scale: 1.02 }}
-                className="solid-card p-5 h-full flex flex-col justify-between border border-white/10 bg-gradient-to-br from-[#0c1017] to-[#090d14] group"
-              >
-                <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/25 flex items-center justify-center text-emerald-400 group-hover:border-emerald-400 transition-colors mb-2">
-                  <Briefcase size={20} />
-                </div>
-                <div>
-                  <div className="text-2xl sm:text-3xl font-black font-mono text-white group-hover:text-emerald-300 transition-colors">
-                    3+
-                  </div>
-                  <div className="text-xs font-bold text-slate-200 mt-0.5">Intern & Training</div>
-                  <div className="text-[11px] text-slate-400 font-sans mt-1">ISAII AI, Algotutor, etc.</div>
-                </div>
-              </motion.div>
-            </AnimatedSection>
-
-            {/* Stat 4: Development Philosophy */}
-            <AnimatedSection delay={0.3} className="h-full">
-              <motion.div
-                whileHover={{ y: -3, scale: 1.02 }}
-                className="solid-card p-5 h-full flex flex-col justify-between border border-white/10 bg-gradient-to-br from-[#0c1017] to-[#090d14] group"
-              >
-                <div className="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/25 flex items-center justify-center text-purple-400 group-hover:border-purple-400 transition-colors mb-2">
-                  <Sparkles size={20} />
-                </div>
-                <div>
-                  <div className="text-2xl sm:text-3xl font-black font-mono text-white group-hover:text-purple-300 transition-colors">
-                    100%
-                  </div>
-                  <div className="text-xs font-bold text-slate-200 mt-0.5">Clean & Responsive</div>
-                  <div className="text-[11px] text-slate-400 font-sans mt-1">Pixel-perfect engineering</div>
-                </div>
-              </motion.div>
-            </AnimatedSection>
-          </div>
         </div>
 
-        {/* Middle Section: 3 Clean Pillars */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-14 items-stretch">
-          {pillars.map((item, idx) => {
-            const Icon = item.icon;
-            return (
-              <AnimatedSection key={item.title} delay={0.15 + idx * 0.1} className="h-full">
-                <motion.div
-                  whileHover={{ y: -4 }}
-                  className="solid-card p-6 h-full flex flex-col justify-between border border-white/10 bg-gradient-to-br from-[#0b0f16] to-[#080c12] group hover:border-cyan-400/30 transition-all"
-                >
-                  <div>
-                    <div
-                      className="w-12 h-12 rounded-xl flex items-center justify-center mb-4 transition-transform group-hover:scale-105 border"
-                      style={{
-                        backgroundColor: `${item.color}15`,
-                        borderColor: `${item.color}35`,
-                        color: item.color,
-                      }}
-                    >
-                      <Icon size={22} />
-                    </div>
-                    <h4 className="text-base font-bold text-white mb-2 group-hover:text-cyan-300 transition-colors">
-                      {item.title}
-                    </h4>
-                    <p className="text-xs text-slate-400 leading-relaxed font-sans mb-4">
-                      {item.desc}
-                    </p>
-                  </div>
-
-                  <div className="pt-3 border-t border-white/5 flex flex-wrap gap-1.5">
-                    {item.tech.map((t) => (
-                      <span
-                        key={t}
-                        className="text-[11px] font-mono px-2 py-0.5 rounded bg-slate-900 border border-white/10 text-slate-300"
-                      >
-                        {t}
-                      </span>
-                    ))}
-                  </div>
-                </motion.div>
-              </AnimatedSection>
-            );
-          })}
-        </div>
-
-        {/* Bottom Section: Education & Qualifications */}
+        {/* =============================================================
+            EDUCATION & QUALIFICATIONS SECTION (STREAMLINED & INNOVATIVE)
+            ============================================================= */}
         <AnimatedSection delay={0.2}>
           <div className="flex flex-col items-center mb-8 text-center">
-            <div className="font-mono text-xs tracking-[0.25em] text-cyan-400 uppercase mb-2">
-              ACADEMIC BACKGROUND
+            <div className="font-mono text-xs tracking-[0.25em] text-cyan-400 uppercase mb-2 border border-cyan-400/30 bg-slate-950 px-3.5 py-1 rounded-full shadow-sm inline-flex items-center gap-1.5">
+              <Cpu size={12} className="text-cyan-400" />
+              <span>02 / ACADEMIC REPOSITORY</span>
             </div>
-            <h3 className="text-2xl sm:text-3xl font-bold text-white">
+            <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white">
               EDUCATION & <span className="text-gradient">QUALIFICATIONS</span>
             </h3>
+            <p className="text-slate-400 text-xs sm:text-sm font-sans mt-2 max-w-lg">
+              Academic credentials and degree timeline presented with interactive 3D depth.
+            </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-            {/* College Hero Card (2 cols) */}
-            <div className="md:col-span-2 solid-card p-6 sm:p-7 border border-white/10 flex flex-col justify-between relative overflow-hidden bg-gradient-to-br from-[#0c1017] via-[#090d14] to-[#0e131d]">
-              <div className="flex justify-between items-start gap-4 mb-5">
-                <div className="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-400/30 flex items-center justify-center text-cyan-400 shadow-sm">
-                  <GraduationCap size={24} />
-                </div>
-                <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-500/15 text-cyan-300 border border-cyan-400/40 text-xs font-mono font-semibold uppercase tracking-wider">
-                  <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-ping" />
-                  <span>{educationList[0].status}</span>
-                </div>
-              </div>
+          {/* Main 3D Tilt Holographic Degree Chassis (Sri Eshwar College) */}
+          <HolographicDegreeChassis />
 
-              <div>
-                <span className="text-xs font-mono text-cyan-400 uppercase tracking-widest block mb-1">
-                  {educationList[0].year}
-                </span>
-                <h4 className="text-xl sm:text-2xl font-bold text-white mb-1.5">
-                  {educationList[0].institution}
-                </h4>
-                <p className="text-slate-300 text-sm font-medium mb-3">
-                  {educationList[0].degree}
-                </p>
-
-                {/* Coursework Tags */}
-                <div className="flex flex-wrap gap-1.5 mb-5">
-                  {educationList[0].highlights.map((h) => (
-                    <span
-                      key={h}
-                      className="text-xs px-2.5 py-0.5 rounded-md bg-slate-900 border border-white/10 text-slate-300 font-sans"
-                    >
-                      {h}
-                    </span>
-                  ))}
-                </div>
-
-                <div className="inline-flex items-center rounded-lg bg-slate-900/90 px-3.5 py-2 border border-cyan-400/30 shadow-inner">
-                  <span className="text-xs font-mono text-slate-400 uppercase tracking-wider mr-2.5">
-                    Score:
-                  </span>
-                  <span className="text-base font-bold font-mono text-cyan-300">
-                    {educationList[0].score}
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            {/* School Cards (1 col) */}
-            <div className="flex flex-col gap-4">
-              {educationList.slice(1).map((item) => (
-                <div
-                  key={item.degree}
-                  className="solid-card p-5 border border-white/10 flex flex-col justify-between bg-gradient-to-br from-[#0a0e15] to-[#070b10] hover:border-cyan-400/30 transition-all"
-                >
-                  <div className="flex justify-between items-center mb-3">
-                    <span className="text-xs font-mono text-cyan-400 tracking-wider bg-slate-900 px-2 py-0.5 rounded border border-white/10">
-                      {item.year}
-                    </span>
-                    <div className="flex items-center gap-1 text-[11px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
-                      <CheckCircle2 size={12} />
-                      <span>Completed</span>
-                    </div>
-                  </div>
-
-                  <div>
-                    <h5 className="text-sm font-bold text-white mb-0.5">{item.institution}</h5>
-                    <p className="text-xs text-slate-400 mb-2">{item.degree}</p>
-                    <span className="inline-block text-xs font-mono font-bold text-cyan-300 bg-slate-950 px-2.5 py-1 rounded border border-cyan-400/25">
-                      Score: {item.score}
-                    </span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+          {/* Secondary Holographic Credential Cards (HSC & SSLC) */}
+          <SecondaryHolographicCards />
         </AnimatedSection>
       </div>
     </section>
