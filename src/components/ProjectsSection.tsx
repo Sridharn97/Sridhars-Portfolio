@@ -8,11 +8,7 @@ import {
   Sparkles,
   Cpu,
   Lock,
-  ArrowUpRight,
-  LayoutGrid,
-  Tv,
-  Star,
-  Check
+  ArrowUpRight
 } from "lucide-react";
 
 /* -------------------------------------------------------------
@@ -272,150 +268,10 @@ const ModernProjectCard = ({ project }: { project: Project }) => {
 };
 
 /* -------------------------------------------------------------
-   INTERACTIVE SPOTLIGHT THEATRE VIEW
-   ------------------------------------------------------------- */
-const SpotlightTheatre = ({
-  selectedProject,
-  onSelectProject,
-}: {
-  selectedProject: Project;
-  onSelectProject: (p: Project) => void;
-}) => {
-  return (
-    <div className="space-y-6">
-      {/* Featured Big Stage Display */}
-      <div className="solid-card border-2 border-cyan-400/40 p-6 sm:p-8 md:p-10 bg-gradient-to-br from-[#0c121e] via-[#090d16] to-[#0f1728] shadow-[0_20px_60px_rgba(0,0,0,0.9),0_0_40px_rgba(0,240,255,0.15)] relative overflow-hidden">
-        {/* Ambient Glow */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
-
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-          {/* Left: Project Information (6 Cols) */}
-          <div className="lg:col-span-6 space-y-4">
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="text-xs font-mono font-bold text-cyan-300 uppercase tracking-widest px-3 py-1 rounded-full bg-cyan-500/15 border border-cyan-400/40">
-                {selectedProject.badge}
-              </span>
-              <span className="text-xs font-mono text-slate-400 bg-slate-900 border border-white/10 px-3 py-1 rounded-full">
-                {selectedProject.category}
-              </span>
-              {selectedProject.demo && (
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-400/40 text-xs font-mono font-bold">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
-                  <span>ONLINE READY</span>
-                </span>
-              )}
-            </div>
-
-            <h3 className="text-3xl sm:text-4xl md:text-5xl font-black text-white leading-tight">
-              {selectedProject.title}
-            </h3>
-
-            <p className="text-slate-300 text-sm sm:text-base font-sans leading-relaxed">
-              {selectedProject.description}
-            </p>
-
-            {/* Tech Badges */}
-            <div className="flex flex-wrap gap-2 pt-2">
-              {selectedProject.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="px-3 py-1 rounded-md bg-slate-900 border border-white/10 text-xs font-mono text-cyan-300 font-bold uppercase tracking-wider"
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
-
-            {/* Action Buttons */}
-            <div className="flex items-center gap-4 pt-4 flex-wrap">
-              <a
-                href={selectedProject.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-3d-secondary px-6 py-3 font-mono text-xs tracking-wider flex items-center gap-2 uppercase font-bold"
-              >
-                <Github size={16} />
-                <span>EXPLORE SOURCE CODE</span>
-              </a>
-
-              {selectedProject.demo && (
-                <a
-                  href={selectedProject.demo}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn-3d-primary px-6 py-3 font-mono text-xs tracking-wider flex items-center gap-2 uppercase font-bold"
-                >
-                  <ExternalLink size={16} />
-                  <span>LAUNCH LIVE DEMO</span>
-                </a>
-              )}
-            </div>
-          </div>
-
-          {/* Right: Live Interactive Mock Frame (6 Cols) */}
-          <div className="lg:col-span-6">
-            <div className="rounded-2xl border-2 border-white/15 bg-slate-950 overflow-hidden shadow-2xl group">
-              {/* Browser Header */}
-              <div className="bg-slate-900/90 px-4 py-2.5 border-b border-white/10 flex items-center justify-between">
-                <div className="flex items-center gap-1.5">
-                  <span className="w-2.5 h-2.5 rounded-full bg-red-500/80" />
-                  <span className="w-2.5 h-2.5 rounded-full bg-amber-500/80" />
-                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/80" />
-                </div>
-                <div className="flex items-center gap-1.5 text-xs font-mono text-slate-300 bg-slate-950 px-3 py-1 rounded-md border border-white/10 truncate max-w-[240px]">
-                  <Lock size={11} className="text-cyan-400" />
-                  <span className="truncate">{selectedProject.domainUrl}</span>
-                </div>
-                <span className="text-[10px] font-mono text-slate-500">PREVIEW</span>
-              </div>
-
-              {/* Image Frame */}
-              <div className="relative aspect-video overflow-hidden">
-                <img
-                  src={selectedProject.image}
-                  alt={selectedProject.title}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-slate-950/20" />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Horizontal Project Selector Bar */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-        {projects.map((p) => {
-          const isCurrent = p.id === selectedProject.id;
-          return (
-            <button
-              key={p.id}
-              onClick={() => onSelectProject(p)}
-              className={`p-3 rounded-xl border text-left transition-all duration-300 ${
-                isCurrent
-                  ? "bg-slate-900 border-cyan-400 shadow-[0_0_15px_rgba(0,240,255,0.3)] scale-102"
-                  : "bg-slate-950/70 border-white/10 hover:border-white/30 hover:bg-slate-900/60"
-              }`}
-            >
-              <span className="text-[9px] font-mono text-cyan-400 uppercase tracking-widest block font-bold mb-1">
-                {p.category}
-              </span>
-              <span className="text-xs font-bold text-white block truncate">{p.title}</span>
-            </button>
-          );
-        })}
-      </div>
-    </div>
-  );
-};
-
-/* -------------------------------------------------------------
    MAIN PROJECTS SECTION EXPORT
    ------------------------------------------------------------- */
 export const ProjectsSection = () => {
   const [activeCategory, setActiveCategory] = useState<string>("All");
-  const [viewMode, setViewMode] = useState<"grid" | "spotlight">("grid");
-  const [spotlightProject, setSpotlightProject] = useState<Project>(projects[0]);
 
   const categories = ["All", "Next.js / React", "MERN Stack", "Python & AI"];
 
@@ -448,88 +304,40 @@ export const ProjectsSection = () => {
               </p>
             </div>
 
-            {/* View Mode Switcher + Filter Controls */}
-            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
-              {/* View Toggle */}
-              <div className="flex items-center bg-slate-950 p-1 rounded-xl border border-white/10 gap-1 text-xs font-mono shadow-md">
-                <button
-                  onClick={() => setViewMode("grid")}
-                  className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 font-bold ${
-                    viewMode === "grid"
-                      ? "bg-cyan-500 text-slate-950 shadow-sm"
-                      : "text-slate-400 hover:text-white"
-                  }`}
-                >
-                  <LayoutGrid size={13} />
-                  <span>Bento Grid</span>
-                </button>
-                <button
-                  onClick={() => setViewMode("spotlight")}
-                  className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 font-bold ${
-                    viewMode === "spotlight"
-                      ? "bg-cyan-500 text-slate-950 shadow-sm"
-                      : "text-slate-400 hover:text-white"
-                  }`}
-                >
-                  <Tv size={13} />
-                  <span>Spotlight</span>
-                </button>
-              </div>
-
-              {/* Category Pills */}
-              <div className="flex flex-wrap items-center gap-1.5 p-1 rounded-xl bg-slate-950 border border-white/10 shadow-md">
-                {categories.map((cat) => {
-                  const isActive = activeCategory === cat;
-                  return (
-                    <button
-                      key={cat}
-                      onClick={() => setActiveCategory(cat)}
-                      className={`px-3 py-1.5 rounded-lg font-mono text-xs font-bold transition-all uppercase ${
-                        isActive
-                          ? "bg-cyan-500/20 text-cyan-300 border border-cyan-400/40 shadow-sm"
-                          : "text-slate-400 hover:text-white"
-                      }`}
-                    >
-                      {cat}
-                    </button>
-                  );
-                })}
-              </div>
+            {/* Category Filter Pills */}
+            <div className="flex flex-wrap items-center gap-1.5 p-1 rounded-xl bg-slate-950 border border-white/10 shadow-md">
+              {categories.map((cat) => {
+                const isActive = activeCategory === cat;
+                return (
+                  <button
+                    key={cat}
+                    onClick={() => setActiveCategory(cat)}
+                    className={`px-3.5 py-1.5 rounded-lg font-mono text-xs font-bold transition-all uppercase ${
+                      isActive
+                        ? "bg-cyan-500/20 text-cyan-300 border border-cyan-400/40 shadow-sm"
+                        : "text-slate-400 hover:text-white"
+                    }`}
+                  >
+                    {cat}
+                  </button>
+                );
+              })}
             </div>
           </div>
         </AnimatedSection>
 
-        {/* Dynamic Project Presentation Canvas */}
-        <AnimatePresence mode="wait">
-          {viewMode === "grid" ? (
-            <motion.div
-              key="grid"
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -15 }}
-              transition={{ duration: 0.3 }}
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 items-stretch"
-            >
-              {filteredProjects.map((project, i) => (
-                <AnimatedSection key={project.id} delay={i * 0.08} className="h-full">
-                  <ModernProjectCard project={project} />
-                </AnimatedSection>
-              ))}
-            </motion.div>
-          ) : (
-            <motion.div
-              key="spotlight"
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -15 }}
-              transition={{ duration: 0.3 }}
-            >
-              <SpotlightTheatre
-                selectedProject={spotlightProject}
-                onSelectProject={setSpotlightProject}
-              />
-            </motion.div>
-          )}
+        {/* Dynamic Bento Project Presentation Grid */}
+        <AnimatePresence mode="popLayout">
+          <motion.div
+            layout
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 items-stretch"
+          >
+            {filteredProjects.map((project, i) => (
+              <AnimatedSection key={project.id} delay={i * 0.08} className="h-full">
+                <ModernProjectCard project={project} />
+              </AnimatedSection>
+            ))}
+          </motion.div>
         </AnimatePresence>
       </div>
     </section>
